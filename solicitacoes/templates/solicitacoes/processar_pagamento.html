@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="mx-auto max-w-3xl px-4 py-8">
+
+    <div class="rounded-2xl bg-white p-6 shadow">
+
+        <div class="mb-6">
+
+            <h1 class="text-2xl font-bold text-gray-900">
+                Pagamento
+            </h1>
+
+            <p class="mt-1 text-sm text-gray-500">
+                Finalize o pagamento para iniciar a contratação.
+            </p>
+
+        </div>
+
+
+        <div class="mb-6 rounded-xl bg-gray-50 p-5">
+
+            <h2 class="mb-4 text-lg font-semibold text-gray-900">
+                Resumo da contratação
+            </h2>
+
+            <div class="space-y-3 text-sm">
+
+                <div class="flex justify-between gap-4">
+                    <span class="text-gray-500">
+                        Serviço
+                    </span>
+
+                    <span class="font-medium text-gray-900">
+                        {{ contratacao.solicitacao.titulo }}
+                    </span>
+                </div>
+
+
+                <div class="flex justify-between gap-4">
+
+                    <span class="text-gray-500">
+                        Profissional
+                    </span>
+
+                    <span class="font-medium text-gray-900">
+                        {{ contratacao.profissional.nome_profissional }}
+                    </span>
+
+                </div>
+
+
+                <div class="flex justify-between gap-4">
+
+                    <span class="text-gray-500">
+                        Valor do serviço
+                    </span>
+
+                    <span class="font-semibold text-gray-900">
+                        R$ {{ pagamento.valor|floatformat:2 }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% if pagamento.metodo == "PIX" %}
+
+            <div class="rounded-xl border border-gray-200 p-6 text-center">
+
+                <h2 class="text-lg font-semibold text-gray-900">
+                    Pagamento via PIX
+                </h2>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    Na próxima etapa, o QR Code do PIX será exibido aqui.
+                </p>
+
+                <div class="mx-auto mt-6 flex h-48 w-48 items-center justify-center rounded-xl bg-gray-100">
+
+                    <span class="text-sm text-gray-400">
+                        QR Code
+                    </span>
+
+                </div>
+
+                <p class="mt-4 text-sm text-gray-500">
+                    Aguardando integração com o gateway de pagamento.
+                </p>
+
+            </div>
+
+
+        {% elif pagamento.metodo == "CARTAO" %}
+
+            <div class="rounded-xl border border-gray-200 p-6">
+
+                <h2 class="text-lg font-semibold text-gray-900">
+                    Pagamento com cartão
+                </h2>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    O formulário seguro do cartão será disponibilizado
+                    após a integração com o gateway.
+                </p>
+
+            </div>
+
+
+        {% elif pagamento.metodo == "BOLETO" %}
+
+            <div class="rounded-xl border border-gray-200 p-6">
+
+                <h2 class="text-lg font-semibold text-gray-900">
+                    Pagamento via boleto
+                </h2>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    O boleto será gerado pelo gateway de pagamento.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="mt-6 flex justify-end">
+
+            <a
+                href="{% url 'solicitacoes:detalhe' contratacao.solicitacao.pk %}"
+                class="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+                Voltar
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

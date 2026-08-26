@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Solicitar orçamento
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mx-auto max-w-4xl">
+
+    <div class="mb-8">
+
+        <h1 class="text-3xl font-bold">
+            Solicitar orçamento
+        </h1>
+
+        <p class="mt-2 text-gray-500">
+            Explique o que precisa e profissionais poderão enviar suas propostas.
+        </p>
+
+    </div>
+
+
+    <div class="rounded-xl bg-white p-8 shadow">
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="space-y-6">
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        {{ form.categoria.label }}
+                    </label>
+
+                    {{ form.categoria }}
+
+                    {% for error in form.categoria.errors %}
+
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        {{ form.titulo.label }}
+                    </label>
+
+                    {{ form.titulo }}
+
+                    {% for error in form.titulo.errors %}
+
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        {{ form.descricao.label }}
+                    </label>
+
+                    {{ form.descricao }}
+
+                    {% for error in form.descricao.errors %}
+
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="border-t pt-6">
+
+                    <h2 class="mb-5 text-lg font-semibold">
+                        Local do serviço
+                    </h2>
+
+
+                    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+
+
+                        <div class="md:col-span-2">
+
+                            <label class="mb-2 block text-sm font-medium">
+                                {{ form.endereco.label }}
+                            </label>
+
+                            {{ form.endereco }}
+
+                        </div>
+
+
+                        <div>
+
+                            <label class="mb-2 block text-sm font-medium">
+                                {{ form.numero.label }}
+                            </label>
+
+                            {{ form.numero }}
+
+                        </div>
+
+
+                        <div>
+
+                            <label class="mb-2 block text-sm font-medium">
+                                {{ form.bairro.label }}
+                            </label>
+
+                            {{ form.bairro }}
+
+                        </div>
+
+
+                        <div>
+
+                            <label class="mb-2 block text-sm font-medium">
+                                {{ form.cidade.label }}
+                            </label>
+
+                            {{ form.cidade }}
+
+                        </div>
+
+
+                        <div>
+
+                            <label class="mb-2 block text-sm font-medium">
+                                {{ form.estado.label }}
+                            </label>
+
+                            {{ form.estado }}
+
+                        </div>
+
+
+                        <div>
+
+                            <label class="mb-2 block text-sm font-medium">
+                                {{ form.cep.label }}
+                            </label>
+
+                            {{ form.cep }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="border-t pt-6">
+
+                    <label class="mb-2 block text-sm font-medium">
+                        {{ form.data_desejada.label }}
+                    </label>
+
+                    {{ form.data_desejada }}
+
+                    <p class="mt-1 text-xs text-gray-500">
+                        Opcional.
+                    </p>
+
+                </div>
+
+
+                <div class="border-t pt-6">
+
+                    <label class="mb-2 block text-sm font-medium">
+                        Fotos
+                    </label>
+
+                    <input
+                        type="file"
+                        name="fotos"
+                        multiple
+                        accept="image/*"
+                        class="block w-full rounded-lg border border-gray-300 bg-white text-sm"
+                    >
+
+                    <p class="mt-2 text-xs text-gray-500">
+                        Você pode enviar até 5 fotos.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-8 flex justify-end gap-3">
+
+                <a
+                    href="{% url 'solicitacoes:lista' %}"
+                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium hover:bg-gray-50"
+                >
+                    Cancelar
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+                >
+                    Enviar solicitação
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Cadastro profissional
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mx-auto max-w-3xl">
+
+    <div class="rounded-xl bg-white p-8 shadow">
+
+        <h1 class="mb-2 text-2xl font-bold">
+            Perfil profissional
+        </h1>
+
+        <p class="mb-8 text-sm text-gray-500">
+            Complete seus dados para oferecer seus serviços.
+        </p>
+
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+
+                {% for field in form %}
+
+                    <div
+                        {% if field.name == "descricao" %}
+                            class="md:col-span-2"
+                        {% endif %}
+                    >
+
+                        <label class="mb-2 block text-sm font-medium">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% for error in field.errors %}
+
+                            <p class="mt-1 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="mt-8">
+
+                <button
+                    type="submit"
+                    class="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                >
+                    Enviar cadastro profissional
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Entrar
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mx-auto max-w-md">
+
+    <div class="rounded-xl bg-white p-8 shadow">
+
+        <h1 class="mb-2 text-2xl font-bold">
+            Entrar
+        </h1>
+
+        <p class="mb-6 text-sm text-gray-500">
+            Acesse sua conta.
+        </p>
+
+
+        {% if form.non_field_errors %}
+
+            <div class="mb-5 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+
+                {{ form.non_field_errors }}
+
+            </div>
+
+        {% endif %}
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <div class="mb-5">
+
+                <label class="mb-2 block text-sm font-medium">
+                    {{ form.username.label }}
+                </label>
+
+                {{ form.username }}
+
+                {% for error in form.username.errors %}
+
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ error }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="mb-6">
+
+                <label class="mb-2 block text-sm font-medium">
+                    {{ form.password.label }}
+                </label>
+
+                {{ form.password }}
+
+                {% for error in form.password.errors %}
+
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ error }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700"
+            >
+                Entrar
+            </button>
+
+        </form>
+
+
+        <div class="mt-6 text-center text-sm">
+
+            Ainda não possui conta?
+
+            <a
+                href="{% url 'usuarios:cadastro' %}"
+                class="font-semibold text-blue-600 hover:underline"
+            >
+                Cadastre-se
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Orçamentos
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mx-auto max-w-6xl">
+
+    <div class="mb-8">
+
+        <a
+            href="{% url 'solicitacoes:detalhe' solicitacao.pk %}"
+            class="text-sm font-medium text-blue-600 hover:underline"
+        >
+            ← Voltar para solicitação
+        </a>
+
+        <h1 class="mt-4 text-3xl font-bold">
+            Orçamentos recebidos
+        </h1>
+
+        <p class="mt-2 text-gray-500">
+            {{ solicitacao.titulo }}
+        </p>
+
+    </div>
+
+
+    {% if orcamentos %}
+
+        <div class="space-y-5">
+
+            {% for orcamento in orcamentos %}
+
+                <div class="rounded-xl bg-white p-6 shadow">
+
+                    <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+
+                        <div>
+
+                            <h2 class="text-lg font-bold">
+                                {{ orcamento.profissional.nome_profissional }}
+                            </h2>
+
+                            <p class="mt-1 text-sm text-gray-500">
+                                Orçamento enviado em
+                                {{ orcamento.data_criacao|date:"d/m/Y H:i" }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="text-left md:text-right">
+
+                            <p class="text-3xl font-bold text-gray-900">
+                                R$
+                                {{ orcamento.valor|floatformat:2 }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mt-6 border-t pt-5">
+
+                        <h3 class="font-semibold">
+                            Descrição do serviço
+                        </h3>
+
+                        <p class="mt-2 whitespace-pre-line text-gray-600">
+                            {{ orcamento.descricao }}
+                        </p>
+
+
+                        <div class="mt-5 flex flex-wrap gap-5 text-sm text-gray-500">
+
+                            {% if orcamento.prazo_execucao %}
+
+                                <span>
+                                    <strong>Prazo:</strong>
+                                    {{ orcamento.prazo_execucao }} dia(s)
+                                </span>
+
+                            {% endif %}
+
+
+                            {% if orcamento.validade %}
+
+                                <span>
+                                    <strong>Validade:</strong>
+                                    {{ orcamento.validade }} dia(s)
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mt-6 flex justify-end">
+
+                        <form
+                            method="post"
+                            action="{% url 'solicitacoes:contratar_orcamento' orcamento.pk %}">
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700">
+                                Contratar este profissional
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="rounded-xl bg-white p-12 text-center shadow">
+
+            <div class="text-5xl">
+                📋
+            </div>
+
+            <h2 class="mt-4 text-xl font-semibold">
+                Ainda não há orçamentos
+            </h2>
+
+            <p class="mt-2 text-gray-500">
+                Aguarde os profissionais enviarem suas propostas.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

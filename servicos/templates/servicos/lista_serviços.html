@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Meus serviços
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mx-auto max-w-7xl">
+
+    <div class="mb-8 flex items-center justify-between">
+
+        <div>
+
+            <h1 class="text-3xl font-bold">
+                Meus serviços
+            </h1>
+
+            <p class="mt-2 text-gray-500">
+                Cadastre e gerencie os serviços que você oferece.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'servicos:novo' %}"
+            class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+        >
+            + Novo serviço
+        </a>
+
+    </div>
+
+
+    {% if servicos %}
+
+        <div class="overflow-hidden rounded-xl bg-white shadow">
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-left text-sm">
+
+                    <thead class="border-b bg-gray-50 text-xs uppercase text-gray-600">
+
+                        <tr>
+
+                            <th class="px-6 py-4">
+                                Serviço
+                            </th>
+
+                            <th class="px-6 py-4">
+                                Categoria
+                            </th>
+
+                            <th class="px-6 py-4">
+                                Preço referência
+                            </th>
+
+                            <th class="px-6 py-4">
+                                Status
+                            </th>
+
+                            <th class="px-6 py-4 text-right">
+                                Ações
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y">
+
+                        {% for servico in servicos %}
+
+                            <tr class="hover:bg-gray-50">
+
+                                <td class="px-6 py-4">
+
+                                    <div class="font-semibold">
+                                        {{ servico.nome }}
+                                    </div>
+
+                                    <div class="mt-1 max-w-md text-gray-500">
+                                        {{ servico.descricao|truncatechars:100 }}
+                                    </div>
+
+                                </td>
+
+
+                                <td class="px-6 py-4">
+
+                                    {{ servico.categoria.nome }}
+
+                                </td>
+
+
+                                <td class="px-6 py-4">
+
+                                    {% if servico.preco_referencia %}
+                                        R$ {{ servico.preco_referencia|floatformat:2 }}
+                                    {% else %}
+                                        A combinar
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="px-6 py-4">
+
+                                    {% if servico.ativo %}
+
+                                        <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                            Ativo
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+                                            Inativo
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="px-6 py-4">
+
+                                    <div class="flex justify-end gap-2">
+
+                                        <a
+                                            href="{% url 'servicos:editar' servico.pk %}"
+                                            class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+                                        >
+                                            Editar
+                                        </a>
+
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'servicos:status' servico.pk %}"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+                                            >
+
+                                                {% if servico.ativo %}
+                                                    Desativar
+                                                {% else %}
+                                                    Ativar
+                                                {% endif %}
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="rounded-xl bg-white p-12 text-center shadow">
+
+            <h2 class="text-xl font-semibold">
+                Você ainda não cadastrou nenhum serviço.
+            </h2>
+
+            <p class="mt-2 text-gray-500">
+                Cadastre seu primeiro serviço para começar a receber solicitações.
+            </p>
+
+
+            <a
+                href="{% url 'servicos:novo' %}"
+                class="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+            >
+                Cadastrar primeiro serviço
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Criar conta
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mx-auto max-w-2xl">
+
+    <div class="rounded-xl bg-white p-8 shadow">
+
+        <h1 class="mb-2 text-2xl font-bold">
+            Criar sua conta
+        </h1>
+
+        <p class="mb-8 text-sm text-gray-500">
+            Escolha como deseja utilizar a plataforma.
+        </p>
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        Nome
+                    </label>
+
+                    {{ form.first_name }}
+
+                    {% for error in form.first_name.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        Sobrenome
+                    </label>
+
+                    {{ form.last_name }}
+
+                    {% for error in form.last_name.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        E-mail
+                    </label>
+
+                    {{ form.email }}
+
+                    {% for error in form.email.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        Telefone
+                    </label>
+
+                    {{ form.telefone }}
+
+                    {% for error in form.telefone.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="md:col-span-2">
+
+                    <label class="mb-2 block text-sm font-medium">
+                        Quero me cadastrar como
+                    </label>
+
+                    {{ form.tipo_usuario }}
+
+                    {% for error in form.tipo_usuario.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        Senha
+                    </label>
+
+                    {{ form.password1 }}
+
+                    {% for error in form.password1.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+
+                <div>
+
+                    <label class="mb-2 block text-sm font-medium">
+                        Confirme a senha
+                    </label>
+
+                    {{ form.password2 }}
+
+                    {% for error in form.password2.errors %}
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-8">
+
+                <button
+                    type="submit"
+                    class="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                >
+                    Criar minha conta
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

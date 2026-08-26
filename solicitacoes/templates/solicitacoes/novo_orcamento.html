@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Enviar orçamento
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mx-auto max-w-4xl">
+
+    <div class="mb-6">
+
+        <a
+            href="{% url 'solicitacoes:disponiveis' %}"
+            class="text-sm font-medium text-blue-600 hover:underline"
+        >
+            ← Voltar para solicitações
+        </a>
+
+    </div>
+
+
+    <div class="mb-8">
+
+        <h1 class="text-3xl font-bold">
+            Enviar orçamento
+        </h1>
+
+        <p class="mt-2 text-gray-500">
+            Analise a solicitação e informe sua proposta.
+        </p>
+
+    </div>
+
+
+    <div class="mb-6 rounded-xl bg-gray-50 p-6">
+
+        <p class="text-sm text-gray-500">
+            Solicitação
+        </p>
+
+        <h2 class="mt-1 text-xl font-bold">
+            {{ solicitacao.titulo }}
+        </h2>
+
+        <p class="mt-3 whitespace-pre-line text-gray-700">
+            {{ solicitacao.descricao }}
+        </p>
+
+
+        <div class="mt-4 text-sm text-gray-500">
+
+            {{ solicitacao.cidade }} -
+            {{ solicitacao.estado }}
+
+            {% if solicitacao.data_desejada %}
+                · Data desejada:
+                {{ solicitacao.data_desejada|date:"d/m/Y" }}
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="rounded-xl bg-white p-8 shadow">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="space-y-6">
+
+                {% for field in form %}
+
+                    <div>
+
+                        <label class="mb-2 block text-sm font-medium">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+
+                            <p class="mt-1 text-xs text-gray-500">
+                                {{ field.help_text }}
+                            </p>
+
+                        {% endif %}
+
+                        {% for error in field.errors %}
+
+                            <p class="mt-1 text-sm text-red-600">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="mt-8 flex justify-end gap-3">
+
+                <a
+                    href="{% url 'solicitacoes:disponiveis' %}"
+                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium hover:bg-gray-50"
+                >
+                    Cancelar
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+                >
+                    Enviar orçamento
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
