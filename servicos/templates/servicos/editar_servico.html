@@ -4,6 +4,10 @@
     Editar serviço
 {% endblock %}
 
+{% block extra_head %}
+<!-- CSS do Tom Select -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
 
@@ -92,4 +96,60 @@
 
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<!-- JS do Tom Select -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const elCategoria = document.getElementById("id_categoria_servico");
+        const inputNome = document.getElementById("id_nome");
+
+        if (elCategoria) {
+            const ts = new TomSelect(elCategoria, {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Digite para pesquisar a categoria...",
+                allowEmptyOption: true,
+            });
+
+            // Atualiza o 'Nome do serviço' caso o usuário mude a Categoria na edição
+            ts.on("change", function(value) {
+                if (value && inputNome) {
+                    const selectedOption = ts.options[value];
+                    if (selectedOption) {
+                        inputNome.value = selectedOption.text.trim();
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Estilização para alinhar o Tom Select ao visual do Tailwind CSS */
+    .ts-wrapper.single .ts-control {
+        border-radius: 0.5rem !important;
+        padding: 0.625rem 1rem !important;
+        border-color: #d1d5db !important;
+        background-color: #ffffff !important;
+        font-size: 0.875rem !important;
+        box-shadow: none !important;
+    }
+    .ts-wrapper.single.focus .ts-control {
+        border-color: #2563eb !important;
+    }
+    .ts-wrapper.single .ts-control:after {
+        right: 15px !important;
+    }
+    .ts-dropdown {
+        border-radius: 0.5rem !important;
+        margin-top: 4px !important;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    }
+</style>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
+from categorias.models import Categoria
 from .models import Usuario, Cliente, Profissional
 
 
@@ -152,10 +153,59 @@ class ClienteForm(forms.ModelForm):
                     "type": "date",
                 }
             ),
+            "cidade": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                }
+            ),
+            "estado": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                    "placeholder": "UF",
+                }
+            ),
+            "endereco": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                }
+            ),
+            "numero": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                }
+            ),
+            "complemento": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                }
+            ),
+            "bairro": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                }
+            ),
+            "cep": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                    "placeholder": "00000-000",
+                }
+            ),
         }
 
 
 class ProfissionalForm(forms.ModelForm):
+
+    categorias = forms.ModelMultipleChoiceField(
+        queryset=Categoria.objects.filter(ativo=True).order_by("nome"),
+        widget=forms.SelectMultiple(
+            attrs={
+                "id": "id_categorias_profissional",
+                "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+            }
+        ),
+        required=False,
+        label="Categorias de Atendimento",
+    )
 
     class Meta:
         model = Profissional
@@ -165,4 +215,45 @@ class ProfissionalForm(forms.ModelForm):
             "aprovado",
             "data_aprovacao",
             "data_cadastro",
+            "mercado_pago_user_id",
+            "mercado_pago_connected",
+            "mercado_pago_connected_at",
         ]
+
+        widgets = {
+            "cpf": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                    "placeholder": "000.000.000-00",
+                }
+            ),
+            "nome_profissional": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                    "placeholder": "Seu nome público ou da sua empresa",
+                }
+            ),
+            "foto": forms.FileInput(
+                attrs={
+                    "class": "w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100",
+                }
+            ),
+            "descricao": forms.Textarea(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                    "rows": 4,
+                    "placeholder": "Descreva sua experiência, serviços oferecidos e diferenciais...",
+                }
+            ),
+            "cidade": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                }
+            ),
+            "estado": forms.TextInput(
+                attrs={
+                    "class": "w-full rounded-lg border border-gray-300 px-4 py-2.5",
+                    "placeholder": "UF",
+                }
+            ),
+        }

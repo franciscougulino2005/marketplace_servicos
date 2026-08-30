@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Pagamento - Contratação #{{ contratacao.id }}
+{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl">
+
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Pagamento</h1>
+        <p class="mt-1 text-sm text-gray-500">Realize o pagamento para confirmar a contratação do serviço.</p>
+    </div>
+
+    <!-- Dados da Contratação -->
+    <div class="rounded-xl bg-white p-6 shadow-sm border mb-6">
+        <div class="flex items-center justify-between border-b pb-4 mb-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-900">Dados da contratação</h2>
+                <p class="text-xs text-gray-500">Contratação #{{ contratacao.id }}</p>
+            </div>
+            <span class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+                Aguardando pagamento
+            </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+                <p class="text-xs text-gray-500 uppercase font-medium">Serviço</p>
+                <p class="font-semibold text-gray-800 mt-0.5">{{ contratacao.solicitacao.titulo }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-500 uppercase font-medium">Profissional</p>
+                <p class="font-semibold text-gray-800 mt-0.5">
+                    {{ contratacao.profissional.usuario.get_full_name|default:contratacao.profissional.usuario.username }}
+                </p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-500 uppercase font-medium">Prazo de execução</p>
+                <p class="font-semibold text-gray-800 mt-0.5">{{ contratacao.orcamento.prazo_dias }} dia(s)</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-500 uppercase font-medium">Valor do serviço</p>
+                <p class="text-xl font-bold text-gray-900 mt-0.5">R$ {{ contratacao.valor }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forma de Pagamento -->
+    <div class="rounded-xl bg-white p-6 shadow-sm border">
+        <h2 class="text-lg font-bold text-gray-900">Forma de pagamento</h2>
+        <p class="text-xs text-gray-500 mb-6">Escolha como deseja realizar o pagamento.</p>
+
+        <form method="post" action="{% url 'solicitacoes:pagamento' contratacao.pk %}">
+            {% csrf_token %}
+
+            <div class="space-y-4">
+                <!-- Opção PIX -->
+                <label class="flex items-center p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input
+                        type="radio"
+                        name="metodo_pagamento"
+                        value="PIX"
+                        class="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                        checked
+                    >
+                    <div class="ml-3">
+                        <span class="block text-sm font-semibold text-gray-900">PIX</span>
+                        <span class="block text-xs text-gray-500">Pagamento instantâneo.</span>
+                    </div>
+                </label>
+
+                <!-- Opção Cartão de Crédito -->
+                <label class="flex items-center p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input
+                        type="radio"
+                        name="metodo_pagamento"
+                        value="CARTAO"
+                        class="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                    >
+                    <div class="ml-3">
+                        <span class="block text-sm font-semibold text-gray-900">Cartão de crédito</span>
+                        <span class="block text-xs text-gray-500">Pagamento com cartão.</span>
+                    </div>
+                </label>
+
+                <!-- Opção Boleto Bancário -->
+                <label class="flex items-center p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input
+                        type="radio"
+                        name="metodo_pagamento"
+                        value="BOLETO"
+                        class="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                    >
+                    <div class="ml-3">
+                        <span class="block text-sm font-semibold text-gray-900">Boleto bancário</span>
+                        <span class="block text-xs text-gray-500">Pagamento através de boleto.</span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Exibição de Mensagens de Erro -->
+            {% if messages %}
+                <div class="mt-6 space-y-2">
+                    {% for message in messages %}
+                        <div class="p-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Botões de Ação -->
+            <div class="mt-8 flex justify-end gap-3 pt-4 border-t">
+                <a
+                    href="{% url 'solicitacoes:detalhe' contratacao.solicitacao.pk %}"
+                    class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                    Voltar
+                </a>
+                <button
+                    type="submit"
+                    class="px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    Continuar para pagamento
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

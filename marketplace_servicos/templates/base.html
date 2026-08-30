@@ -18,6 +18,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     {% block extra_head %}
+    <!-- Tom Select CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.tailwind.min.css" rel="stylesheet">
     {% endblock %}
 </head>
 
@@ -37,6 +40,15 @@
             <nav class="flex items-center gap-4">
 
                 {% if user.is_authenticated %}
+
+                    {% if user.is_staff or user.is_superuser %}
+                        <a
+                            href="{% url 'categorias:lista' %}"
+                            class="text-sm font-medium hover:text-blue-600"
+                        >
+                            Categorias
+                        </a>
+                    {% endif %}
 
                     <a
                         href="{% url 'usuarios:perfil' %}"
@@ -106,6 +118,33 @@
 
 
     {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            new TomSelect("#id_categoria", {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Digite para pesquisar...",
+                plugins: ['dropdown_input'],
+            });
+        });
+    </script>
+
+    <style>
+        /* Ajuste visual para o Tom Select alinhar perfeitamente com o Tailwind */
+        .ts-control {
+            border-radius: 0.5rem !important;
+            padding: 0.625rem !important;
+            border-color: #d1d5db !important;
+            background-color: #ffffff !important;
+        }
+        .ts-wrapper.single .ts-control:after {
+            right: 15px !important;
+        }
+    </style>
     {% endblock %}
 
 </body>

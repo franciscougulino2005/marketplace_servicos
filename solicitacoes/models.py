@@ -33,7 +33,7 @@ class Solicitacao(models.Model):
     )
 
     categoria = models.ForeignKey(
-        "servicos.Categoria",
+        "categorias.Categoria",  # <-- ATUALIZADO DE "servicos.Categoria" PARA "categorias.Categoria"
         on_delete=models.PROTECT,
         related_name="solicitacoes",
         verbose_name="Categoria",
@@ -440,6 +440,51 @@ class Pagamento(models.Model):
         verbose_name="Identificador da transação",
         help_text="Identificador fornecido pelo gateway de pagamento.",
     )
+    # ==========================================================
+    # DADOS DO MERCADO PAGO
+    # ==========================================================
+
+    mercado_pago_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        unique=True,
+        verbose_name="ID Mercado Pago",
+    )
+
+    mercado_pago_status = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        verbose_name="Status Mercado Pago",
+    )
+
+    mercado_pago_status_detail = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Detalhe do status Mercado Pago",
+    )
+
+    qr_code = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="PIX Copia e Cola",
+    )
+
+    qr_code_base64 = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="QR Code Base64",
+    )
+
+    ticket_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="URL do pagamento",
+    )
+
+    # ==========================================================
 
     data_criacao = models.DateTimeField(
         auto_now_add=True,
@@ -467,4 +512,68 @@ class Pagamento(models.Model):
             f"Pagamento #{self.pk} - "
             f"R$ {self.valor:.2f} - "
             f"{self.get_status_display()}"
+        )
+
+
+class ContaGateway(models.Model):
+
+    class Gateway(models.TextChoices):
+        MERCADO_PAGO = (
+            "MERCADO_PAGO",
+            "Mercado Pago",
+        )
+
+    profissional = models.OneToOneField(
+        "usuarios.Profissional",
+        on_delete=models.CASCADE,
+        related_name="conta_gateway",
+        verbose_name="Profissional",
+    )
+
+    gateway = models.CharField(
+        max_length=30,
+        choices=Gateway.choices,
+        default=Gateway.MERCADO_PAGO,
+        verbose_name="Gateway",
+    )
+
+    access_token = models.TextField(
+        verbose_name="Access Token",
+    )
+
+    refresh_token = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Refresh Token",
+    )
+
+    token_expires_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="Expiração do token",
+    )
+
+    ativo = models.BooleanField(
+        default=True,
+        verbose_name="Ativo",
+    )
+
+    data_conexao = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Data da conexão",
+    )
+
+    data_atualizacao = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Última atualização",
+    )
+
+    class Meta:
+        verbose_name = "Conta de gateway"
+        verbose_name_plural = "Contas de gateway"
+
+    def __str__(self):
+        return (
+            f"{self.get_gateway_display()} - "
+            f"{self.profissional.nome_profissional}"
         )

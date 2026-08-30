@@ -12,14 +12,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-
 from dotenv import load_dotenv
-
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Força o carregamento do .env localizado na raiz do projeto (onde está o manage.py)
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -30,7 +29,16 @@ SECRET_KEY = 'django-insecure-r9$ifnigpnz-et!=+ev8&#r!-(^)^i5jw4oeo%v&e&+4-%g(kj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    ".ngrok-free.dev",
+    ".trycloudflare.com"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://zero-concur-program.ngrok-free.dev",
+]
 
 
 # Application definition
@@ -45,6 +53,7 @@ INSTALLED_APPS = [
     'usuarios',
     'servicos',
     'solicitacoes',
+    'categorias',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +71,9 @@ ROOT_URLCONF = 'marketplace_servicos.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        "DIRS": [BASE_DIR / "templates"],
+        'DIRS': [
+            BASE_DIR / 'marketplace_servicos' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,17 +153,25 @@ LOGIN_URL = "usuarios:login"
 LOGIN_REDIRECT_URL = "usuarios:perfil"
 LOGOUT_REDIRECT_URL = "usuarios:login"
 
-MERCADO_PAGO_CLIENT_ID = os.getenv(
-    "MP_CLIENT_ID"
-)
 
-MERCADO_PAGO_CLIENT_SECRET = os.getenv(
-    "MP_CLIENT_SECRET"
-)
+# ==========================================================
+# CONFIGURAÇÕES ADICIONAIS DO MERCADO PAGO
+# ==========================================================
 
-MERCADO_PAGO_REDIRECT_URI = os.getenv(
-    "MP_REDIRECT_URI"
-)
+MERCADO_PAGO_CLIENT_ID = os.getenv("MP_CLIENT_ID")
+MERCADO_PAGO_CLIENT_SECRET = os.getenv("MP_CLIENT_SECRET")
+MERCADO_PAGO_REDIRECT_URI = os.getenv("MP_REDIRECT_URI")
+MERCADO_PAGO_ACCESS_TOKEN = os.getenv("MP_ACCESS_TOKEN")
+
+# Permite que o Django reconheça o HTTPS enviado pelo Cloudflare / Ngrok Tunnel
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
+# configuração para envio de emails (Desenvolvimento)
+# em produção temos que fazer outras coisas
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "Marketplace <no-reply@marketplace.com.br>"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

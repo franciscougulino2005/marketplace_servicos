@@ -1,30 +1,6 @@
 from django.contrib import admin
 
-from .models import Categoria, Servico
-
-
-@admin.register(Categoria)
-class CategoriaAdmin(admin.ModelAdmin):
-
-    list_display = (
-        "nome",
-        "ativo",
-        "data_cadastro",
-        "data_atualizacao",
-    )
-
-    list_filter = (
-        "ativo",
-    )
-
-    search_fields = (
-        "nome",
-        "descricao",
-    )
-
-    ordering = (
-        "nome",
-    )
+from .models import Servico
 
 
 @admin.register(Servico)
@@ -50,9 +26,9 @@ class ServicoAdmin(admin.ModelAdmin):
         "profissional__nome_profissional",
     )
 
+    # Removido 'categoria' do autocomplete
     autocomplete_fields = (
         "profissional",
-        "categoria",
     )
 
     ordering = (

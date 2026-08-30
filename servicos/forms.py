@@ -1,5 +1,6 @@
 from django import forms
 
+from categorias.models import Categoria
 from .models import Servico
 
 
@@ -25,11 +26,8 @@ class ServicoForm(forms.ModelForm):
         widgets = {
             "categoria": forms.Select(
                 attrs={
-                    "class": (
-                        "w-full rounded-lg border "
-                        "border-gray-300 px-4 py-2.5 "
-                        "bg-white"
-                    ),
+                    "id": "id_categoria_servico",
+                    "class": "w-full text-sm",
                 }
             ),
 
@@ -37,7 +35,8 @@ class ServicoForm(forms.ModelForm):
                 attrs={
                     "class": (
                         "w-full rounded-lg border "
-                        "border-gray-300 px-4 py-2.5"
+                        "border-gray-300 px-4 py-2.5 "
+                        "bg-white"
                     ),
                     "placeholder": "Ex.: Instalação de tomadas",
                 }
@@ -47,7 +46,8 @@ class ServicoForm(forms.ModelForm):
                 attrs={
                     "class": (
                         "w-full rounded-lg border "
-                        "border-gray-300 px-4 py-2.5"
+                        "border-gray-300 px-4 py-2.5 "
+                        "bg-white"
                     ),
                     "rows": 5,
                     "placeholder": (
@@ -60,7 +60,8 @@ class ServicoForm(forms.ModelForm):
                 attrs={
                     "class": (
                         "w-full rounded-lg border "
-                        "border-gray-300 px-4 py-2.5"
+                        "border-gray-300 px-4 py-2.5 "
+                        "bg-white"
                     ),
                     "placeholder": "0,00",
                     "step": "0.01",
@@ -74,7 +75,6 @@ class ServicoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["categoria"].queryset = (
-            self.fields["categoria"]
-            .queryset
-            .filter(ativo=True)
+            Categoria.objects.filter(ativo=True).order_by("nome")
         )
+        self.fields["categoria"].empty_label = "Selecione uma categoria"

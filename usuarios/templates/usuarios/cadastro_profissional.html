@@ -4,13 +4,14 @@
     Cadastro profissional
 {% endblock %}
 
+{% block extra_head %}
+<!-- CSS do Tom Select -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
-
 <div class="mx-auto max-w-3xl">
-
     <div class="rounded-xl bg-white p-8 shadow">
-
         <h1 class="mb-2 text-2xl font-bold">
             Perfil profissional
         </h1>
@@ -19,35 +20,18 @@
             Complete seus dados para oferecer seus serviços.
         </p>
 
-
-        <form
-            method="post"
-            enctype="multipart/form-data"
-        >
-
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-
             {% if form.non_field_errors %}
-
                 <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700">
                     {{ form.non_field_errors }}
                 </div>
-
             {% endif %}
 
-
             <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-
-
                 {% for field in form %}
-
-                    <div
-                        {% if field.name == "descricao" %}
-                            class="md:col-span-2"
-                        {% endif %}
-                    >
-
+                    <div {% if field.name == "descricao" or field.name == "categorias" %}class="md:col-span-2"{% endif %}>
                         <label class="mb-2 block text-sm font-medium">
                             {{ field.label }}
                         </label>
@@ -55,35 +39,53 @@
                         {{ field }}
 
                         {% for error in field.errors %}
-
                             <p class="mt-1 text-sm text-red-600">
                                 {{ error }}
                             </p>
-
                         {% endfor %}
-
                     </div>
-
                 {% endfor %}
-
             </div>
 
-
             <div class="mt-8">
-
                 <button
                     type="submit"
                     class="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
                 >
                     Enviar cadastro profissional
                 </button>
-
             </div>
-
         </form>
-
     </div>
-
 </div>
+{% endblock %}
 
+{% block scripts %}
+<!-- JS do Tom Select -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const el = document.getElementById("id_categorias_profissional");
+        if (el) {
+            new TomSelect(el, {
+                plugins: ['remove_button'],
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Selecione as categorias em que você atua...",
+            });
+        }
+    });
+</script>
+
+<style>
+    .ts-control {
+        border-radius: 0.5rem !important;
+        padding: 0.625rem !important;
+        border-color: #d1d5db !important;
+        background-color: #ffffff !important;
+    }
+</style>
 {% endblock %}

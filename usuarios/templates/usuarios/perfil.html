@@ -10,7 +10,7 @@
 <div class="mx-auto max-w-5xl">
     {% if request.user.tipo_usuario == "PROFISSIONAL" %}
 
-        {% if request.user.profissional.mercado_pago_connected %}
+        {% if conta_gateway and conta_gateway.ativo %}
 
             <div class="rounded-xl border border-green-200 bg-green-50 p-4">
 
@@ -86,13 +86,13 @@
                 <div class="mt-8 flex flex-wrap gap-3">
 
                     <a
-                        href="{% url 'solicitacoes:nova' %}"
+                        href="{% url 'solicitacoes:nova_solicitacao' %}"
                         class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700">
                         Solicitar orçamento
                     </a>
 
                     <a
-                        href="{% url 'solicitacoes:lista' %}"
+                        href="{% url 'solicitacoes:lista_solicitacoes' %}"
                         class="rounded-lg border border-gray-300 px-5 py-3 font-medium hover:bg-gray-50">
                         Minhas solicitações
                     </a>

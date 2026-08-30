@@ -127,6 +127,13 @@ class Profissional(models.Model):
         verbose_name="Usuário",
     )
 
+    categorias = models.ManyToManyField(
+        "categorias.Categoria",
+        related_name="profissionais",
+        blank=True,
+        verbose_name="Categorias de Atendimento",
+    )
+
     cpf = models.CharField(
         max_length=14,
         unique=True,
