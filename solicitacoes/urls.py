@@ -14,9 +14,9 @@ urlpatterns = [
     path("orcamento/<int:pk>/contratar/", views.contratar_orcamento, name="contratar_orcamento"),
     path("contratacao/<int:pk>/pagamento/", views.pagamento, name="pagamento"),
     path("pagamento/<int:pk>/processar/", views.processar_pagamento, name="processar_pagamento"),
+    path('pagamento/<int:pk>/cartao/', views.processar_pagamento_cartao, name='processar_cartao'),
 
     # Áreas e Ações do Profissional
-    # path("disponiveis/", views.lista_solicitacoes_disponiveis, name="disponiveis"),
     path("disponiveis/", views.lista_solicitacoes_disponiveis, name="solicitacoes_disponiveis"),
     path("<int:pk>/novo-orcamento/", views.novo_orcamento, name="novo_orcamento"),
     path("meus-orcamentos/", views.meus_orcamentos, name="meus_orcamentos"),

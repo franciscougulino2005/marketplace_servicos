@@ -4,35 +4,35 @@
 
 <div class="mx-auto max-w-3xl px-4 py-8">
 
-    <div class="rounded-2xl bg-white p-6 shadow">
+    <div class="rounded-2xl bg-white p-6 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
         <div class="mb-6">
 
-            <h1 class="text-2xl font-bold text-gray-900">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                 Processar Pagamento
             </h1>
 
-            <p class="mt-1 text-sm text-gray-500">
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Finalize o pagamento para iniciar a execução do serviço.
             </p>
 
         </div>
 
 
-        <div class="mb-6 rounded-xl bg-gray-50 p-5">
+        <div class="mb-6 rounded-xl bg-gray-50 p-5 dark:bg-gray-900/50 dark:border dark:border-gray-700">
 
-            <h2 class="mb-4 text-lg font-semibold text-gray-900">
+            <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                 Resumo da contratação
             </h2>
 
             <div class="space-y-3 text-sm">
 
                 <div class="flex justify-between gap-4">
-                    <span class="text-gray-500">
+                    <span class="text-gray-500 dark:text-gray-400">
                         Serviço
                     </span>
 
-                    <span class="font-medium text-gray-900">
+                    <span class="font-medium text-gray-900 dark:text-white">
                         {{ contratacao.solicitacao.titulo }}
                     </span>
                 </div>
@@ -40,11 +40,11 @@
 
                 <div class="flex justify-between gap-4">
 
-                    <span class="text-gray-500">
+                    <span class="text-gray-500 dark:text-gray-400">
                         Profissional
                     </span>
 
-                    <span class="font-medium text-gray-900">
+                    <span class="font-medium text-gray-900 dark:text-white">
                         {{ contratacao.profissional.nome_profissional }}
                     </span>
 
@@ -53,11 +53,11 @@
 
                 <div class="flex justify-between gap-4">
 
-                    <span class="text-gray-500">
+                    <span class="text-gray-500 dark:text-gray-400">
                         Valor do serviço
                     </span>
 
-                    <span class="font-semibold text-gray-900">
+                    <span class="font-semibold text-gray-900 dark:text-white">
                         R$ {{ pagamento.valor|floatformat:2 }}
                     </span>
 
@@ -70,13 +70,13 @@
 
         {% if pagamento.metodo == "PIX" %}
 
-            <div class="rounded-xl border border-gray-200 p-6 text-center">
+            <div class="rounded-xl border border-gray-200 p-6 text-center dark:border-gray-700 dark:bg-gray-800">
 
-                <h2 class="text-lg font-semibold text-gray-900">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Pagamento via PIX
                 </h2>
 
-                <p class="mt-2 text-sm text-gray-500">
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                     Abra o app do seu banco e escaneie o QR Code abaixo ou utilize a chave PIX Copia e Cola.
                 </p>
 
@@ -85,18 +85,17 @@
                     <div class="mx-auto mt-6 flex justify-center">
 
                         <img
-                            src="data:image/jpeg;base64,{{ pagamento.qr_code_base64 }}"
+                            src="data:image/png;base64,{{ pagamento.qr_context_base64|default:pagamento.qr_code_base64 }}"
                             alt="QR Code PIX"
-                            class="h-56 w-56 rounded-xl border border-gray-200 p-2 shadow-sm"
-                        >
+                            class="h-56 w-56 rounded-xl border border-gray-200 p-2 shadow-sm bg-white dark:bg-white dark:border-gray-700">
 
                     </div>
 
                 {% else %}
 
-                    <div class="mx-auto mt-6 flex h-48 w-48 items-center justify-center rounded-xl bg-gray-100">
+                    <div class="mx-auto mt-6 flex h-48 w-48 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-700">
 
-                        <span class="text-sm text-gray-400">
+                        <span class="text-sm text-gray-400 dark:text-gray-300">
                             QR Code indisponível
                         </span>
 
@@ -108,7 +107,7 @@
 
                     <div class="mt-6 text-left">
 
-                        <label for="pix-chave" class="block text-sm font-medium text-gray-700">
+                        <label for="pix-chave" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             PIX Copia e Cola
                         </label>
 
@@ -119,14 +118,14 @@
                                 id="pix-chave"
                                 value="{{ pagamento.qr_code }}"
                                 readonly
-                                class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
                             >
 
                             <button
                                 type="button"
                                 onclick="copiarPix()"
                                 id="btn-copiar"
-                                class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600"
                             >
                                 <span id="text-copiar">Copiar</span>
                             </button>
@@ -137,8 +136,8 @@
 
                 {% endif %}
 
-                <div class="mt-6 flex items-center justify-center gap-2 text-sm text-amber-600">
-                    <svg class="h-4 w-4 animate-spin text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <div class="mt-6 flex items-center justify-center gap-2 text-sm text-amber-600 dark:text-amber-400">
+                    <svg class="h-4 w-4 animate-spin text-amber-500 dark:text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -150,13 +149,13 @@
 
         {% elif pagamento.metodo == "CARTAO" %}
 
-            <div class="rounded-xl border border-gray-200 p-6">
+            <div class="rounded-xl border border-gray-200 p-6 dark:border-gray-700 dark:bg-gray-800">
 
-                <h2 class="text-lg font-semibold text-gray-900">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Pagamento com cartão
                 </h2>
 
-                <p class="mt-2 text-sm text-gray-500">
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                     O formulário de cartão será disponibilizado no checkout seguro.
                 </p>
 
@@ -165,13 +164,13 @@
 
         {% elif pagamento.metodo == "BOLETO" %}
 
-            <div class="rounded-xl border border-gray-200 p-6">
+            <div class="rounded-xl border border-gray-200 p-6 dark:border-gray-700 dark:bg-gray-800">
 
-                <h2 class="text-lg font-semibold text-gray-900">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Pagamento via boleto
                 </h2>
 
-                <p class="mt-2 text-sm text-gray-500">
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                     O boleto bancário está disponível para download.
                 </p>
 
@@ -184,7 +183,7 @@
 
             <a
                 href="{% url 'solicitacoes:detalhe' contratacao.solicitacao.pk %}"
-                class="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                class="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600"
             >
                 Voltar para Solicitação
             </a>

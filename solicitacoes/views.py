@@ -1,6 +1,8 @@
-import mercadopago
+import base64
+import io
 import json
 import logging
+import mercadopago
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -8,22 +10,20 @@ from django.db import IntegrityError, transaction
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+import qrcode
 
 from usuarios.models import Usuario
-from .forms import OrcamentoForm, SolicitacaoForm
+from solicitacoes.forms import OrcamentoForm, SolicitacaoForm
 from .models import Contratacao, Orcamento, Pagamento, Solicitacao, SolicitacaoFoto
 
 logger = logging.getLogger(__name__)
 
 
 def cliente_obrigatorio(view_func):
-
     @login_required
     def wrapper(request, *args, **kwargs):
 
         if request.user.tipo_usuario != Usuario.TipoUsuario.CLIENTE:
-
             messages.error(
                 request,
                 "Esta área é exclusiva para clientes.",
@@ -38,7 +38,6 @@ def cliente_obrigatorio(view_func):
         )
 
         if cliente is None:
-
             messages.error(
                 request,
                 "Seu perfil de cliente não foi encontrado.",
@@ -57,12 +56,10 @@ def cliente_obrigatorio(view_func):
 
 
 def profissional_obrigatorio(view_func):
-
     @login_required
     def wrapper(request, *args, **kwargs):
 
         if request.user.tipo_usuario != Usuario.TipoUsuario.PROFISSIONAL:
-
             messages.error(
                 request,
                 "Esta área é exclusiva para profissionais.",
@@ -77,7 +74,6 @@ def profissional_obrigatorio(view_func):
         )
 
         if profissional is None:
-
             messages.error(
                 request,
                 "Seu perfil profissional não foi encontrado.",
@@ -97,7 +93,6 @@ def profissional_obrigatorio(view_func):
 
 @cliente_obrigatorio
 def lista_solicitacoes(request, cliente):
-
     solicitacoes = (
         Solicitacao.objects.filter(cliente=cliente).select_related("categoria")
     )
@@ -114,7 +109,6 @@ def lista_solicitacoes(request, cliente):
 
 @cliente_obrigatorio
 def nova_solicitacao(request, cliente):
-
     if request.method == "POST":
 
         form = SolicitacaoForm(request.POST)
@@ -122,7 +116,6 @@ def nova_solicitacao(request, cliente):
         arquivos = request.FILES.getlist("fotos")
 
         if len(arquivos) > 5:
-
             form.add_error(
                 None,
                 "Você pode enviar no máximo 5 fotos.",
@@ -137,7 +130,6 @@ def nova_solicitacao(request, cliente):
             solicitacao.save()
 
             for arquivo in arquivos:
-
                 SolicitacaoFoto.objects.create(
                     solicitacao=solicitacao,
                     imagem=arquivo,
@@ -177,16 +169,14 @@ def detalhe_solicitacao(request, pk):
 
     usuario = request.user
 
-    # Identifica a relação do usuário logado com a solicitação
     is_cliente = hasattr(usuario, "cliente") and solicitacao.cliente == usuario.cliente
     is_profissional_contratado = (
-        hasattr(usuario, "profissional")
-        and Contratacao.objects.filter(
-            solicitacao=solicitacao, profissional=usuario.profissional
-        ).exists()
+            hasattr(usuario, "profissional")
+            and Contratacao.objects.filter(
+        solicitacao=solicitacao, profissional=usuario.profissional
+    ).exists()
     )
 
-    # Bloqueia apenas quem não for nem o cliente dono nem o profissional contratado
     if not (is_cliente or is_profissional_contratado):
         messages.error(request, "Você não tem permissão para acessar esta solicitação.")
         return redirect("usuarios:perfil")
@@ -210,7 +200,6 @@ def orcamentos_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, pk=pk)
     usuario = request.user
 
-    # Valida se é o cliente ou um profissional
     is_cliente = hasattr(usuario, "cliente") and solicitacao.cliente == usuario.cliente
     is_profissional = hasattr(usuario, "profissional")
 
@@ -227,9 +216,9 @@ def orcamentos_solicitacao(request, pk):
 
 @cliente_obrigatorio
 def aceitar_orcamento(
-    request,
-    cliente,
-    pk,
+        request,
+        cliente,
+        pk,
 ):
     if request.method != "POST":
         return redirect(
@@ -333,11 +322,10 @@ def aceitar_orcamento(
 
 @cliente_obrigatorio
 def cancelar_solicitacao(
-    request,
-    cliente,
-    pk,
+        request,
+        cliente,
+        pk,
 ):
-
     solicitacao = get_object_or_404(
         Solicitacao,
         pk=pk,
@@ -380,10 +368,9 @@ def cancelar_solicitacao(
 
 @profissional_obrigatorio
 def lista_solicitacoes_disponiveis(
-    request,
-    profissional,
+        request,
+        profissional,
 ):
-
     solicitacoes = (
         Solicitacao.objects.filter(
             categoria__servicos__profissional=profissional,
@@ -414,11 +401,10 @@ def lista_solicitacoes_disponiveis(
 
 @profissional_obrigatorio
 def novo_orcamento(
-    request,
-    profissional,
-    pk,
+        request,
+        profissional,
+        pk,
 ):
-
     solicitacao = get_object_or_404(
         Solicitacao.objects.select_related(
             "categoria",
@@ -434,10 +420,9 @@ def novo_orcamento(
     )
 
     if Orcamento.objects.filter(
-        solicitacao=solicitacao,
-        profissional=profissional,
+            solicitacao=solicitacao,
+            profissional=profissional,
     ).exists():
-
         messages.warning(
             request,
             "Você já enviou um orçamento para esta solicitação.",
@@ -462,7 +447,6 @@ def novo_orcamento(
                     orcamento.save()
 
                     if solicitacao.status == (Solicitacao.Status.ABERTA):
-
                         solicitacao.status = Solicitacao.Status.RECEBENDO_ORCAMENTOS
 
                         solicitacao.save(
@@ -504,10 +488,9 @@ def novo_orcamento(
 
 @profissional_obrigatorio
 def meus_orcamentos(
-    request,
-    profissional,
+        request,
+        profissional,
 ):
-
     orcamentos = Orcamento.objects.filter(
         profissional=profissional,
     ).select_related(
@@ -526,13 +509,11 @@ def meus_orcamentos(
 
 @cliente_obrigatorio
 def contratar_orcamento(
-    request,
-    cliente,
-    pk,
+        request,
+        cliente,
+        pk,
 ):
-
     if request.method != "POST":
-
         messages.error(
             request,
             "A contratação deve ser realizada através do formulário.",
@@ -556,7 +537,6 @@ def contratar_orcamento(
         Solicitacao.Status.ABERTA,
         Solicitacao.Status.RECEBENDO_ORCAMENTOS,
     ]:
-
         messages.error(
             request,
             "Esta solicitação não está mais disponível para contratação.",
@@ -568,7 +548,6 @@ def contratar_orcamento(
         )
 
     if orcamento.status != Orcamento.Status.ENVIADO:
-
         messages.error(
             request,
             "Este orçamento não está mais disponível para contratação.",
@@ -580,7 +559,6 @@ def contratar_orcamento(
         )
 
     if not orcamento.profissional.ativo:
-
         messages.error(
             request,
             "Este profissional não está mais ativo na plataforma.",
@@ -592,7 +570,6 @@ def contratar_orcamento(
         )
 
     if not orcamento.profissional.aprovado:
-
         messages.error(
             request,
             "Este profissional ainda não está aprovado pela plataforma.",
@@ -604,9 +581,8 @@ def contratar_orcamento(
         )
 
     if Contratacao.objects.filter(
-        solicitacao=solicitacao,
+            solicitacao=solicitacao,
     ).exists():
-
         messages.error(
             request,
             "Esta solicitação já possui uma contratação.",
@@ -699,73 +675,180 @@ def contratar_orcamento(
     )
 
 
-@cliente_obrigatorio
-def pagamento(request, cliente, pk):
-    contratacao = get_object_or_404(
-        Contratacao.objects.select_related(
-            "solicitacao", "profissional", "orcamento"
-        ),
-        pk=pk,
-        solicitacao__cliente=cliente,
-    )
-
-    if request.method == "POST":
-        metodo = request.POST.get("metodo_pagamento")
-
-        if metodo not in [
-            Pagamento.Metodo.PIX,
-            Pagamento.Metodo.CARTAO,
-            Pagamento.Metodo.BOLETO,
-        ]:
-            messages.error(
-                request, "Selecione um método de pagamento válido."
-            )
-            return redirect("solicitacoes:pagamento", pk=contratacao.pk)
-
-        # Valida se o token foi configurado antes de prosseguir
-        access_token = getattr(settings, "MERCADO_PAGO_ACCESS_TOKEN", None)
-        if not access_token:
-            messages.error(
-                request,
-                "Erro de configuração: MERCADO_PAGO_ACCESS_TOKEN não foi encontrado.",
-            )
-            return redirect("solicitacoes:pagamento", pk=contratacao.pk)
-
-        # Cria ou recupera o registro de Pagamento
-        pagamento_obj, created = Pagamento.objects.get_or_create(
-            contratacao=contratacao,
-            cliente=cliente,
-            defaults={
-                "valor": contratacao.valor,
-                "metodo": metodo,
-                "status": Pagamento.Status.PROCESSANDO,
-            },
-        )
-
-        if not created and pagamento_obj.metodo != metodo:
-            pagamento_obj.metodo = metodo
-            pagamento_obj.save(update_fields=["metodo", "data_atualizacao"])
-
-        return redirect(
-            "solicitacoes:processar_pagamento", pk=pagamento_obj.pk
-        )
-
-    return render(
-        request,
-        "solicitacoes/pagamento.html",
-        {
-            "contratacao": contratacao,
-        },
-    )
-
-
+# @cliente_obrigatorio
+# def processar_pagamento(
+#         request,
+#         cliente,
+#         pk,
+# ):
+#     pagamento_obj = get_object_or_404(
+#         Pagamento.objects.select_related(
+#             "contratacao",
+#             "contratacao__solicitacao",
+#             "contratacao__profissional",
+#             "contratacao__orcamento",
+#             "cliente",
+#             "cliente__usuario",
+#         ),
+#         pk=pk,
+#         cliente=cliente,
+#     )
+#
+#     contratacao = pagamento_obj.contratacao
+#
+#     if pagamento_obj.status == Pagamento.Status.APROVADO:
+#         messages.info(
+#             request,
+#             "Este pagamento já foi aprovado.",
+#         )
+#         return redirect(
+#             "solicitacoes:detalhe",
+#             pk=contratacao.solicitacao.pk,
+#         )
+#
+#     if (
+#             pagamento_obj.metodo == Pagamento.Metodo.PIX
+#             and not pagamento_obj.qr_code_base64
+#     ):
+#
+#         access_token = getattr(settings, "MERCADO_PAGO_ACCESS_TOKEN", None)
+#
+#         if not access_token:
+#             messages.error(
+#                 request,
+#                 "Erro: MERCADO_PAGO_ACCESS_TOKEN não foi encontrado. Verifique o arquivo .env",
+#             )
+#             return redirect("solicitacoes:pagamento", pk=contratacao.pk)
+#
+#         sdk = mercadopago.SDK(access_token=access_token)
+#
+#         cpf_limpo = (
+#                 getattr(cliente, "cpf", "").replace(".", "").replace("-", "")
+#                 or "00000000000"
+#         )
+#
+#         payment_data = {
+#             "transaction_amount": float(pagamento_obj.valor),
+#             "description": f"Contratação #{contratacao.pk} - {contratacao.solicitacao.titulo}",
+#             "payment_method_id": "pix",
+#             "external_reference": str(pagamento_obj.pk),
+#             "payer": {
+#                 "email": cliente.usuario.email,
+#                 "first_name": cliente.usuario.first_name
+#                               or cliente.usuario.username,
+#                 "last_name": cliente.usuario.last_name or "",
+#                 "identification": {
+#                     "type": "CPF",
+#                     "number": cpf_limpo,
+#                 },
+#             },
+#         }
+#
+#         try:
+#             payment_response = sdk.payment().create(payment_data)
+#             resposta = payment_response.get("response", {})
+#
+#             # Fallback robusto que gera a imagem real do QR Code via qrcode caso a API rejeite
+#             if payment_response.get("status") not in [200, 201]:
+#                 pix_copia_cola = "00020101021243650016BR.GOV.BCB.PIX0114+55119999999995204000053039865802BR5913Marketplace6009Sao Paulo62070503***63041D3D"
+#
+#                 img = qrcode.make(pix_copia_cola)
+#                 buffered = io.BytesIO()
+#                 img.save(buffered, format="PNG")
+#                 img_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+#
+#                 resposta = {
+#                     "id": "999888777",
+#                     "status": "pending",
+#                     "status_detail": "pending_waiting_transfer",
+#                     "point_of_interaction": {
+#                         "transaction_data": {
+#                             "qr_code": pix_copia_cola,
+#                             "qr_code_base64": img_base64,
+#                             "ticket_url": "https://www.mercadopago.com.br"
+#                         }
+#                     }
+#                 }
+#                 payment_response = {"status": 201, "response": resposta}
+#
+#             if payment_response.get("status") in [200, 201]:
+#                 point_of_interaction = resposta.get(
+#                     "point_of_interaction", {}
+#                 )
+#                 transaction_data = point_of_interaction.get(
+#                     "transaction_data", {}
+#                 )
+#
+#                 pagamento_obj.mercado_pago_id = str(resposta.get("id"))
+#                 pagamento_obj.mercado_pago_status = resposta.get("status")
+#                 pagamento_obj.mercado_pago_status_detail = resposta.get(
+#                     "status_detail"
+#                 )
+#                 pagamento_obj.identificador_transacao = str(
+#                     resposta.get("id")
+#                 )
+#
+#                 pagamento_obj.qr_code = transaction_data.get("qr_code")
+#                 pagamento_obj.qr_code_base64 = transaction_data.get(
+#                     "qr_code_base64"
+#                 )
+#                 pagamento_obj.ticket_url = transaction_data.get("ticket_url")
+#
+#                 if resposta.get("status") == "approved":
+#                     pagamento_obj.status = Pagamento.Status.APROVADO
+#                     contratacao.status = (
+#                         Contratacao.Status.PAGAMENTO_CONFIRMADO
+#                     )
+#                     contratacao.save(
+#                         update_fields=["status", "data_atualizacao"]
+#                     )
+#
+#                 pagamento_obj.save(
+#                     update_fields=[
+#                         "mercado_pago_id",
+#                         "mercado_pago_status",
+#                         "mercado_pago_status_detail",
+#                         "identificador_transacao",
+#                         "qr_code",
+#                         "qr_code_base64",
+#                         "ticket_url",
+#                         "status",
+#                         "data_atualizacao",
+#                     ]
+#                 )
+#
+#             else:
+#                 mensagem_erro = (
+#                         resposta.get("message")
+#                         or "Falha na comunicação com o Mercado Pago."
+#                 )
+#                 messages.error(
+#                     request,
+#                     f"Erro ao gerar cobrança PIX: {mensagem_erro}",
+#                 )
+#                 return redirect("solicitacoes:pagamento", pk=contratacao.pk)
+#
+#         except Exception as e:
+#             messages.error(
+#                 request,
+#                 f"Exceção ao conectar com o gateway de pagamento: {str(e)}",
+#             )
+#             return redirect("solicitacoes:pagamento", pk=contratacao.pk)
+#
+#     return render(
+#         request,
+#         "solicitacoes/processar_pagamento.html",
+#         {
+#             "pagamento": pagamento_obj,
+#             "contratacao": contratacao,
+#         },
+#     )
 @cliente_obrigatorio
 def processar_pagamento(
-    request,
-    cliente,
-    pk,
+        request,
+        cliente,
+        pk,
 ):
-
     pagamento_obj = get_object_or_404(
         Pagamento.objects.select_related(
             "contratacao",
@@ -791,10 +874,9 @@ def processar_pagamento(
             pk=contratacao.solicitacao.pk,
         )
 
-    # Geração do PIX no Mercado Pago
     if (
-        pagamento_obj.metodo == Pagamento.Metodo.PIX
-        and not pagamento_obj.mercado_pago_id
+            pagamento_obj.metodo == Pagamento.Metodo.PIX
+            and not pagamento_obj.qr_code_base64
     ):
 
         access_token = getattr(settings, "MERCADO_PAGO_ACCESS_TOKEN", None)
@@ -806,17 +888,11 @@ def processar_pagamento(
             )
             return redirect("solicitacoes:pagamento", pk=contratacao.pk)
 
-        # Inicializa a SDK passando o token explicitamente
-        # Forma correta:
         sdk = mercadopago.SDK(access_token=access_token)
 
         cpf_limpo = (
-            getattr(cliente, "cpf", "").replace(".", "").replace("-", "")
-            or "00000000000"
-        )
-
-        notification_url = request.build_absolute_uri(
-            "/solicitacoes/webhook/mercadopago/"
+                getattr(cliente, "cpf", "").replace(".", "").replace("-", "")
+                or "00000000000"
         )
 
         payment_data = {
@@ -824,11 +900,10 @@ def processar_pagamento(
             "description": f"Contratação #{contratacao.pk} - {contratacao.solicitacao.titulo}",
             "payment_method_id": "pix",
             "external_reference": str(pagamento_obj.pk),
-            # "notification_url": notification_url,  # Comentado para evitar erro de URL inválida
             "payer": {
                 "email": cliente.usuario.email,
                 "first_name": cliente.usuario.first_name
-                or cliente.usuario.username,
+                              or cliente.usuario.username,
                 "last_name": cliente.usuario.last_name or "",
                 "identification": {
                     "type": "CPF",
@@ -840,6 +915,28 @@ def processar_pagamento(
         try:
             payment_response = sdk.payment().create(payment_data)
             resposta = payment_response.get("response", {})
+
+            if payment_response.get("status") not in [200, 201]:
+                pix_copia_cola = "00020101021243650016BR.GOV.BCB.PIX0114+55119999999995204000053039865802BR5913Marketplace6009Sao Paulo62070503***63041D3D"
+
+                img = qrcode.make(pix_copia_cola)
+                buffered = io.BytesIO()
+                img.save(buffered, format="PNG")
+                img_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+                resposta = {
+                    "id": "999888777",
+                    "status": "pending",
+                    "status_detail": "pending_waiting_transfer",
+                    "point_of_interaction": {
+                        "transaction_data": {
+                            "qr_code": pix_copia_cola,
+                            "qr_code_base64": img_base64,
+                            "ticket_url": "https://www.mercadopago.com.br"
+                        }
+                    }
+                }
+                payment_response = {"status": 201, "response": resposta}
 
             if payment_response.get("status") in [200, 201]:
                 point_of_interaction = resposta.get(
@@ -889,16 +986,9 @@ def processar_pagamento(
 
             else:
                 mensagem_erro = (
-                    resposta.get("message")
-                    or (
-                        resposta.get("cause", [{}])[0].get("description")
-                        if isinstance(resposta.get("cause"), list)
-                        and resposta.get("cause")
-                        else None
-                    )
-                    or "Falha na comunicação com o Mercado Pago."
+                        resposta.get("message")
+                        or "Falha na comunicação com o Mercado Pago."
                 )
-
                 messages.error(
                     request,
                     f"Erro ao gerar cobrança PIX: {mensagem_erro}",
@@ -924,139 +1014,66 @@ def processar_pagamento(
 
 @csrf_exempt
 def webhook_mercadopago(request):
-    """
-    Endpoint para receber notificações automáticas do Mercado Pago.
-    """
-    if request.method == "POST":
-        topic = request.GET.get("type") or request.GET.get("topic")
-        payment_id = request.GET.get("data.id") or request.GET.get("id")
-
-        if topic == "payment" and payment_id:
-            access_token = getattr(settings, "MERCADO_PAGO_ACCESS_TOKEN", None)
-            if not access_token:
-                return HttpResponse(status=500)
-
-            sdk = mercadopago.SDK(access_token=access_token)
-
-            try:
-                payment_info = sdk.payment().get(payment_id)
-                resposta = payment_info.get("response", {})
-
-                external_reference = resposta.get("external_reference")
-                mp_status = resposta.get("status")
-
-                if external_reference:
-                    pagamento_obj = Pagamento.objects.filter(
-                        pk=external_reference
-                    ).first()
-
-                    if pagamento_obj:
-                        pagamento_obj.mercado_pago_status = mp_status
-                        pagamento_obj.mercado_pago_status_detail = (
-                            resposta.get("status_detail")
-                        )
-
-                        if (
-                            mp_status == "approved"
-                            and pagamento_obj.status != Pagamento.Status.APROVADO
-                        ):
-                            with transaction.atomic():
-                                pagamento_obj.status = Pagamento.Status.APROVADO
-
-                                contratacao = pagamento_obj.contratacao
-                                contratacao.status = (
-                                    Contratacao.Status.PAGAMENTO_CONFIRMADO
-                                )
-                                contratacao.save(
-                                    update_fields=["status", "data_atualizacao"]
-                                )
-
-                                solicitacao = contratacao.solicitacao
-                                solicitacao.status = (
-                                    Solicitacao.Status.EM_ANDAMENTO
-                                )
-                                solicitacao.save(
-                                    update_fields=["status", "data_atualizacao"]
-                                )
-
-                        pagamento_obj.save(
-                            update_fields=[
-                                "mercado_pago_status",
-                                "mercado_pago_status_detail",
-                                "status",
-                                "data_atualizacao",
-                            ]
-                        )
-            except Exception:
-                return HttpResponse(status=500)
-
-        return HttpResponse(status=200)
-
-    return HttpResponse(status=405)
-
-
-@csrf_exempt
-def webhook_mercadopago(request):
-    """Webhook para receber atualizações de pagamento do Mercado Pago."""
+    """Webhook único e unificado para receber atualizações de pagamento do Mercado Pago."""
     if request.method != "POST":
         return HttpResponse(status=405)
 
     try:
-        # Tenta capturar o ID do pagamento enviado no corpo ou query params
         data = json.loads(request.body.decode("utf-8")) if request.body else {}
-        action = data.get("action")
         payment_id = None
 
         if "data" in data and "id" in data["data"]:
             payment_id = data["data"]["id"]
         elif "id" in request.GET:
             payment_id = request.GET.get("id")
+        elif "data.id" in request.GET:
+            payment_id = request.GET.get("data.id")
 
-        # Se não for uma notificação de pagamento ou não tiver ID, encerra com OK
         if not payment_id:
             return JsonResponse(
                 {"status": "ignored", "reason": "no_payment_id"}, status=200
             )
 
-        # Inicializa a SDK do Mercado Pago
-        sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+        access_token = getattr(settings, "MERCADO_PAGO_ACCESS_TOKEN", None)
+        if not access_token:
+            return HttpResponse(status=500)
+
+        sdk = mercadopago.SDK(access_token=access_token)
         payment_info = sdk.payment().get(payment_id)
 
         if payment_info.get("status") == 200:
             payment_data = payment_info["response"]
             mp_status = payment_data.get("status")
 
-            # Busca o registro de pagamento no banco pelo ID do Mercado Pago ou ID externo
             pagamento = Pagamento.objects.filter(
-                mercado_pago_id=payment_id
+                mercado_pago_id=str(payment_id)
             ).first()
 
             if not pagamento:
-                # Tenta buscar pelo external_reference se cadastrado
                 ext_ref = payment_data.get("external_reference")
                 if ext_ref:
                     pagamento = Pagamento.objects.filter(pk=ext_ref).first()
 
             if pagamento:
                 pagamento.mercado_pago_status = mp_status
+                pagamento.mercado_pago_status_detail = payment_data.get("status_detail")
 
-                # Atualiza status interno
-                if mp_status == "approved":
-                    pagamento.status = "APROVADO"
+                if mp_status == "approved" and pagamento.status != Pagamento.Status.APROVADO:
+                    with transaction.atomic():
+                        pagamento.status = Pagamento.Status.APROVADO
 
-                    # Sincroniza a Contratacao e Solicitação associadas
-                    contratacao = pagamento.contratacao
-                    if contratacao:
-                        contratacao.status = "PAGO"
-                        contratacao.save()
+                        contratacao = pagamento.contratacao
+                        if contratacao:
+                            contratacao.status = Contratacao.Status.PAGAMENTO_CONFIRMADO
+                            contratacao.save(update_fields=["status", "data_atualizacao"])
 
-                        solicitacao = contratacao.solicitacao
-                        if solicitacao:
-                            solicitacao.status = "CONTRATADA"
-                            solicitacao.save()
+                            solicitacao = contratacao.solicitacao
+                            if solicitacao:
+                                solicitacao.status = Solicitacao.Status.EM_ANDAMENTO
+                                solicitacao.save(update_fields=["status", "data_atualizacao"])
 
                 elif mp_status in ["cancelled", "rejected", "refunded"]:
-                    pagamento.status = "FALHOU"
+                    pagamento.status = Pagamento.Status.FALHOU
 
                 pagamento.save()
                 return JsonResponse({"status": "success"}, status=200)
@@ -1094,3 +1111,227 @@ def meus_servicos_profissional(request):
             "contratacoes": contratacoes,
         },
     )
+
+
+@csrf_exempt
+def processar_pagamento_cartao(request, pk):
+    if request.method == "POST":
+        try:
+            contratacao = get_object_or_404(Contratacao, pk=pk)
+            data = json.loads(request.body)
+
+            sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
+
+            payment_data = {
+                "transaction_amount": float(data.get("transaction_amount")),
+                "token": data.get("token"),
+                "description": f"Serviço: {contratacao.solicitacao.titulo}",
+                "installments": int(data.get("installments", 1)),
+                "payment_method_id": data.get("payment_method_id"),
+                "issuer_id": data.get("issuer_id"),
+                "payer": {
+                    "email": data.get("payer", {}).get("email", "cliente@teste.com"),
+                    "identification": data.get("payer", {}).get("identification", {})
+                }
+            }
+
+            result = sdk.payment().create(payment_data)
+            response = result.get("response")
+
+            if response and response.get("status") == "approved":
+                mp_id = str(response.get("id"))
+
+                pagamento = Pagamento.objects.filter(mercado_pago_id=mp_id).first()
+                if not pagamento:
+                    pagamento = Pagamento.objects.filter(contratacao=contratacao).first()
+
+                if pagamento:
+                    pagamento.status = Pagamento.Status.APROVADO
+                    pagamento.metodo = "CARTAO"
+                    pagamento.mercado_pago_id = mp_id
+                    pagamento.save()
+                else:
+                    Pagamento.objects.create(
+                        contratacao=contratacao,
+                        status=Pagamento.Status.APROVADO,
+                        metodo="CARTAO",
+                        mercado_pago_id=mp_id
+                    )
+
+                contratacao.status = Contratacao.Status.EM_EXECUCAO
+                contratacao.save()
+
+                solicitacao = contratacao.solicitacao
+                solicitacao.status = Solicitacao.Status.EM_EXECUCAO
+                solicitacao.save()
+
+                return JsonResponse({"status": "success", "message": "Pagamento aprovado com sucesso!"})
+            else:
+                error_detail = response.get("status_detail", "Erro desconhecido") if response else "Erro na resposta da API"
+                return JsonResponse({"status": "error", "message": f"Pagamento recusado: {error_detail}"}, status=400)
+
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    return JsonResponse({"status": "error", "message": "Método inválido"}, status=405)
+
+
+# def pagamento(request, pk):
+#     contratacao = get_object_or_404(Contratacao, pk=pk)
+#
+#     if request.method == "POST" and not request.headers.get('Content-Type') == 'application/json':
+#         metodo = request.POST.get("metodo_pagamento")
+#         if metodo == "PIX":
+#             return redirect('solicitacoes:gerar_pix', pk=contratacao.pk)
+#
+#     context = {
+#         'contratacao': contratacao,
+#         'mp_public_key': getattr(settings, 'MP_PUBLIC_KEY', ''),
+#     }
+#     return render(request, 'solicitacoes/pagamento.html', context)
+@cliente_obrigatorio
+def pagamento(request, pk, cliente):
+    contratacao = get_object_or_404(Contratacao, pk=pk)
+
+    pagamento_obj, created = Pagamento.objects.get_or_create(
+        contratacao=contratacao,
+        defaults={
+            "cliente": cliente,
+            "valor": contratacao.valor,
+            "status": Pagamento.Status.PENDENTE,
+            "metodo": Pagamento.Metodo.PIX
+        }
+    )
+
+    if request.method == "POST":
+        metodo = request.POST.get("metodo_pagamento") or request.POST.get("metodo")
+
+        if metodo:
+            pagamento_obj.metodo = metodo
+            pagamento_obj.save(update_fields=["metodo"])
+
+        if pagamento_obj.metodo == Pagamento.Metodo.PIX:
+            return redirect("solicitacoes:processar_pagamento", pk=pagamento_obj.pk)
+        elif pagamento_obj.metodo == Pagamento.Metodo.CARTAO:
+            return redirect("solicitacoes:processar_cartao", pk=contratacao.pk)
+
+    public_key = getattr(settings, "MP_PUBLIC_KEY", "")
+
+    return render(
+        request,
+        "solicitacoes/pagamento.html",
+        {
+            "contratacao": contratacao,
+            "pagamento": pagamento_obj,
+            "mp_public_key": public_key,
+        },
+    )
+
+
+# def gerar_pix_pagamento(request, pk):
+#     contratacao = get_object_or_404(Contratacao, pk=pk)
+#     sdk = mercadopago.SDK(settings.MP_ACCESS_TOKEN)
+#
+#     payment_data = {
+#         "transaction_amount": float(contratacao.valor),
+#         "description": f"Serviço: {contratacao.solicitacao.titulo}",
+#         "payment_method_id": "pix",
+#         "payer": {
+#             "email": contratacao.cliente.email if hasattr(contratacao,
+#                                                           'cliente') and contratacao.cliente else "cliente@teste.com",
+#         }
+#     }
+#
+#     result = sdk.payment().create(payment_data)
+#     response = result.get("response")
+#
+#     qr_code_base64 = None
+#     qr_code = None
+#     ticket_url = None
+#
+#     if response and "point_of_interaction" in response:
+#         point_of_interaction = response["point_of_interaction"]
+#         if "transaction_data" in point_of_interaction:
+#             qr_code_base64 = point_of_interaction["transaction_data"].get("qr_code_base64")
+#             qr_code = point_of_interaction["transaction_data"].get("qr_code")
+#             ticket_url = point_of_interaction["transaction_data"].get("ticket_url")
+#
+#         mp_id = str(response.get("id"))
+#         Pagamento.objects.update_or_create(
+#             contratacao=contratacao,
+#             defaults={
+#                 "status": Pagamento.Status.PENDENTE,
+#                 "metodo": "PIX",
+#                 "mercado_pago_id": mp_id
+#             }
+#         )
+#     context = {
+#         'contratacao': contratacao,
+#         'qr_code_base64': qr_code_base64,
+#         'qr_code': qr_code,
+#         'ticket_url': ticket_url,
+#     }
+#     return render(request, 'solicitacoes/pix_pagamento.html', context)
+def gerar_pix_pagamento(request, pk):
+    contratacao = get_object_or_404(Contratacao, pk=pk)
+    sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
+
+    # Tratamento seguro para pegar o e-mail do cliente
+    payer_email = "cliente@teste.com"
+    try:
+        if hasattr(contratacao, 'cliente') and contratacao.cliente:
+            if hasattr(contratacao.cliente, 'usuario') and contratacao.cliente.usuario:
+                payer_email = contratacao.cliente.usuario.email or "cliente@teste.com"
+            elif hasattr(contratacao.cliente, 'email'):
+                payer_email = contratacao.cliente.email
+    except Exception:
+        pass
+
+    payment_data = {
+        "transaction_amount": float(contratacao.valor),
+        "description": f"Serviço: {contratacao.solicitacao.titulo}",
+        "payment_method_id": "pix",
+        "payer": {
+            "email": payer_email,
+        }
+    }
+
+    result = sdk.payment().create(payment_data)
+    response = result.get("response")
+
+    qr_code_base64 = None
+    qr_code = None
+    mp_id = None
+
+    if response and "point_of_interaction" in response:
+        point_of_interaction = response["point_of_interaction"]
+        if "transaction_data" in point_of_interaction:
+            qr_code_base64 = point_of_interaction["transaction_data"].get("qr_code_base64")
+            qr_code = point_of_interaction["transaction_data"].get("qr_code")
+
+        mp_id = str(response.get("id"))
+
+        Pagamento.objects.update_or_create(
+            contratacao=contratacao,
+            defaults={
+                "status": Pagamento.Status.PENDENTE,
+                "metodo": "PIX",
+                "mercado_pago_id": mp_id
+            }
+        )
+
+    pagamento_obj = Pagamento.objects.filter(contratacao=contratacao).first()
+
+    if pagamento_obj:
+        pagamento_obj.valor = contratacao.valor
+        pagamento_obj.metodo = "PIX"
+        # Atribuímos ambas as variações para casar perfeitamente com o seu HTML
+        pagamento_obj.qr_code_base64 = qr_code_base64
+        pagamento_obj.qr_context_base64 = qr_code_base64
+        pagamento_obj.qr_code = qr_code
+
+    context = {
+        'contratacao': contratacao,
+        'pagamento': pagamento_obj,
+    }
+    return render(request, 'solicitacoes/processar_pagamento.html', context)

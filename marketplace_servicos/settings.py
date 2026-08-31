@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,11 +158,17 @@ LOGOUT_REDIRECT_URL = "usuarios:login"
 # ==========================================================
 # CONFIGURAÇÕES ADICIONAIS DO MERCADO PAGO
 # ==========================================================
-
 MERCADO_PAGO_CLIENT_ID = os.getenv("MP_CLIENT_ID")
 MERCADO_PAGO_CLIENT_SECRET = os.getenv("MP_CLIENT_SECRET")
 MERCADO_PAGO_REDIRECT_URI = os.getenv("MP_REDIRECT_URI")
 MERCADO_PAGO_ACCESS_TOKEN = os.getenv("MP_ACCESS_TOKEN")
+
+# Tenta carregar via decouple ou cai para o os.getenv padrão
+try:
+    MP_PUBLIC_KEY = config('MP_PUBLIC_KEY', default='')
+except Exception:
+    MP_PUBLIC_KEY = os.getenv("MP_PUBLIC_KEY", "")
+
 
 # Permite que o Django reconheça o HTTPS enviado pelo Cloudflare / Ngrok Tunnel
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
