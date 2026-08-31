@@ -11,12 +11,12 @@
 
 {% block content %}
 <div class="mx-auto max-w-3xl">
-    <div class="rounded-xl bg-white p-8 shadow">
-        <h1 class="mb-2 text-2xl font-bold">
+    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
+        <h1 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
             Perfil profissional
         </h1>
 
-        <p class="mb-8 text-sm text-gray-500">
+        <p class="mb-8 text-sm text-gray-500 dark:text-gray-400">
             Complete seus dados para oferecer seus serviços.
         </p>
 
@@ -24,7 +24,7 @@
             {% csrf_token %}
 
             {% if form.non_field_errors %}
-                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700">
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900/30 dark:border dark:border-red-800 dark:text-red-300">
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
@@ -32,14 +32,17 @@
             <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 {% for field in form %}
                     <div {% if field.name == "descricao" or field.name == "categorias" %}class="md:col-span-2"{% endif %}>
-                        <label class="mb-2 block text-sm font-medium">
+                        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                             {{ field.label }}
                         </label>
 
-                        {{ field }}
+                        <!-- Wrapper para estilizar inputs e textareas do Django no Dark Mode -->
+                        <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white [&>textarea]:w-full [&>textarea]:rounded-lg [&>textarea]:border [&>textarea]:border-gray-300 [&>textarea]:p-2.5 [&>textarea]:text-gray-900 [&>textarea]:dark:bg-gray-700 [&>textarea]:dark:border-gray-600 [&>textarea]:dark:text-white [&>select]:w-full [&>select]:rounded-lg [&>select]:border [&>select]:border-gray-300 [&>select]:p-2.5 [&>select]:text-gray-900 [&>select]:dark:bg-gray-700 [&>select]:dark:border-gray-600 [&>select]:dark:text-white">
+                            {{ field }}
+                        </div>
 
                         {% for error in field.errors %}
-                            <p class="mt-1 text-sm text-red-600">
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">
                                 {{ error }}
                             </p>
                         {% endfor %}
@@ -50,7 +53,7 @@
             <div class="mt-8">
                 <button
                     type="submit"
-                    class="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                    class="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                 >
                     Enviar cadastro profissional
                 </button>
@@ -81,11 +84,27 @@
 </script>
 
 <style>
+    /* Estilização adaptativa do Tom Select para modo claro e escuro */
     .ts-control {
         border-radius: 0.5rem !important;
         padding: 0.625rem !important;
         border-color: #d1d5db !important;
         background-color: #ffffff !important;
+        color: #111827 !important;
+    }
+    .dark .ts-control {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+        color: #ffffff !important;
+    }
+    .dark .ts-dropdown {
+        background-color: #374151 !important;
+        color: #ffffff !important;
+        border-color: #4b5563 !important;
+    }
+    .dark .ts-dropdown .active {
+        background-color: #4b5563 !important;
+        color: #ffffff !important;
     }
 </style>
 {% endblock %}
