@@ -13,16 +13,16 @@
 
         <a
             href="{% url 'solicitacoes:detalhe' solicitacao.pk %}"
-            class="text-sm font-medium text-blue-600 hover:underline"
+            class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
         >
             ← Voltar para solicitação
         </a>
 
-        <h1 class="mt-4 text-3xl font-bold">
+        <h1 class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
             Orçamentos recebidos
         </h1>
 
-        <p class="mt-2 text-gray-500">
+        <p class="mt-2 text-gray-500 dark:text-gray-400">
             {{ solicitacao.titulo }}
         </p>
 
@@ -35,17 +35,17 @@
 
             {% for orcamento in orcamentos %}
 
-                <div class="rounded-xl bg-white p-6 shadow">
+                <div class="rounded-xl bg-white p-6 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
                     <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
 
                         <div>
 
-                            <h2 class="text-lg font-bold">
+                            <h2 class="text-lg font-bold text-gray-900 dark:text-white">
                                 {{ orcamento.profissional.nome_profissional }}
                             </h2>
 
-                            <p class="mt-1 text-sm text-gray-500">
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 Orçamento enviado em
                                 {{ orcamento.data_criacao|date:"d/m/Y H:i" }}
                             </p>
@@ -55,7 +55,7 @@
 
                         <div class="text-left md:text-right">
 
-                            <p class="text-3xl font-bold text-gray-900">
+                            <p class="text-3xl font-bold text-gray-900 dark:text-white">
                                 R$
                                 {{ orcamento.valor|floatformat:2 }}
                             </p>
@@ -65,23 +65,23 @@
                     </div>
 
 
-                    <div class="mt-6 border-t pt-5">
+                    <div class="mt-6 border-t border-gray-200 pt-5 dark:border-gray-700">
 
-                        <h3 class="font-semibold">
+                        <h3 class="font-semibold text-gray-900 dark:text-white">
                             Descrição do serviço
                         </h3>
 
-                        <p class="mt-2 whitespace-pre-line text-gray-600">
+                        <p class="mt-2 whitespace-pre-line text-gray-600 dark:text-gray-300">
                             {{ orcamento.descricao }}
                         </p>
 
 
-                        <div class="mt-5 flex flex-wrap gap-5 text-sm text-gray-500">
+                        <div class="mt-5 flex flex-wrap gap-5 text-sm text-gray-500 dark:text-gray-400">
 
                             {% if orcamento.prazo_execucao %}
 
                                 <span>
-                                    <strong>Prazo:</strong>
+                                    <strong class="text-gray-700 dark:text-gray-300">Prazo:</strong>
                                     {{ orcamento.prazo_execucao }} dia(s)
                                 </span>
 
@@ -91,7 +91,7 @@
                             {% if orcamento.validade %}
 
                                 <span>
-                                    <strong>Validade:</strong>
+                                    <strong class="text-gray-700 dark:text-gray-300">Validade:</strong>
                                     {{ orcamento.validade }} dia(s)
                                 </span>
 
@@ -111,7 +111,7 @@
 
                             <button
                                 type="submit"
-                                class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700">
+                                class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm">
                                 Contratar este profissional
                             </button>
 
@@ -127,17 +127,17 @@
 
     {% else %}
 
-        <div class="rounded-xl bg-white p-12 text-center shadow">
+        <div class="rounded-xl bg-white p-12 text-center shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
             <div class="text-5xl">
                 📋
             </div>
 
-            <h2 class="mt-4 text-xl font-semibold">
+            <h2 class="mt-4 text-xl font-semibold text-gray-900 dark:text-white">
                 Ainda não há orçamentos
             </h2>
 
-            <p class="mt-2 text-gray-500">
+            <p class="mt-2 text-gray-500 dark:text-gray-400">
                 Aguarde os profissionais enviarem suas propostas.
             </p>
 

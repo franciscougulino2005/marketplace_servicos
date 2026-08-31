@@ -6,16 +6,16 @@
 <div class="mx-auto max-w-5xl px-4 py-8">
 
     <!-- Cabeçalho -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-gray-200">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-gray-200 dark:border-gray-700">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">Meus Serviços Contratados</h1>
-            <p class="text-gray-600 text-sm mt-1">Visualize e gerencie os trabalhos que você aceitou.</p>
-            <p class="text-gray-600 text-sm">Busque novas oportunidades no mercado.</p>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Meus Serviços Contratados</h1>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Visualize e gerencie os trabalhos que você aceitou.</p>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">Busque novas oportunidades no mercado.</p>
         </div>
 
         <div>
             <a href="{% url 'solicitacoes:solicitacoes_disponiveis' %}"
-               class="inline-flex items-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors">
+               class="inline-flex items-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors dark:bg-blue-500 dark:hover:bg-blue-600">
                 🔍 Buscar Novas Solicitações
             </a>
         </div>
@@ -25,16 +25,16 @@
     {% if contratacoes %}
         <div class="space-y-4">
             {% for contratacao in contratacoes %}
-                <div class="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 dark:bg-gray-800 dark:border-gray-700">
 
                     <!-- Lado Esquerdo -->
                     <div class="space-y-2">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-semibold px-3 py-1 rounded-md
                                 {% if contratacao.status == 'PAGO' or contratacao.pagamento.status == 'APROVADO' or contratacao.pagamento_set.first.status == 'APROVADO' %}
-                                    bg-green-100 text-green-800
+                                    bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300
                                 {% else %}
-                                    bg-yellow-100 text-yellow-800
+                                    bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300
                                 {% endif %}">
                                 {% if contratacao.status == 'PAGO' or contratacao.pagamento.status == 'APROVADO' or contratacao.pagamento_set.first.status == 'APROVADO' %}
                                     Pagamento Confirmado
@@ -42,36 +42,36 @@
                                     Aguardando Pagamento
                                 {% endif %}
                             </span>
-                            <span class="text-xs text-gray-500">Solicitação #{{ contratacao.solicitacao.id }}</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Solicitação #{{ contratacao.solicitacao.id }}</span>
                         </div>
 
-                        <h2 class="text-xl font-bold text-gray-900">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
                             {{ contratacao.solicitacao.titulo }}
                         </h2>
 
-                        <p class="text-sm text-gray-700">
+                        <p class="text-sm text-gray-700 dark:text-gray-300">
                             <strong>Cliente:</strong> {{ contratacao.cliente.usuario.get_full_name|default:contratacao.cliente.usuario.username }}
                         </p>
 
-                        <p class="text-sm text-gray-500 flex items-center gap-1">
+                        <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                             📍 {{ contratacao.solicitacao.cidade }} - {{ contratacao.solicitacao.estado }}
                             {% if contratacao.solicitacao.bairro %}({{ contratacao.solicitacao.bairro }}){% endif %}
                         </p>
                     </div>
 
                     <!-- Lado Direito -->
-                    <div class="flex flex-col items-end justify-between gap-2">
-                        <span class="text-2xl font-bold text-green-700">
+                    <div class="flex flex-col items-start md:items-end justify-between gap-2">
+                        <span class="text-2xl font-bold text-green-700 dark:text-green-400">
                             R$ {{ contratacao.valor }}
                         </span>
 
                         <a href="{% url 'solicitacoes:detalhe' pk=contratacao.solicitacao.pk %}"
-                           class="text-sm font-semibold text-gray-900 hover:underline">
+                           class="text-sm font-semibold text-gray-900 dark:text-gray-200 hover:underline">
                             Ver Detalhes
                         </a>
 
                         <a href="{% url 'solicitacoes:solicitacoes_disponiveis' %}"
-                           class="mt-1 px-3 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                           class="mt-1 px-3 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors">
                             Aceitar Outro
                         </a>
                     </div>
@@ -80,8 +80,8 @@
             {% endfor %}
         </div>
     {% else %}
-        <div class="rounded-2xl bg-white p-12 text-center shadow-sm border border-gray-100">
-            <p class="text-gray-500">Você ainda não possui serviços contratados.</p>
+        <div class="rounded-2xl bg-white p-12 text-center shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
+            <p class="text-gray-500 dark:text-gray-400">Você ainda não possui serviços contratados.</p>
         </div>
     {% endif %}
 

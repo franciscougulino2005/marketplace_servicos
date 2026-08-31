@@ -12,13 +12,13 @@
 
         {% if conta_gateway and conta_gateway.ativo %}
 
-            <div class="rounded-xl border border-green-200 bg-green-50 p-4">
+            <div class="rounded-xl border border-green-200 bg-green-50 p-4 mb-6 dark:bg-green-900/30 dark:border-green-800">
 
-                <p class="font-semibold text-green-800">
+                <p class="font-semibold text-green-800 dark:text-green-300">
                     Mercado Pago conectado
                 </p>
 
-                <p class="mt-1 text-sm text-green-700">
+                <p class="mt-1 text-sm text-green-700 dark:text-green-400">
                     Sua conta está conectada e poderá receber
                     pagamentos através da plataforma.
                 </p>
@@ -27,20 +27,20 @@
 
         {% else %}
 
-            <div class="rounded-xl border border-gray-200 bg-white p-5">
+            <div class="rounded-xl border border-gray-200 bg-white p-5 mb-6 dark:bg-gray-800 dark:border-gray-700">
 
-                <h3 class="text-lg font-semibold text-gray-900">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Recebimento de pagamentos
                 </h3>
 
-                <p class="mt-2 text-sm text-gray-600">
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
                     Conecte sua conta Mercado Pago para receber
                     pelos serviços contratados através da plataforma.
                 </p>
 
                 <a
                     href="{% url 'usuarios:conectar_mercado_pago' %}"
-                    class="mt-4 inline-flex rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+                    class="mt-4 inline-flex rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                 >
                     Conectar Mercado Pago
                 </a>
@@ -53,12 +53,12 @@
 
     <div class="mb-8">
 
-        <h1 class="text-3xl font-bold">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
             Olá,
             {{ usuario.first_name|default:usuario.email }}
         </h1>
 
-        <p class="mt-2 text-gray-500">
+        <p class="mt-2 text-gray-500 dark:text-gray-400">
             Bem-vindo à sua área.
         </p>
 
@@ -67,19 +67,19 @@
 
     {% if usuario.tipo_usuario == "CLIENTE" %}
 
-        <div class="rounded-xl bg-white p-8 shadow">
+        <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
-            <h2 class="text-xl font-bold">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
                 Área do cliente
             </h2>
 
-            <p class="mt-2 text-gray-500">
+            <p class="mt-2 text-gray-500 dark:text-gray-400">
                 Aqui você poderá solicitar orçamentos e acompanhar seus serviços.
             </p>
 
             <div class="mt-6">
 
-                <span class="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">
+                <span class="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
                     Cliente
                 </span>
 
@@ -87,13 +87,13 @@
 
                     <a
                         href="{% url 'solicitacoes:nova_solicitacao' %}"
-                        class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700">
+                        class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
                         Solicitar orçamento
                     </a>
 
                     <a
                         href="{% url 'solicitacoes:lista_solicitacoes' %}"
-                        class="rounded-lg border border-gray-300 px-5 py-3 font-medium hover:bg-gray-50">
+                        class="rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">
                         Minhas solicitações
                     </a>
 
@@ -106,17 +106,17 @@
 
     {% elif usuario.tipo_usuario == "PROFISSIONAL" %}
 
-        <div class="rounded-xl bg-white p-8 shadow">
+        <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
             <div class="flex items-center justify-between">
 
                 <div>
 
-                    <h2 class="text-xl font-bold">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">
                         {{ profissional.nome_profissional|default:"Perfil profissional" }}
                     </h2>
 
-                    <p class="mt-2 text-gray-500">
+                    <p class="mt-2 text-gray-500 dark:text-gray-400">
                         Área do profissional
                     </p>
 
@@ -125,13 +125,13 @@
 
                 {% if profissional.aprovado %}
 
-                    <span class="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
+                    <span class="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700 dark:bg-green-900/50 dark:text-green-300">
                         Aprovado
                     </span>
 
                 {% else %}
 
-                    <span class="rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-700">
+                    <span class="rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300">
                         Em análise
                     </span>
 
@@ -142,7 +142,7 @@
 
             <div class="mt-6">
 
-                <p class="text-gray-600">
+                <p class="text-gray-600 dark:text-gray-300">
                     Seu cadastro profissional será analisado pela plataforma.
                 </p>
 
@@ -150,13 +150,27 @@
 
             {% if profissional.aprovado %}
 
-                <div class="mt-8">
+                <div class="mt-8 flex flex-wrap gap-3">
 
                     <a
                         href="{% url 'servicos:lista' %}"
-                        class="inline-flex items-center rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                        class="inline-flex items-center rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                     >
                         Gerenciar meus serviços
+                    </a>
+
+                    <a
+                        href="{% url 'solicitacoes:solicitacoes_disponiveis' %}"
+                        class="inline-flex items-center rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                        Solicitações disponíveis
+                    </a>
+
+                    <a
+                        href="{% url 'solicitacoes:meus_orcamentos' %}"
+                        class="inline-flex items-center rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                        Meus orçamentos
                     </a>
 
                 </div>

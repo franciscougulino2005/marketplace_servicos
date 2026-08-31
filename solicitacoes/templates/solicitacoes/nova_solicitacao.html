@@ -11,18 +11,18 @@
 
     <div class="mb-8">
 
-        <h1 class="text-3xl font-bold">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
             Solicitar orçamento
         </h1>
 
-        <p class="mt-2 text-gray-500">
+        <p class="mt-2 text-gray-500 dark:text-gray-400">
             Explique o que precisa e profissionais poderão enviar suas propostas.
         </p>
 
     </div>
 
 
-    <div class="rounded-xl bg-white p-8 shadow">
+    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
         <form
             method="post"
@@ -34,7 +34,7 @@
 
             {% if form.non_field_errors %}
 
-                <div class="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
 
                     {{ form.non_field_errors }}
 
@@ -46,9 +46,9 @@
             <div class="space-y-6">
 
 
-                <div>
+                <div class="relative">
 
-                    <label class="mb-2 block text-sm font-medium">
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                         {{ form.categoria.label }}
                     </label>
 
@@ -56,7 +56,7 @@
 
                     {% for error in form.categoria.errors %}
 
-                        <p class="mt-1 text-sm text-red-600">
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
                             {{ error }}
                         </p>
 
@@ -67,7 +67,7 @@
 
                 <div>
 
-                    <label class="mb-2 block text-sm font-medium">
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                         {{ form.titulo.label }}
                     </label>
 
@@ -75,7 +75,7 @@
 
                     {% for error in form.titulo.errors %}
 
-                        <p class="mt-1 text-sm text-red-600">
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
                             {{ error }}
                         </p>
 
@@ -86,7 +86,7 @@
 
                 <div>
 
-                    <label class="mb-2 block text-sm font-medium">
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                         {{ form.descricao.label }}
                     </label>
 
@@ -94,7 +94,7 @@
 
                     {% for error in form.descricao.errors %}
 
-                        <p class="mt-1 text-sm text-red-600">
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
                             {{ error }}
                         </p>
 
@@ -103,9 +103,9 @@
                 </div>
 
 
-                <div class="border-t pt-6">
+                <div class="border-t border-gray-200 pt-6 dark:border-gray-700">
 
-                    <h2 class="mb-5 text-lg font-semibold">
+                    <h2 class="mb-5 text-lg font-semibold text-gray-900 dark:text-white">
                         Local do serviço
                     </h2>
 
@@ -115,7 +115,7 @@
 
                         <div class="md:col-span-2">
 
-                            <label class="mb-2 block text-sm font-medium">
+                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ form.endereco.label }}
                             </label>
 
@@ -126,7 +126,7 @@
 
                         <div>
 
-                            <label class="mb-2 block text-sm font-medium">
+                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ form.numero.label }}
                             </label>
 
@@ -137,7 +137,7 @@
 
                         <div>
 
-                            <label class="mb-2 block text-sm font-medium">
+                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ form.bairro.label }}
                             </label>
 
@@ -148,7 +148,7 @@
 
                         <div>
 
-                            <label class="mb-2 block text-sm font-medium">
+                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ form.cidade.label }}
                             </label>
 
@@ -159,7 +159,7 @@
 
                         <div>
 
-                            <label class="mb-2 block text-sm font-medium">
+                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ form.estado.label }}
                             </label>
 
@@ -170,7 +170,7 @@
 
                         <div>
 
-                            <label class="mb-2 block text-sm font-medium">
+                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ form.cep.label }}
                             </label>
 
@@ -183,24 +183,24 @@
                 </div>
 
 
-                <div class="border-t pt-6">
+                <div class="border-t border-gray-200 pt-6 dark:border-gray-700">
 
-                    <label class="mb-2 block text-sm font-medium">
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                         {{ form.data_desejada.label }}
                     </label>
 
                     {{ form.data_desejada }}
 
-                    <p class="mt-1 text-xs text-gray-500">
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         Opcional.
                     </p>
 
                 </div>
 
 
-                <div class="border-t pt-6">
+                <div class="border-t border-gray-200 pt-6 dark:border-gray-700">
 
-                    <label class="mb-2 block text-sm font-medium">
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                         Fotos
                     </label>
 
@@ -209,10 +209,10 @@
                         name="fotos"
                         multiple
                         accept="image/*"
-                        class="block w-full rounded-lg border border-gray-300 bg-white text-sm"
+                        class="block w-full rounded-lg border border-gray-300 bg-white text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:file:bg-gray-600 dark:file:text-blue-300"
                     >
 
-                    <p class="mt-2 text-xs text-gray-500">
+                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                         Você pode enviar até 5 fotos.
                     </p>
 
@@ -225,7 +225,7 @@
 
                 <a
                     href="{% url 'solicitacoes:lista_solicitacoes' %}"
-                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium hover:bg-gray-50"
+                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                     Cancelar
                 </a>
@@ -233,7 +233,7 @@
 
                 <button
                     type="submit"
-                    class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+                    class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
                 >
                     Enviar solicitação
                 </button>
@@ -245,5 +245,60 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const input = document.getElementById("id_categoria_input");
+        if (!input) return;
+
+        const categorias = [
+            {% for cat in form.categoria.field.queryset %}
+                "{{ cat.nome|escapejs }}",
+            {% endfor %}
+        ];
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 hidden max-h-60 overflow-y-auto";
+        input.parentNode.appendChild(dropdown);
+
+        function mostrarCategorias(termo) {
+            dropdown.innerHTML = "";
+            const termoLower = termo.toLowerCase().trim();
+            const filtradas = termoLower === ""
+                ? categorias
+                : categorias.filter(c => c.toLowerCase().includes(termoLower));
+
+            if (filtradas.length > 0) {
+                dropdown.classList.remove("hidden");
+                filtradas.forEach(cat => {
+                    const item = document.createElement("div");
+                    item.className = "px-4 py-2 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer";
+                    item.textContent = cat;
+                    item.addEventListener("click", function() {
+                        input.value = cat;
+                        dropdown.classList.add("hidden");
+                    });
+                    dropdown.appendChild(item);
+                });
+            } else {
+                dropdown.classList.add("hidden");
+            }
+        }
+
+        input.addEventListener("focus", function() {
+            mostrarCategorias(input.value);
+        });
+
+        input.addEventListener("input", function() {
+            mostrarCategorias(input.value);
+        });
+
+        document.addEventListener("click", function(e) {
+            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+    });
+</script>
 
 {% endblock %}
