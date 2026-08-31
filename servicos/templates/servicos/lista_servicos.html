@@ -13,11 +13,11 @@
 
         <div>
 
-            <h1 class="text-3xl font-bold">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
                 Meus serviços
             </h1>
 
-            <p class="mt-2 text-gray-500">
+            <p class="mt-2 text-gray-500 dark:text-gray-400">
                 Cadastre e gerencie os serviços que você oferece.
             </p>
 
@@ -26,7 +26,7 @@
 
         <a
             href="{% url 'servicos:novo' %}"
-            class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+            class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
         >
             + Novo serviço
         </a>
@@ -36,13 +36,13 @@
 
     {% if servicos %}
 
-        <div class="overflow-hidden rounded-xl bg-white shadow">
+        <div class="overflow-hidden rounded-xl bg-white shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
             <div class="overflow-x-auto">
 
-                <table class="w-full text-left text-sm">
+                <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 
-                    <thead class="border-b bg-gray-50 text-xs uppercase text-gray-600">
+                    <thead class="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-600 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-300">
 
                         <tr>
 
@@ -71,33 +71,33 @@
                     </thead>
 
 
-                    <tbody class="divide-y">
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 
                         {% for servico in servicos %}
 
-                            <tr class="hover:bg-gray-50">
+                            <tr class="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700/50 transition-colors">
 
                                 <td class="px-6 py-4">
 
-                                    <div class="font-semibold">
+                                    <div class="font-semibold text-gray-900 dark:text-white">
                                         {{ servico.nome }}
                                     </div>
 
-                                    <div class="mt-1 max-w-md text-gray-500">
+                                    <div class="mt-1 max-w-md text-gray-500 dark:text-gray-400">
                                         {{ servico.descricao|truncatechars:100 }}
                                     </div>
 
                                 </td>
 
 
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-gray-900 dark:text-gray-200">
 
                                     {{ servico.categoria.nome }}
 
                                 </td>
 
 
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-gray-900 dark:text-gray-200">
 
                                     {% if servico.preco_referencia %}
                                         R$ {{ servico.preco_referencia|floatformat:2 }}
@@ -112,13 +112,13 @@
 
                                     {% if servico.ativo %}
 
-                                        <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                        <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300 dark:border dark:border-green-800">
                                             Ativo
                                         </span>
 
                                     {% else %}
 
-                                        <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+                                        <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:border dark:border-gray-600">
                                             Inativo
                                         </span>
 
@@ -133,7 +133,7 @@
 
                                         <a
                                             href="{% url 'servicos:editar' servico.pk %}"
-                                            class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+                                            class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
                                         >
                                             Editar
                                         </a>
@@ -148,7 +148,7 @@
 
                                             <button
                                                 type="submit"
-                                                class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+                                                class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
                                             >
 
                                                 {% if servico.ativo %}
@@ -179,20 +179,20 @@
 
     {% else %}
 
-        <div class="rounded-xl bg-white p-12 text-center shadow">
+        <div class="rounded-xl bg-white p-12 text-center shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
-            <h2 class="text-xl font-semibold">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
                 Você ainda não cadastrou nenhum serviço.
             </h2>
 
-            <p class="mt-2 text-gray-500">
+            <p class="mt-2 text-gray-500 dark:text-gray-400">
                 Cadastre seu primeiro serviço para começar a receber solicitações.
             </p>
 
 
             <a
                 href="{% url 'servicos:novo' %}"
-                class="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                class="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
             >
                 Cadastrar primeiro serviço
             </a>

@@ -13,11 +13,11 @@
 
         <div>
 
-            <h1 class="text-3xl font-bold">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
                 Minhas solicitações
             </h1>
 
-            <p class="mt-2 text-gray-500">
+            <p class="mt-2 text-gray-500 dark:text-gray-400">
                 Acompanhe os serviços para os quais você solicitou orçamento.
             </p>
 
@@ -26,7 +26,7 @@
 
         <a
             href="{% url 'solicitacoes:nova_solicitacao' %}"
-            class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+            class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
         >
             + Solicitar orçamento
         </a>
@@ -40,7 +40,7 @@
 
             {% for solicitacao in solicitacoes %}
 
-                <div class="rounded-xl bg-white p-6 shadow">
+                <div class="rounded-xl bg-white p-6 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
                     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
@@ -48,38 +48,38 @@
 
                             <div class="flex items-center gap-3">
 
-                                <h2 class="text-lg font-bold">
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
                                     {{ solicitacao.titulo }}
                                 </h2>
 
 
                                 {% if solicitacao.status == "ABERTA" %}
 
-                                    <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+                                    <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
                                         Aberta
                                     </span>
 
                                 {% elif solicitacao.status == "RECEBENDO_ORCAMENTOS" %}
 
-                                    <span class="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
+                                    <span class="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
                                         Recebendo orçamentos
                                     </span>
 
                                 {% elif solicitacao.status == "CONCLUIDA" %}
 
-                                    <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                    <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300">
                                         Concluída
                                     </span>
 
                                 {% elif solicitacao.status == "CANCELADA" %}
 
-                                    <span class="rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                    <span class="rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700 dark:bg-red-900/40 dark:text-red-300">
                                         Cancelada
                                     </span>
 
                                 {% else %}
 
-                                    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                                    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300">
                                         {{ solicitacao.get_status_display }}
                                     </span>
 
@@ -88,13 +88,13 @@
                             </div>
 
 
-                            <p class="mt-2 text-sm text-gray-500">
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                                 Categoria:
                                 {{ solicitacao.categoria.nome }}
                             </p>
 
 
-                            <p class="mt-1 text-sm text-gray-500">
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
 
                                 {{ solicitacao.cidade }} -
                                 {{ solicitacao.estado }}
@@ -108,7 +108,7 @@
 
                             <a
                                 href="{% url 'solicitacoes:detalhe' solicitacao.pk %}"
-                                class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50"
+                                class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
                             >
                                 Ver detalhes
                             </a>
@@ -125,20 +125,20 @@
 
     {% else %}
 
-        <div class="rounded-xl bg-white p-12 text-center shadow">
+        <div class="rounded-xl bg-white p-12 text-center shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
-            <h2 class="text-xl font-semibold">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
                 Você ainda não fez nenhuma solicitação.
             </h2>
 
-            <p class="mt-2 text-gray-500">
+            <p class="mt-2 text-gray-500 dark:text-gray-400">
                 Descreva o serviço que você precisa e receba propostas de profissionais.
             </p>
 
 
             <a
-                href="{% url 'solicitacoes:nova' %}"
-                class="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                href="{% url 'solicitacoes:nova_solicitacao' %}"
+                class="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
             >
                 Solicitar orçamento
             </a>

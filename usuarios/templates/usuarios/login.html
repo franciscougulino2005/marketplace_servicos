@@ -9,20 +9,20 @@
 
 <div class="mx-auto max-w-md">
 
-    <div class="rounded-xl bg-white p-8 shadow">
+    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
-        <h1 class="mb-2 text-2xl font-bold">
+        <h1 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
             Entrar
         </h1>
 
-        <p class="mb-6 text-sm text-gray-500">
+        <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
             Acesse sua conta.
         </p>
 
 
         {% if form.non_field_errors %}
 
-            <div class="mb-5 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+            <div class="mb-5 rounded-lg bg-red-50 p-4 text-sm text-red-700 dark:bg-red-900/30 dark:border dark:border-red-800 dark:text-red-300">
 
                 {{ form.non_field_errors }}
 
@@ -38,15 +38,18 @@
 
             <div class="mb-5">
 
-                <label class="mb-2 block text-sm font-medium">
+                <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ form.username.label }}
                 </label>
 
-                {{ form.username }}
+                <!-- Campo renderizado pelo Django, aplicamos classes via form widget ou estilização padrão se aplicável -->
+                <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
+                    {{ form.username }}
+                </div>
 
                 {% for error in form.username.errors %}
 
-                    <p class="mt-1 text-sm text-red-600">
+                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">
                         {{ error }}
                     </p>
 
@@ -57,15 +60,17 @@
 
             <div class="mb-6">
 
-                <label class="mb-2 block text-sm font-medium">
+                <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ form.password.label }}
                 </label>
 
-                {{ form.password }}
+                <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
+                    {{ form.password }}
+                </div>
 
                 {% for error in form.password.errors %}
 
-                    <p class="mt-1 text-sm text-red-600">
+                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">
                         {{ error }}
                     </p>
 
@@ -76,7 +81,7 @@
 
             <button
                 type="submit"
-                class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700"
+                class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
             >
                 Entrar
             </button>
@@ -84,13 +89,13 @@
         </form>
 
 
-        <div class="mt-6 text-center text-sm">
+        <div class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
 
             Ainda não possui conta?
 
             <a
                 href="{% url 'usuarios:cadastro' %}"
-                class="font-semibold text-blue-600 hover:underline"
+                class="font-semibold text-blue-600 hover:underline dark:text-blue-400"
             >
                 Cadastre-se
             </a>

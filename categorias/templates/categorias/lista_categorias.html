@@ -12,7 +12,7 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">Gerencie as categorias disponíveis para solicitações e prestadores.</p>
         </div>
         <div>
-            <a href="{% url 'categorias:criar' %}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 shadow-sm transition-colors">
+            <a href="{% url 'categorias:criar' %}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 shadow-sm transition-colors">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -29,14 +29,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
             </div>
-            <input type="text" id="searchInput" onkeyup="filtrarCategorias()" placeholder="Pesquisar categoria por nome ou descrição..." class="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white">
+            <input type="text" id="searchInput" onkeyup="filtrarCategorias()" placeholder="Pesquisar categoria por nome ou descrição..." class="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
         </div>
     </div>
 
     <!-- Tabela de Categorias -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-200 dark:border-gray-700">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="tabelaCategorias">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
                 <tr>
                     <th scope="col" class="px-6 py-3">ID</th>
                     <th scope="col" class="px-6 py-3">Nome</th>
@@ -47,36 +47,36 @@
             </thead>
             <tbody>
                 {% for categoria in categorias %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors linha-categoria">
-                    <td class="px-6 py-4 font-mono text-xs text-gray-400">
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors linha-categoria">
+                    <td class="px-6 py-4 font-mono text-xs text-gray-400 dark:text-gray-500">
                         #{{ categoria.id }}
                     </td>
                     <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white whitespace-nowrap nome-categoria">
                         {{ categoria.nome }}
                     </td>
-                    <td class="px-6 py-4 max-w-xs truncate descricao-categoria">
+                    <td class="px-6 py-4 max-w-xs truncate descricao-categoria text-gray-500 dark:text-gray-400">
                         {{ categoria.descricao|default:"—" }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         {% if categoria.ativo %}
-                            <span class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                            <span class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-full dark:bg-green-900/40 dark:text-green-300 dark:border dark:border-green-800">
                                 <span class="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
                                 Ativo
                             </span>
                         {% else %}
-                            <span class="bg-red-100 text-red-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                            <span class="bg-red-100 text-red-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-full dark:bg-red-900/40 dark:text-red-300 dark:border dark:border-red-800">
                                 <span class="w-2 h-2 mr-1 bg-red-500 rounded-full"></span>
                                 Inativo
                             </span>
                         {% endif %}
                     </td>
                     <td class="px-6 py-4 text-right space-x-2 whitespace-nowrap">
-                        <a href="{% url 'categorias:editar' categoria.pk %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        <a href="{% url 'categorias:editar' categoria.pk %}" class="font-medium text-blue-600 dark:text-blue-400 hover:underline">
                             Editar
                         </a>
                         <form action="{% url 'categorias:alternar_status' categoria.pk %}" method="POST" class="inline">
                             {% csrf_token %}
-                            <button type="submit" class="font-medium {% if categoria.ativo %}text-red-600 dark:text-red-500{% else %}text-green-600 dark:text-green-500{% endif %} hover:underline ml-2">
+                            <button type="submit" class="font-medium {% if categoria.ativo %}text-red-600 dark:text-red-400 hover:text-red-700{% else %}text-green-600 dark:text-green-400 hover:text-green-700{% endif %} hover:underline ml-2">
                                 {% if categoria.ativo %}Desativar{% else %}Ativar{% endif %}
                             </button>
                         </form>
