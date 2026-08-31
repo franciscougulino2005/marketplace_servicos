@@ -15,18 +15,18 @@
 
     <div class="mb-8">
 
-        <h1 class="text-3xl font-bold">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
             Editar serviço
         </h1>
 
-        <p class="mt-2 text-gray-500">
+        <p class="mt-2 text-gray-500 dark:text-gray-400">
             Atualize as informações do serviço.
         </p>
 
     </div>
 
 
-    <div class="rounded-xl bg-white p-8 shadow">
+    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
         <form method="post">
 
@@ -35,7 +35,7 @@
 
             {% if form.non_field_errors %}
 
-                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700">
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900/30 dark:border dark:border-red-800 dark:text-red-300">
 
                     {{ form.non_field_errors }}
 
@@ -50,7 +50,7 @@
 
                     <div>
 
-                        <label class="mb-2 block text-sm font-medium">
+                        <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
                             {{ field.label }}
                         </label>
 
@@ -58,7 +58,7 @@
 
                         {% for error in field.errors %}
 
-                            <p class="mt-1 text-sm text-red-600">
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">
                                 {{ error }}
                             </p>
 
@@ -75,7 +75,7 @@
 
                 <a
                     href="{% url 'servicos:lista' %}"
-                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium hover:bg-gray-50"
+                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                     Cancelar
                 </a>
@@ -83,7 +83,7 @@
 
                 <button
                     type="submit"
-                    class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                    class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
                 >
                     Salvar alterações
                 </button>
@@ -131,12 +131,34 @@
 </script>
 
 <style>
-    /* Estilização para alinhar o Tom Select ao visual do Tailwind CSS */
+    /* Estilização Geral dos Campos de Texto e Inputs do Django */
+    input[type="text"], input[type="number"], textarea, select {
+        width: 100%;
+        border-radius: 0.5rem;
+        border: 1px solid #d1d5db;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        background-color: #ffffff;
+        color: #111827;
+    }
+
+    .dark input[type="text"], .dark input[type="number"], .dark textarea, .dark select {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+        color: #f9fafb !important;
+    }
+
+    .dark input::placeholder, .dark textarea::placeholder {
+        color: #9ca3af !important;
+    }
+
+    /* Estilização do Tom Select (Modo Claro & Escuro) */
     .ts-wrapper.single .ts-control {
         border-radius: 0.5rem !important;
         padding: 0.625rem 1rem !important;
         border-color: #d1d5db !important;
         background-color: #ffffff !important;
+        color: #111827 !important;
         font-size: 0.875rem !important;
         box-shadow: none !important;
     }
@@ -149,7 +171,35 @@
     .ts-dropdown {
         border-radius: 0.5rem !important;
         margin-top: 4px !important;
+        background-color: #ffffff !important;
+        color: #111827 !important;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    }
+    .ts-dropdown .active {
+        background-color: #eff6ff !important;
+        color: #1d4ed8 !important;
+    }
+
+    /* Adaptações do Tom Select para o Dark Mode */
+    .dark .ts-wrapper.single .ts-control {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+        color: #f9fafb !important;
+    }
+    .dark .ts-control input {
+        color: #f9fafb !important;
+    }
+    .dark .ts-dropdown {
+        background-color: #374151 !important;
+        border: 1px solid #4b5563 !important;
+        color: #f9fafb !important;
+    }
+    .dark .ts-dropdown .option {
+        color: #f9fafb !important;
+    }
+    .dark .ts-dropdown .active {
+        background-color: #1f2937 !important;
+        color: #60a5fa !important;
     }
 </style>
 {% endblock %}

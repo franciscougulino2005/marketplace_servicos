@@ -6,13 +6,17 @@ from categorias.models import Categoria
 INPUT_STYLE = 'bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm'
 
 class SolicitacaoForm(forms.ModelForm):
+    # Declaramos o campo categoria explicitamente para aceitar a busca por texto limpo
     categoria = forms.ModelChoiceField(
-        queryset=Categoria.objects.filter(ativo=True).order_by('nome'),
-        empty_label="Selecione uma categoria",
-        widget=forms.Select(attrs={
-            'id': 'id_categoria',
-            'class': 'block w-full text-sm'
-        })
+        queryset=Categoria.objects.all(),
+        to_field_name="nome",
+        widget=forms.TextInput(attrs={
+            'id': 'id_categoria_input',
+            'class': INPUT_STYLE,
+            'placeholder': 'Digite para buscar a categoria...',
+            'autocomplete': 'off'
+        }),
+        label='Categoria'
     )
 
     class Meta:
@@ -40,7 +44,6 @@ class SolicitacaoForm(forms.ModelForm):
             'cep': forms.TextInput(attrs={'class': INPUT_STYLE, 'placeholder': '00000-000'}),
             'data_desejada': forms.DateInput(attrs={'type': 'date', 'class': INPUT_STYLE}),
         }
-
 
 class OrcamentoForm(forms.ModelForm):
     class Meta:

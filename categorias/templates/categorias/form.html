@@ -10,7 +10,7 @@
         <div class="flex items-center justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ titulo }}</h2>
             <a href="{% url 'categorias:lista' %}" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">
-                ← Voltar para a lista
+                &larr; Voltar para a lista
             </a>
         </div>
 
@@ -22,7 +22,9 @@
                 <label for="{{ form.nome.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Nome da Categoria <span class="text-red-500">*</span>
                 </label>
-                {{ form.nome }}
+                <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
+                    {{ form.nome }}
+                </div>
                 {% if form.nome.errors %}
                     <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.nome.errors.0 }}</p>
                 {% endif %}
@@ -33,7 +35,9 @@
                 <label for="{{ form.descricao.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Descrição
                 </label>
-                {{ form.descricao }}
+                <div class="[&>textarea]:w-full [&>textarea]:rounded-lg [&>textarea]:border [&>textarea]:border-gray-300 [&>textarea]:p-2.5 [&>textarea]:text-gray-900 [&>textarea]:dark:bg-gray-700 [&>textarea]:dark:border-gray-600 [&>textarea]:dark:text-white">
+                    {{ form.descricao }}
+                </div>
                 {% if form.descricao.errors %}
                     <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.descricao.errors.0 }}</p>
                 {% endif %}
@@ -42,7 +46,9 @@
             <!-- Campo Ativo (Checkbox) -->
             <div class="flex items-center">
                 <div class="flex items-center h-5">
-                    {{ form.ativo }}
+                    <div class="[&>input]:w-4 [&>input]:h-4 [&>input]:text-blue-600 [&>input]:bg-gray-100 [&>input]:border-gray-300 [&>input]:rounded [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600">
+                        {{ form.ativo }}
+                    </div>
                 </div>
                 <label for="{{ form.ativo.id_for_label }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                     Categoria ativa (disponível para novas solicitações)
@@ -54,7 +60,7 @@
                 <a href="{% url 'categorias:lista' %}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
                     Cancelar
                 </a>
-                <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                     Salvar Categoria
                 </button>
             </div>
