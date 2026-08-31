@@ -249,6 +249,9 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const input = document.getElementById("id_categoria_input");
+        const tituloInput = document.getElementById("id_titulo");
+        const descricaoInput = document.getElementById("id_descricao");
+
         if (!input) return;
 
         const categorias = [
@@ -277,6 +280,16 @@
                     item.addEventListener("click", function() {
                         input.value = cat;
                         dropdown.classList.add("hidden");
+
+                        // Preenche automaticamente o título se estiver vazio
+                        if (tituloInput && !tituloInput.value.trim()) {
+                            tituloInput.value = cat;
+                        }
+
+                        // Move o foco diretamente para o campo de descrição
+                        if (descricaoInput) {
+                            descricaoInput.focus();
+                        }
                     });
                     dropdown.appendChild(item);
                 });

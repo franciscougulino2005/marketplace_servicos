@@ -34,7 +34,11 @@ class SolicitacaoForm(forms.ModelForm):
             'data_desejada',
         ]
         widgets = {
-            'titulo': forms.TextInput(attrs={'class': INPUT_STYLE, 'placeholder': 'Ex: Preciso de manutenção no quadro elétrico'}),
+            'titulo': forms.TextInput(attrs={
+                'readonly': 'readonly',
+                'class': 'bg-gray-100 border border-gray-300 text-gray-700 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-300 shadow-sm',
+                'placeholder': 'Preenchido automaticamente pela categoria'
+            }),
             'descricao': forms.Textarea(attrs={'class': INPUT_STYLE, 'rows': 4, 'placeholder': 'Descreva detalhadamente o que precisa...'}),
             'cidade': forms.TextInput(attrs={'class': INPUT_STYLE}),
             'estado': forms.TextInput(attrs={'class': INPUT_STYLE, 'placeholder': 'UF'}),

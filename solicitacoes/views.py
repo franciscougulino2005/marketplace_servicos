@@ -507,6 +507,172 @@ def meus_orcamentos(
     )
 
 
+# @cliente_obrigatorio
+# def contratar_orcamento(
+#         request,
+#         cliente,
+#         pk,
+# ):
+#     if request.method != "POST":
+#         messages.error(
+#             request,
+#             "A contratação deve ser realizada através do formulário.",
+#         )
+#
+#         return redirect("solicitacoes:lista_solicitacoes")
+#
+#     orcamento = get_object_or_404(
+#         Orcamento.objects.select_related(
+#             "solicitacao",
+#             "solicitacao__cliente",
+#             "profissional",
+#         ),
+#         pk=pk,
+#         solicitacao__cliente=cliente,
+#     )
+#
+#     solicitacao = orcamento.solicitacao
+#
+#     if solicitacao.status not in [
+#         Solicitacao.Status.ABERTA,
+#         Solicitacao.Status.RECEBENDO_ORCAMENTOS,
+#     ]:
+#         messages.error(
+#             request,
+#             "Esta solicitação não está mais disponível para contratação.",
+#         )
+#
+#         return redirect(
+#             "solicitacoes:orcamentos_solicitacao",
+#             pk=solicitacao.pk,
+#         )
+#
+#     if orcamento.status != Orcamento.Status.ENVIADO:
+#         messages.error(
+#             request,
+#             "Este orçamento não está mais disponível para contratação.",
+#         )
+#
+#         return redirect(
+#             "solicitacoes:orcamentos_solicitacao",
+#             pk=solicitacao.pk,
+#         )
+#
+#     if not orcamento.profissional.ativo:
+#         messages.error(
+#             request,
+#             "Este profissional não está mais ativo na plataforma.",
+#         )
+#
+#         return redirect(
+#             "solicitacoes:orcamentos_solicitacao",
+#             pk=solicitacao.pk,
+#         )
+#
+#     if not orcamento.profissional.aprovado:
+#         messages.error(
+#             request,
+#             "Este profissional ainda não está aprovado pela plataforma.",
+#         )
+#
+#         return redirect(
+#             "solicitacoes:orcamentos_solicitacao",
+#             pk=solicitacao.pk,
+#         )
+#
+#     if Contratacao.objects.filter(
+#             solicitacao=solicitacao,
+#     ).exists():
+#         messages.error(
+#             request,
+#             "Esta solicitação já possui uma contratação.",
+#         )
+#
+#         return redirect(
+#             "solicitacoes:orcamentos_solicitacao",
+#             pk=solicitacao.pk,
+#         )
+#
+#     percentual_comissao = 10
+#
+#     valor = orcamento.valor
+#
+#     valor_comissao = valor * percentual_comissao / 100
+#
+#     valor_profissional = valor - valor_comissao
+#
+#     try:
+#
+#         with transaction.atomic():
+#
+#             contratacao = Contratacao.objects.create(
+#                 solicitacao=solicitacao,
+#                 orcamento=orcamento,
+#                 cliente=cliente,
+#                 profissional=orcamento.profissional,
+#                 valor=valor,
+#                 percentual_comissao=percentual_comissao,
+#                 valor_comissao=valor_comissao,
+#                 valor_profissional=valor_profissional,
+#                 status=Contratacao.Status.AGUARDANDO_PAGAMENTO,
+#             )
+#
+#             Pagamento.objects.create(
+#                 contratacao=contratacao,
+#                 cliente=cliente,
+#                 valor=valor,
+#                 status=Pagamento.Status.PENDENTE,
+#             )
+#
+#             orcamento.status = Orcamento.Status.ACEITO
+#
+#             orcamento.save(
+#                 update_fields=[
+#                     "status",
+#                     "data_atualizacao",
+#                 ]
+#             )
+#
+#             Orcamento.objects.filter(
+#                 solicitacao=solicitacao,
+#             ).exclude(
+#                 pk=orcamento.pk,
+#             ).filter(
+#                 status=Orcamento.Status.ENVIADO,
+#             ).update(
+#                 status=Orcamento.Status.RECUSADO,
+#             )
+#
+#             solicitacao.status = Solicitacao.Status.ORCAMENTO_ACEITO
+#
+#             solicitacao.save(
+#                 update_fields=[
+#                     "status",
+#                     "data_atualizacao",
+#                 ]
+#             )
+#
+#     except IntegrityError:
+#
+#         messages.error(
+#             request,
+#             "Não foi possível concluir a contratação. Tente novamente.",
+#         )
+#
+#         return redirect(
+#             "solicitacoes:orcamentos_solicitacao",
+#             pk=solicitacao.pk,
+#         )
+#
+#     messages.success(
+#         request,
+#         "Orçamento contratado com sucesso! Agora realize o pagamento.",
+#     )
+#
+#     return redirect(
+#         "solicitacoes:pagamento",
+#         pk=contratacao.pk,
+#     )
 @cliente_obrigatorio
 def contratar_orcamento(
         request,
@@ -582,23 +748,21 @@ def contratar_orcamento(
 
     if Contratacao.objects.filter(
             solicitacao=solicitacao,
+            status=Contratacao.Status.AGUARDANDO_PAGAMENTO,
     ).exists():
-        messages.error(
-            request,
-            "Esta solicitação já possui uma contratação.",
+        # Se já existe uma contratação pendente, apenas redireciona para o pagamento existente
+        contratacao_existente = Contratacao.objects.get(
+            solicitacao=solicitacao,
+            status=Contratacao.Status.AGUARDANDO_PAGAMENTO
         )
-
         return redirect(
-            "solicitacoes:orcamentos_solicitacao",
-            pk=solicitacao.pk,
+            "solicitacoes:pagamento",
+            pk=contratacao_existente.pk,
         )
 
     percentual_comissao = 10
-
     valor = orcamento.valor
-
     valor_comissao = valor * percentual_comissao / 100
-
     valor_profissional = valor - valor_comissao
 
     try:
@@ -624,33 +788,9 @@ def contratar_orcamento(
                 status=Pagamento.Status.PENDENTE,
             )
 
-            orcamento.status = Orcamento.Status.ACEITO
-
-            orcamento.save(
-                update_fields=[
-                    "status",
-                    "data_atualizacao",
-                ]
-            )
-
-            Orcamento.objects.filter(
-                solicitacao=solicitacao,
-            ).exclude(
-                pk=orcamento.pk,
-            ).filter(
-                status=Orcamento.Status.ENVIADO,
-            ).update(
-                status=Orcamento.Status.RECUSADO,
-            )
-
-            solicitacao.status = Solicitacao.Status.ORCAMENTO_ACEITO
-
-            solicitacao.save(
-                update_fields=[
-                    "status",
-                    "data_atualizacao",
-                ]
-            )
+            # Nota: O status do orçamento, da solicitação e a recusa dos
+            # outros orçamentos foram removidos daqui e devem ser movidos
+            # exclusivamente para a view de confirmação do pagamento.
 
     except IntegrityError:
 
@@ -666,7 +806,7 @@ def contratar_orcamento(
 
     messages.success(
         request,
-        "Orçamento contratado com sucesso! Agora realize o pagamento.",
+        "Prosseguindo para o pagamento. Conclua a operação para efetivar o contrato.",
     )
 
     return redirect(
@@ -1012,6 +1152,77 @@ def processar_pagamento(
     )
 
 
+# @csrf_exempt
+# def webhook_mercadopago(request):
+#     """Webhook único e unificado para receber atualizações de pagamento do Mercado Pago."""
+#     if request.method != "POST":
+#         return HttpResponse(status=405)
+#
+#     try:
+#         data = json.loads(request.body.decode("utf-8")) if request.body else {}
+#         payment_id = None
+#
+#         if "data" in data and "id" in data["data"]:
+#             payment_id = data["data"]["id"]
+#         elif "id" in request.GET:
+#             payment_id = request.GET.get("id")
+#         elif "data.id" in request.GET:
+#             payment_id = request.GET.get("data.id")
+#
+#         if not payment_id:
+#             return JsonResponse(
+#                 {"status": "ignored", "reason": "no_payment_id"}, status=200
+#             )
+#
+#         access_token = getattr(settings, "MERCADO_PAGO_ACCESS_TOKEN", None)
+#         if not access_token:
+#             return HttpResponse(status=500)
+#
+#         sdk = mercadopago.SDK(access_token=access_token)
+#         payment_info = sdk.payment().get(payment_id)
+#
+#         if payment_info.get("status") == 200:
+#             payment_data = payment_info["response"]
+#             mp_status = payment_data.get("status")
+#
+#             pagamento = Pagamento.objects.filter(
+#                 mercado_pago_id=str(payment_id)
+#             ).first()
+#
+#             if not pagamento:
+#                 ext_ref = payment_data.get("external_reference")
+#                 if ext_ref:
+#                     pagamento = Pagamento.objects.filter(pk=ext_ref).first()
+#
+#             if pagamento:
+#                 pagamento.mercado_pago_status = mp_status
+#                 pagamento.mercado_pago_status_detail = payment_data.get("status_detail")
+#
+#                 if mp_status == "approved" and pagamento.status != Pagamento.Status.APROVADO:
+#                     with transaction.atomic():
+#                         pagamento.status = Pagamento.Status.APROVADO
+#
+#                         contratacao = pagamento.contratacao
+#                         if contratacao:
+#                             contratacao.status = Contratacao.Status.PAGAMENTO_CONFIRMADO
+#                             contratacao.save(update_fields=["status", "data_atualizacao"])
+#
+#                             solicitacao = contratacao.solicitacao
+#                             if solicitacao:
+#                                 solicitacao.status = Solicitacao.Status.EM_ANDAMENTO
+#                                 solicitacao.save(update_fields=["status", "data_atualizacao"])
+#
+#                 elif mp_status in ["cancelled", "rejected", "refunded"]:
+#                     pagamento.status = Pagamento.Status.FALHOU
+#
+#                 pagamento.save()
+#                 return JsonResponse({"status": "success"}, status=200)
+#
+#         return JsonResponse({"status": "not_processed"}, status=200)
+#
+#     except Exception as e:
+#         logger.error(f"Erro no processamento do webhook: {str(e)}")
+#         return JsonResponse({"error": str(e)}, status=500)
 @csrf_exempt
 def webhook_mercadopago(request):
     """Webhook único e unificado para receber atualizações de pagamento do Mercado Pago."""
@@ -1061,15 +1272,31 @@ def webhook_mercadopago(request):
                 if mp_status == "approved" and pagamento.status != Pagamento.Status.APROVADO:
                     with transaction.atomic():
                         pagamento.status = Pagamento.Status.APROVADO
+                        pagamento.save()
 
                         contratacao = pagamento.contratacao
                         if contratacao:
                             contratacao.status = Contratacao.Status.PAGAMENTO_CONFIRMADO
                             contratacao.save(update_fields=["status", "data_atualizacao"])
 
+                            orcamento = contratacao.orcamento
+                            if orcamento:
+                                orcamento.status = Orcamento.Status.ACEITO
+                                orcamento.save(update_fields=["status", "data_atualizacao"])
+
+                                Orcamento.objects.filter(
+                                    solicitacao=orcamento.solicitacao,
+                                ).exclude(
+                                    pk=orcamento.pk,
+                                ).filter(
+                                    status=Orcamento.Status.ENVIADO,
+                                ).update(
+                                    status=Orcamento.Status.RECUSADO,
+                                )
+
                             solicitacao = contratacao.solicitacao
                             if solicitacao:
-                                solicitacao.status = Solicitacao.Status.EM_ANDAMENTO
+                                solicitacao.status = Solicitacao.Status.ORCAMENTO_ACEITO
                                 solicitacao.save(update_fields=["status", "data_atualizacao"])
 
                 elif mp_status in ["cancelled", "rejected", "refunded"]:
