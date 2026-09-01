@@ -169,6 +169,20 @@ try:
 except Exception:
     MP_PUBLIC_KEY = os.getenv("MP_PUBLIC_KEY", "")
 
+# ==========================================================
+# CONFIGURAÇÕES DO WHATSAPP (Evolution API / Local)
+# ==========================================================
+WHATSAPP_API_URL = os.getenv("WHATSAPP_API_URL", "http://localhost:8080/message/sendText/sua_instancia")
+WHATSAPP_API_TOKEN = os.getenv("WHATSAPP_API_TOKEN")
+
+# Configuração de E-mail (Exemplo usando Gmail ou console para desenvolvimento)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # Ou 'django.core.mail.backends.console.EmailBackend' para testes locais
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'franciscougulino@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv("SENHA_EMAIL", "")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "")
 
 # Permite que o Django reconheça o HTTPS enviado pelo Cloudflare / Ngrok Tunnel
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

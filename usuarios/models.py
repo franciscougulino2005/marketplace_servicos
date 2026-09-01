@@ -24,8 +24,8 @@ class Usuario(AbstractUser):
 
     telefone = models.CharField(
         max_length=20,
-        blank=True,
-        verbose_name="Telefone",
+        blank=False,
+        null=False
     )
 
     data_cadastro = models.DateTimeField(

@@ -52,6 +52,13 @@ class CadastroForm(forms.ModelForm):
         ),
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["telefone"].required = True
+        self.fields["telefone"].error_messages = {
+            "required": "O preenchimento do telefone é obrigatório."
+        }
+
     class Meta:
         model = Usuario
         fields = [

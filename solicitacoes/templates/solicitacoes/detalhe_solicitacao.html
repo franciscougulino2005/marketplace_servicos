@@ -44,11 +44,11 @@
                     <span class="rounded-full bg-purple-100 px-4 py-2 text-sm font-medium text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
                         Recebendo orçamentos
                     </span>
-                {% elif solicitacao.status == "CANCELADA" %}
+                {% elif solicitacao.status == "CANCELADA" or solicitacao.contratacao.status == "CANCELADA" %}
                     <span class="rounded-full bg-red-100 px-4 py-2 text-sm font-medium text-red-700 dark:bg-red-900/40 dark:text-red-300">
                         Cancelada
                     </span>
-                {% elif solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" %}
+                {% elif solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
                     <span class="rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300">
                         Serviço Contratado
                     </span>
@@ -175,9 +175,13 @@
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:bg-gray-900/50 dark:border-gray-700">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
-                            {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" %}
+                            {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
                                 <span class="inline-block rounded-md bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800 dark:bg-green-900/40 dark:text-green-300 mb-2">
                                     Serviço Contratado
+                                </span>
+                            {% elif solicitacao.contratacao.status == "CANCELADA" %}
+                                <span class="inline-block rounded-md bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-800 dark:bg-red-900/40 dark:text-red-300 mb-2">
+                                    Contratação Cancelada
                                 </span>
                             {% else %}
                                 <span class="inline-block rounded-md bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 mb-2">
@@ -186,22 +190,29 @@
                             {% endif %}
 
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                                Profissional: {{ solicitacao.contratacao.profissional.usuario.get_full_name|default:solicitacao.contratacao.profissional.usuario.username }}
+                                Profissional: {{ solicitacao.contratacao.profissional.nome_profissional }}
                             </h3>
                             <p class="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">
                                 R$ {{ solicitacao.contratacao.valor }}
                             </p>
+
+                            <!-- Telefone do profissional -->
+                            {% if solicitacao.contratacao.profissional.usuario.telefone %}
+                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                                    <span>📱 WhatsApp:</span>
+                                    <a href="https://wa.me/55{{ solicitacao.contratacao.profissional.usuario.telefone|slugify }}" target="_blank" class="font-medium text-green-600 dark:text-green-400 hover:underline">
+                                        {{ solicitacao.contratacao.profissional.usuario.telefone }}
+                                    </a>
+                                </p>
+                            {% endif %}
                         </div>
 
-                        <div>
-                            {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" %}
+                        <div class="flex flex-wrap items-center gap-3">
+                            {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
                                 <span class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white shadow-sm cursor-default dark:bg-emerald-500">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
                                     Pagamento Realizado
                                 </span>
-                            {% else %}
+                            {% elif solicitacao.contratacao.status != "CANCELADA" and solicitacao.contratacao.status != "SERVICO_CONCLUIDO" %}
                                 <a
                                     href="{% url 'solicitacoes:pagamento' solicitacao.contratacao.pk %}"
                                     class="inline-block rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition-colors shadow-sm"
@@ -209,14 +220,67 @@
                                     Efetuar Pagamento
                                 </a>
                             {% endif %}
+
+                            <!-- Botão de Cancelar Contrato -->
+                            {% if solicitacao.contratacao.status != "CANCELADA" and solicitacao.contratacao.status != "SERVICO_CONCLUIDO" %}
+                                <form
+                                    action="{% url 'solicitacoes:cancelar_contratacao' solicitacao.contratacao.pk %}"
+                                    method="POST"
+                                    onsubmit="return confirm('Tem certeza que deseja cancelar esta contratação? Se houver pagamento aprovado, o estorno será solicitado.');"
+                                >
+                                    {% csrf_token %}
+                                    <button
+                                        type="submit"
+                                        class="rounded-lg bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition-colors shadow-sm"
+                                    >
+                                        Cancelar Contrato
+                                    </button>
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% else %}
-                <div class="rounded-lg border border-dashed border-gray-300 p-6 text-center dark:border-gray-700">
-                    <p class="text-gray-500 dark:text-gray-400">
-                        Nenhum orçamento foi aceito ainda para esta solicitação.
-                    </p>
+                <!-- Caso exiba os orçamentos quando a contratação ainda não foi gerada -->
+                <div class="space-y-4">
+                    {% for orcamento in solicitacao.orcamentos.all %}
+                        {% if orcamento.status == "ACEITO" %}
+                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:bg-gray-900/50 dark:border-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                <div>
+                                    <span class="inline-block rounded-md bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 mb-2">
+                                        Orçamento Aceito
+                                    </span>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                                        Profissional: {{ orcamento.profissional.nome_profissional }}
+                                    </h3>
+                                    <p class="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">
+                                        R$ {{ orcamento.valor }}
+                                    </p>
+
+                                    <!-- Telefone do profissional -->
+                                    {% if orcamento.profissional.usuario.telefone %}
+                                        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                                            <span>📱 WhatsApp:</span>
+                                            <a href="https://wa.me/55{{ orcamento.profissional.usuario.telefone|slugify }}" target="_blank" class="font-medium text-green-600 dark:text-green-400 hover:underline">
+                                                {{ orcamento.profissional.usuario.telefone }}
+                                            </a>
+                                        </p>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <a
+                                        href="{% url 'solicitacoes:contratar_orcamento' orcamento.pk %}"
+                                        class="inline-block rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 transition-colors shadow-sm"
+                                    >
+                                        Gerar Contratação e Pagar
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <p class="text-gray-500 dark:text-gray-400">Nenhum orçamento recebido ainda.</p>
+                    {% endfor %}
                 </div>
             {% endif %}
         </div>

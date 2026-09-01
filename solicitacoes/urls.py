@@ -15,6 +15,7 @@ urlpatterns = [
     path("contratacao/<int:pk>/pagamento/", views.pagamento, name="pagamento"),
     path("pagamento/<int:pk>/processar/", views.processar_pagamento, name="processar_pagamento"),
     path('pagamento/<int:pk>/cartao/', views.processar_pagamento_cartao, name='processar_cartao'),
+    path("contratacao/<int:contratacao_id>/cancelar/", views.cancelar_contratacao_cliente, name="cancelar_contratacao"),
 
     # Áreas e Ações do Profissional
     path("disponiveis/", views.lista_solicitacoes_disponiveis, name="solicitacoes_disponiveis"),
