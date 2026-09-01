@@ -42,7 +42,6 @@
                     {{ form.username.label }}
                 </label>
 
-                <!-- Campo renderizado pelo Django, aplicamos classes via form widget ou estilização padrão se aplicável -->
                 <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
                     {{ form.username }}
                 </div>
@@ -58,7 +57,7 @@
             </div>
 
 
-            <div class="mb-6">
+            <div class="mb-4">
 
                 <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ form.password.label }}
@@ -76,6 +75,16 @@
 
                 {% endfor %}
 
+            </div>
+
+
+            <div class="mb-6 flex items-center justify-end">
+                <a
+                    href="{% url 'usuarios:password_reset' %}"
+                    class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                >
+                    Esqueceu sua senha?
+                </a>
             </div>
 
 

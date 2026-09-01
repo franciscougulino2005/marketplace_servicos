@@ -76,9 +76,85 @@ def cadastro(request):
     )
 
 
+# def cadastro_profissional(request):
+#     usuario_id = request.session.get("usuario_cadastro_id")
+#
+#     if not usuario_id:
+#         return redirect("usuarios:cadastro")
+#
+#     try:
+#         usuario = Usuario.objects.get(
+#             id=usuario_id,
+#             tipo_usuario=Usuario.TipoUsuario.PROFISSIONAL,
+#         )
+#     except Usuario.DoesNotExist:
+#         return redirect("usuarios:cadastro")
+#
+#     if request.method == "POST":
+#         form = ProfissionalForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             profissional = form.save(commit=False)
+#             profissional.usuario = usuario
+#             profissional.save()
+#
+#             del request.session["usuario_cadastro_id"]
+#
+#             messages.success(
+#                 request,
+#                 "Cadastro realizado. Seu perfil será analisado pela plataforma.",
+#             )
+#             login(request, usuario)
+#             return redirect("usuarios:perfil")
+#     else:
+#         form = ProfissionalForm()
+#
+#     return render(
+#         request,
+#         "usuarios/cadastro_profissional.html",
+#         {
+#             "form": form,
+#             "usuario": usuario,
+#         },
+#     )
 def cadastro_profissional(request):
-    usuario_id = request.session.get("usuario_cadastro_id")
+    # Se o usuário já estiver logado, editamos diretamente o perfil dele
+    if request.user.is_authenticated:
+        if request.user.tipo_usuario != Usuario.TipoUsuario.PROFISSIONAL:
+            return redirect("usuarios:perfil")
 
+        profissional, _ = Profissional.objects.get_or_create(usuario=request.user)
+
+        if request.method == "POST":
+            # Se o usuário clicou em cancelar, redireciona sem salvar
+            if "cancelar" in request.POST:
+                return redirect("usuarios:perfil")
+
+            form = ProfissionalForm(request.POST, request.FILES, instance=profissional)
+
+            if form.is_valid():
+                prof = form.save(commit=False)
+                prof.usuario = request.user
+                prof.save()
+
+                # Salva as categorias ManyToMany se houver
+                form.save_m2m()
+
+                messages.success(request, "Cadastro atualizado com sucesso!")
+                return redirect("usuarios:perfil")
+        else:
+            form = ProfissionalForm(instance=profissional)
+
+        return render(
+            request,
+            "usuarios/cadastro_profissional.html",
+            {
+                "form": form,
+                "usuario": request.user,
+            },
+        )
+
+    # Caso contrário, mantém o fluxo original para novos cadastros via sessão
+    usuario_id = request.session.get("usuario_cadastro_id")
     if not usuario_id:
         return redirect("usuarios:cadastro")
 
@@ -90,14 +166,24 @@ def cadastro_profissional(request):
     except Usuario.DoesNotExist:
         return redirect("usuarios:cadastro")
 
-    if request.method == "POST":
-        form = ProfissionalForm(request.POST, request.FILES)
-        if form.is_valid():
-            profissional = form.save(commit=False)
-            profissional.usuario = usuario
-            profissional.save()
+    # Verifica se já existe perfil profissional associado para evitar duplicidade
+    profissional, _ = Profissional.objects.get_or_create(usuario=usuario)
 
-            del request.session["usuario_cadastro_id"]
+    if request.method == "POST":
+        if "cancelar" in request.POST:
+            return redirect("usuarios:perfil")
+
+        form = ProfissionalForm(request.POST, request.FILES, instance=profissional)
+
+        if form.is_valid():
+            prof = form.save(commit=False)
+            prof.usuario = usuario
+            prof.save()
+
+            form.save_m2m()
+
+            if "usuario_cadastro_id" in request.session:
+                del request.session["usuario_cadastro_id"]
 
             messages.success(
                 request,
@@ -106,7 +192,7 @@ def cadastro_profissional(request):
             login(request, usuario)
             return redirect("usuarios:perfil")
     else:
-        form = ProfissionalForm()
+        form = ProfissionalForm(instance=profissional)
 
     return render(
         request,
@@ -116,7 +202,6 @@ def cadastro_profissional(request):
             "usuario": usuario,
         },
     )
-
 
 def perfil(request):
     if not request.user.is_authenticated:

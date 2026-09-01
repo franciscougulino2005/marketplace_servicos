@@ -30,6 +30,7 @@
             {% endif %}
 
             <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <!-- Campos do Profissional -->
                 {% for field in form %}
                     <div {% if field.name == "descricao" or field.name == "categorias" %}class="md:col-span-2"{% endif %}>
                         <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -48,14 +49,24 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
-            </div>
+            </div> <!-- Fim da grid -->
 
-            <div class="mt-8">
+
+            <div class="mt-8 flex items-center justify-center gap-4">
                 <button
                     type="submit"
-                    class="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                    class="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                 >
                     Enviar cadastro profissional
+                </button>
+
+                <button
+                    type="submit"
+                    name="cancelar"
+                    formnovalidate
+                    class="rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                >
+                    Cancelar
                 </button>
             </div>
         </form>

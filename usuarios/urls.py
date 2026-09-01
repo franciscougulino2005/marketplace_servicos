@@ -56,7 +56,7 @@ urlpatterns = [
         "esqueci-senha/",
         auth_views.PasswordResetView.as_view(
             template_name="usuarios/password_reset.html",
-            email_template_name="usuarios/password_reset_email.html",
+            email_template_name="usuarios/password_reset_email.txt",
             subject_template_name="usuarios/password_reset_subject.txt",
             success_url=reverse_lazy("usuarios:password_reset_done"),
         ),
