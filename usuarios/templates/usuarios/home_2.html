@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-slate-50 min-h-screen dark:bg-slate-950 transition-colors duration-200">
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 text-center">
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+      Conecte-se aos Melhores Profissionais da Sua Região
+    </h1>
+    <p class="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+      Encontre profissionais qualificados para serviços hidráulicos, elétricos, reformas e muito mais.
+    </p>
+    <div class="mt-8 flex justify-center gap-4">
+      <a href="{% url 'usuarios:cadastro' %}" class="px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition shadow">
+        Quero me cadastrar
+      </a>
+      <a href="{% url 'usuarios:login' %}" class="px-6 py-3 text-base font-medium text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-blue-50 dark:bg-slate-900 dark:text-blue-400 dark:border-blue-500/50 dark:hover:bg-slate-800 transition">
+        Já tenho conta
+      </a>
+    </div>
+  </section>
+
+  <!-- Vitrine de Serviços -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Serviços em Destaque</h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm">Confira algumas das opções disponíveis na plataforma</p>
+      </div>
+      <a href="{% url 'usuarios:login' %}" class="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+        Ver todos &rarr;
+      </a>
+    </div>
+
+    {% if servicos_destaque %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for servico in servicos_destaque %}
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between hover:shadow-md dark:bg-slate-800 dark:border-slate-700 transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800">
+                  {{ servico.categoria|default:"Geral" }}
+                </span>
+                {% if servico.preco_referencia %}
+                  <span class="text-sm font-bold text-slate-900 dark:text-white">
+                    R$ {{ servico.preco_referencia }}
+                  </span>
+                {% endif %}
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+                {{ servico.nome }}
+              </h3>
+              <p class="text-slate-600 dark:text-slate-300 text-sm mt-2 line-clamp-3">
+                {{ servico.descricao|default:"Sem descrição informada." }}
+              </p>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+              <span class="text-xs text-slate-500 dark:text-slate-400">
+                Por: {{ servico.profissional.usuario.get_full_name|default:servico.profissional.usuario.username }}
+              </span>
+              <a href="{% url 'usuarios:login' %}" class="px-3 py-1.5 text-xs font-medium text-white bg-slate-900 rounded hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 transition">
+                Solicitar
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="bg-white rounded-xl border border-slate-200 p-8 text-center text-slate-500 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400">
+        Nenhum serviço disponível no momento.
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- Como Funciona -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200 dark:border-slate-800">
+    <h2 class="text-2xl font-bold text-slate-900 dark:text-white text-center mb-8">Como funciona o Marketplace</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center dark:bg-slate-800 dark:border-slate-700">
+        <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mb-4 dark:bg-blue-900/50 dark:text-blue-300">1</div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Busque o Serviço</h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm">Encontre exatamente o que precisa navegando pela nossa lista.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center dark:bg-slate-800 dark:border-slate-700">
+        <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mb-4 dark:bg-blue-900/50 dark:text-blue-300">2</div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Faça seu Pedido</h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm">Crie sua conta rapidinho e negocie direto com o profissional.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center dark:bg-slate-800 dark:border-slate-700">
+        <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mb-4 dark:bg-blue-900/50 dark:text-blue-300">3</div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Pagamento Seguro</h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm">Realize o pagamento de forma simples e segura na plataforma.</p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

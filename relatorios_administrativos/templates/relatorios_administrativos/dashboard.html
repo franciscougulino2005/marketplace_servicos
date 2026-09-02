@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-6">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Painel Administrativo</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Central de auditoria, relatórios financeiros e gerenciais da plataforma.</p>
+    </div>
+
+    <!-- Grid de Módulos / Atalhos -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card: Extrato de Comissões -->
+        <a href="{% url 'relatorios_administrativos:comissoes' %}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-blue-100 text-blue-600 rounded-lg dark:bg-blue-900 dark:text-blue-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-gray-900 px-2.5 py-1 rounded-full">Ativo</span>
+            </div>
+            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Extrato de Comissões</h5>
+            <p class="font-normal text-sm text-gray-500 dark:text-gray-400">Visualize o volume negociado, comissões retidas pela plataforma e repasses consolidados por mês e ano.</p>
+        </a>
+
+        <!-- Futuro Card (Exemplo de expansão) -->
+        <div class="p-6 bg-white border border-dashed border-gray-300 rounded-lg opacity-60 dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-gray-100 text-gray-400 rounded-lg dark:bg-gray-700 dark:text-gray-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                </div>
+                <span class="text-xs font-medium text-gray-400">Em Breve</span>
+            </div>
+            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-400 dark:text-gray-500">Extratos por Profissional</h5>
+            <p class="font-normal text-sm text-gray-400 dark:text-gray-500">Relatório individual detalhado para auditoria de pagamentos de cada prestador de serviço.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

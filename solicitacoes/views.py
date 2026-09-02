@@ -1428,3 +1428,43 @@ def cancelar_contratacao_cliente(request, pk):
         messages.success(request, "Contratação cancelada com sucesso.")
 
     return redirect('solicitacoes:lista_solicitacoes')
+
+
+from django.db.models import Sum
+from django.utils import timezone
+from datetime import datetime, date
+from django.shortcuts import render
+from solicitacoes.models import Contratacao
+
+
+def relatorio_comissoes(request):
+    # Pega o mês e ano atuais como padrão, ou usa os filtros da requisição
+    hoje = timezone.now().date()
+    mes_atual = request.GET.get('mes', hoje.strftime('%Y-%m'))
+
+    try:
+        ano, mes = map(int, mes_atual.split('-'))
+    except ValueError:
+        ano, mes = hoje.year, hoje.month
+
+    # Filtra as contratações concluídas ou com pagamento confirmado no mês selecionado
+    contratacoes = Contratacao.objects.filter(
+        data_contratacao__year=ano,
+        data_contratacao__month=mes,
+        status__in=[Contratacao.Status.SERVICO_CONCLUIDO, Contratacao.Status.PAGAMENTO_LIBERADO,
+                    Contratacao.Status.PAGAMENTO_CONFIRMADO]
+    ).order_by('-data_contratacao')
+
+    # Totais consolidados do período
+    totais = contratacoes.aggregate(
+        total_bruto=Sum('valor'),
+        total_comissao=Sum('valor_comissao'),
+        total_profissional=Sum('valor_profissional')
+    )
+
+    context = {
+        'contratacoes': contratacoes,
+        'totais': totais,
+        'mes_atual': mes_atual,
+    }
+    return render(request, 'financeiro/comissoes.html', context)

@@ -1,100 +1,1725 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
 
-{% block content %}
-<div class="bg-slate-50 min-h-screen dark:bg-slate-950 transition-colors duration-200">
-  <!-- Hero Section -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 text-center">
-    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-      Conecte-se aos Melhores Profissionais da Sua Região
-    </h1>
-    <p class="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-      Encontre profissionais qualificados para serviços hidráulicos, elétricos, reformas e muito mais.
-    </p>
-    <div class="mt-8 flex justify-center gap-4">
-      <a href="{% url 'usuarios:cadastro' %}" class="px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition shadow">
-        Quero me cadastrar
-      </a>
-      <a href="{% url 'usuarios:login' %}" class="px-6 py-3 text-base font-medium text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-blue-50 dark:bg-slate-900 dark:text-blue-400 dark:border-blue-500/50 dark:hover:bg-slate-800 transition">
-        Já tenho conta
-      </a>
-    </div>
-  </section>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Vitrine de Serviços -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex justify-between items-center mb-8">
-      <div>
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Serviços em Destaque</h2>
-        <p class="text-slate-600 dark:text-slate-400 text-sm">Confira algumas das opções disponíveis na plataforma</p>
-      </div>
-      <a href="{% url 'usuarios:login' %}" class="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
-        Ver todos &rarr;
-      </a>
-    </div>
+    <title>ChamaPro Serviços</title>
 
-    {% if servicos_destaque %}
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for servico in servicos_destaque %}
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between hover:shadow-md dark:bg-slate-800 dark:border-slate-700 transition">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800">
-                  {{ servico.categoria|default:"Geral" }}
+    <meta name="description"
+          content="Encontre profissionais para realizar seus serviços. ChamaPro Serviços — Precisou? Chame um profissional.">
+
+    <!-- Tailwind via CDN - desenvolvimento -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        chamapro: {
+                            50:  '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+<!-- ========================================================= -->
+<!-- NAVBAR -->
+<!-- ========================================================= -->
+
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="h-20 flex items-center justify-between">
+
+            <!-- LOGO -->
+
+            <a href="{% url 'home' %}"
+               class="flex items-center gap-3">
+
+                <div class="w-11 h-11 rounded-xl bg-chamapro-500
+                            flex items-center justify-center
+                            shadow-lg shadow-chamapro-500/20">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="2"
+                         stroke="white"
+                         class="w-6 h-6">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M11.42 15.17
+                                 16.25 20
+                                 21 15.25
+                                 M11.42 15.17
+                                 8.83 17.76
+                                 A2.25 2.25 0 0 1 5.64 14.57
+                                 l4.95-4.95
+                                 a2.25 2.25 0 0 1 3.18 0
+                                 l.64.64
+                                 a2.25 2.25 0 0 0 3.18 0
+                                 l1.06-1.06
+                                 a2.25 2.25 0 0 0 0-3.18
+                                 l-1.06-1.06
+                                 a2.25 2.25 0 0 0-3.18 0
+                                 l-4.95 4.95"/>
+                    </svg>
+
+                </div>
+
+                <div class="leading-tight">
+
+                    <div class="text-2xl font-extrabold tracking-tight">
+                        <span class="text-gray-900">Chama</span><span
+                              class="text-chamapro-500">Pro</span>
+                    </div>
+
+                    <div class="text-xs font-medium text-gray-500 tracking-wide">
+                        SERVIÇOS
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- MENU DESKTOP -->
+
+            <div class="hidden lg:flex items-center gap-8">
+
+                <a href="#inicio"
+                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                    Início
+                </a>
+
+                <a href="#categorias"
+                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                    Categorias
+                </a>
+
+                <a href="#profissionais"
+                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                    Profissionais
+                </a>
+
+                <a href="#como-funciona"
+                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                    Como funciona
+                </a>
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="hidden md:flex items-center gap-3">
+
+                <a href="#"
+                   class="px-4 py-2 text-sm font-semibold text-gray-700
+                          hover:text-chamapro-600 transition">
+                    Entrar
+                </a>
+
+                <a href="#"
+                   class="px-5 py-2.5 rounded-xl
+                          bg-chamapro-500 hover:bg-chamapro-600
+                          text-white text-sm font-bold
+                          shadow-lg shadow-chamapro-500/20
+                          transition">
+
+                    Criar conta
+
+                </a>
+
+            </div>
+
+
+            <!-- BOTÃO MOBILE -->
+
+            <button id="menuMobileBtn"
+                    type="button"
+                    class="lg:hidden p-2 rounded-lg
+                           text-gray-600 hover:bg-gray-100">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="w-7 h-7">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+
+        <!-- MENU MOBILE -->
+
+        <div id="menuMobile"
+             class="hidden lg:hidden pb-5">
+
+            <div class="flex flex-col gap-2">
+
+                <a href="#inicio"
+                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                    Início
+                </a>
+
+                <a href="#categorias"
+                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                    Categorias
+                </a>
+
+                <a href="#profissionais"
+                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                    Profissionais
+                </a>
+
+                <a href="#como-funciona"
+                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                    Como funciona
+                </a>
+
+                <hr class="my-2">
+
+                <a href="#"
+                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                    Entrar
+                </a>
+
+                <a href="#"
+                   class="px-4 py-3 rounded-lg bg-chamapro-500
+                          text-white text-center font-bold">
+                    Criar conta
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<!-- ========================================================= -->
+<!-- HERO -->
+<!-- ========================================================= -->
+
+<main id="inicio">
+
+<section class="relative overflow-hidden
+                bg-gradient-to-br from-chamapro-600
+                via-chamapro-500 to-orange-400">
+
+    <!-- Elementos decorativos -->
+
+    <div class="absolute -top-32 -right-32
+                w-96 h-96 rounded-full
+                bg-white/10"></div>
+
+    <div class="absolute -bottom-40 -left-40
+                w-96 h-96 rounded-full
+                bg-black/10"></div>
+
+
+    <div class="relative max-w-7xl mx-auto
+                px-4 sm:px-6 lg:px-8
+                py-20 lg:py-28">
+
+        <div class="max-w-4xl mx-auto text-center">
+
+            <span class="inline-flex items-center gap-2
+                         px-4 py-2 rounded-full
+                         bg-white/15 border border-white/20
+                         text-white text-sm font-semibold
+                         mb-6">
+
+                <span class="w-2 h-2 rounded-full bg-white"></span>
+
+                Profissionais perto de você
+
+            </span>
+
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl
+                       font-extrabold tracking-tight
+                       text-white leading-tight">
+
+                Precisou de um serviço?
+
+                <span class="block text-orange-100">
+                    Chame um profissional.
                 </span>
-                {% if servico.preco_referencia %}
-                  <span class="text-sm font-bold text-slate-900 dark:text-white">
-                    R$ {{ servico.preco_referencia }}
-                  </span>
-                {% endif %}
-              </div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wide">
-                {{ servico.nome }}
-              </h3>
-              <p class="text-slate-600 dark:text-slate-300 text-sm mt-2 line-clamp-3">
-                {{ servico.descricao|default:"Sem descrição informada." }}
-              </p>
+
+            </h1>
+
+
+            <p class="mt-6 text-lg sm:text-xl
+                      text-orange-50 max-w-2xl mx-auto">
+
+                Encontre profissionais qualificados,
+                compare propostas e contrate quem você confia.
+
+            </p>
+
+
+            <!-- BUSCA -->
+
+            <div class="mt-10 bg-white rounded-2xl
+                        p-3 shadow-2xl
+                        max-w-4xl mx-auto">
+
+                <form id="formBusca"
+                      method="GET"
+                      action="#">
+
+                    <div class="grid grid-cols-1
+                                md:grid-cols-[1fr_1fr_auto]
+                                gap-3">
+
+
+                        <!-- SERVIÇO -->
+
+                        <div class="relative">
+
+                            <div class="absolute inset-y-0 left-0
+                                        flex items-center pl-4
+                                        pointer-events-none">
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke-width="2"
+                                     stroke="currentColor"
+                                     class="w-5 h-5 text-gray-400">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="m21 21-4.35-4.35
+                                             m0 0A7.5 7.5 0 1 0
+                                             6.04 6.04
+                                             a7.5 7.5 0 0 0
+                                             10.61 10.61Z"/>
+
+                                </svg>
+
+                            </div>
+
+
+                            <input type="text"
+                                   id="servico"
+                                   name="servico"
+                                   autocomplete="off"
+                                   placeholder="Que serviço você precisa?"
+                                   class="w-full h-14 pl-12 pr-4
+                                          rounded-xl border border-gray-200
+                                          focus:border-chamapro-500
+                                          focus:ring-2
+                                          focus:ring-chamapro-200
+                                          outline-none text-gray-800">
+
+                        </div>
+
+
+                        <!-- LOCAL -->
+
+                        <div class="relative">
+
+                            <div class="absolute inset-y-0 left-0
+                                        flex items-center pl-4
+                                        pointer-events-none">
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke-width="2"
+                                     stroke="currentColor"
+                                     class="w-5 h-5 text-gray-400">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M15 10.5a3 3 0 1 1-6 0
+                                             3 3 0 0 1 6 0Z"/>
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M19.5 10.5c0 7.142-7.5 10.5-7.5
+                                             10.5S4.5 17.642 4.5 10.5
+                                             a7.5 7.5 0 1 1 15 0Z"/>
+
+                                </svg>
+
+                            </div>
+
+
+                            <input type="text"
+                                   id="localizacao"
+                                   name="localizacao"
+                                   placeholder="Onde será o serviço?"
+                                   class="w-full h-14 pl-12 pr-4
+                                          rounded-xl border border-gray-200
+                                          focus:border-chamapro-500
+                                          focus:ring-2
+                                          focus:ring-chamapro-200
+                                          outline-none text-gray-800">
+
+                        </div>
+
+
+                        <!-- BOTÃO -->
+
+                        <button type="submit"
+                                class="h-14 px-7 rounded-xl
+                                       bg-gray-900 hover:bg-gray-800
+                                       text-white font-bold
+                                       transition
+                                       flex items-center
+                                       justify-center gap-2">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="2"
+                                 stroke="currentColor"
+                                 class="w-5 h-5">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="m21 21-4.35-4.35
+                                         m0 0A7.5 7.5 0 1 0
+                                         6.04 6.04
+                                         a7.5 7.5 0 0 0
+                                         10.61 10.61Z"/>
+
+                            </svg>
+
+                            Buscar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
             </div>
 
-            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-              <span class="text-xs text-slate-500 dark:text-slate-400">
-                Por: {{ servico.profissional.usuario.get_full_name|default:servico.profissional.usuario.username }}
-              </span>
-              <a href="{% url 'usuarios:login' %}" class="px-3 py-1.5 text-xs font-medium text-white bg-slate-900 rounded hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 transition">
-                Solicitar
-              </a>
+
+            <!-- BUSCAS POPULARES -->
+
+            <div class="mt-6 text-sm text-white/90">
+
+                <span class="font-semibold">
+                    Populares:
+                </span>
+
+                <button type="button"
+                        data-servico="Eletricista"
+                        class="ml-2 underline underline-offset-4 hover:text-white">
+                    Eletricista
+                </button>
+
+                <button type="button"
+                        data-servico="Encanador"
+                        class="ml-3 underline underline-offset-4 hover:text-white">
+                    Encanador
+                </button>
+
+                <button type="button"
+                        data-servico="Diarista"
+                        class="ml-3 underline underline-offset-4 hover:text-white">
+                    Diarista
+                </button>
+
+                <button type="button"
+                        data-servico="Pintor"
+                        class="ml-3 underline underline-offset-4 hover:text-white">
+                    Pintor
+                </button>
+
             </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="bg-white rounded-xl border border-slate-200 p-8 text-center text-slate-500 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400">
-        Nenhum serviço disponível no momento.
-      </div>
-    {% endif %}
-  </section>
 
-  <!-- Como Funciona -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200 dark:border-slate-800">
-    <h2 class="text-2xl font-bold text-slate-900 dark:text-white text-center mb-8">Como funciona o Marketplace</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center dark:bg-slate-800 dark:border-slate-700">
-        <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mb-4 dark:bg-blue-900/50 dark:text-blue-300">1</div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Busque o Serviço</h3>
-        <p class="text-slate-600 dark:text-slate-300 text-sm">Encontre exatamente o que precisa navegando pela nossa lista.</p>
-      </div>
+        </div>
 
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center dark:bg-slate-800 dark:border-slate-700">
-        <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mb-4 dark:bg-blue-900/50 dark:text-blue-300">2</div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Faça seu Pedido</h3>
-        <p class="text-slate-600 dark:text-slate-300 text-sm">Crie sua conta rapidinho e negocie direto com o profissional.</p>
-      </div>
-
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center dark:bg-slate-800 dark:border-slate-700">
-        <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mb-4 dark:bg-blue-900/50 dark:text-blue-300">3</div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Pagamento Seguro</h3>
-        <p class="text-slate-600 dark:text-slate-300 text-sm">Realize o pagamento de forma simples e segura na plataforma.</p>
-      </div>
     </div>
-  </section>
-</div>
-{% endblock %}
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- CATEGORIAS -->
+<!-- ========================================================= -->
+
+<section id="categorias"
+         class="py-20 bg-white">
+
+    <div class="max-w-7xl mx-auto
+                px-4 sm:px-6 lg:px-8">
+
+
+        <div class="flex flex-col sm:flex-row
+                    sm:items-end sm:justify-between
+                    gap-4 mb-10">
+
+            <div>
+
+                <span class="text-sm font-bold
+                             text-chamapro-600 uppercase
+                             tracking-wider">
+                    Explore
+                </span>
+
+                <h2 class="mt-2 text-3xl sm:text-4xl
+                           font-extrabold text-gray-900">
+                    Encontre por categoria
+                </h2>
+
+                <p class="mt-3 text-gray-500">
+                    Encontre profissionais especializados
+                    no serviço que você precisa.
+                </p>
+
+            </div>
+
+
+            <a href="#"
+               class="text-sm font-bold
+                      text-chamapro-600
+                      hover:text-chamapro-700">
+
+                Ver todas as categorias →
+
+            </a>
+
+        </div>
+
+
+        <div class="grid grid-cols-2
+                    sm:grid-cols-3
+                    lg:grid-cols-6
+                    gap-4">
+
+
+            <!-- CATEGORIA -->
+
+            <a href="#"
+               class="group p-6 rounded-2xl
+                      bg-gray-50 border border-gray-100
+                      hover:border-chamapro-200
+                      hover:bg-chamapro-50
+                      transition text-center">
+
+                <div class="w-14 h-14 mx-auto
+                            rounded-2xl bg-white
+                            shadow-sm
+                            flex items-center justify-center
+                            text-2xl
+                            group-hover:scale-110 transition">
+
+                    🔌
+
+                </div>
+
+                <h3 class="mt-4 font-bold text-gray-800">
+                    Elétrica
+                </h3>
+
+                <p class="mt-1 text-xs text-gray-500">
+                    Eletricistas
+                </p>
+
+            </a>
+
+
+            <a href="#"
+               class="group p-6 rounded-2xl
+                      bg-gray-50 border border-gray-100
+                      hover:border-chamapro-200
+                      hover:bg-chamapro-50
+                      transition text-center">
+
+                <div class="w-14 h-14 mx-auto
+                            rounded-2xl bg-white
+                            shadow-sm
+                            flex items-center justify-center
+                            text-2xl
+                            group-hover:scale-110 transition">
+                    🚿
+                </div>
+
+                <h3 class="mt-4 font-bold text-gray-800">
+                    Hidráulica
+                </h3>
+
+                <p class="mt-1 text-xs text-gray-500">
+                    Encanadores
+                </p>
+
+            </a>
+
+
+            <a href="#"
+               class="group p-6 rounded-2xl
+                      bg-gray-50 border border-gray-100
+                      hover:border-chamapro-200
+                      hover:bg-chamapro-50
+                      transition text-center">
+
+                <div class="w-14 h-14 mx-auto
+                            rounded-2xl bg-white
+                            shadow-sm
+                            flex items-center justify-center
+                            text-2xl
+                            group-hover:scale-110 transition">
+                    🔨
+                </div>
+
+                <h3 class="mt-4 font-bold text-gray-800">
+                    Construção
+                </h3>
+
+                <p class="mt-1 text-xs text-gray-500">
+                    Pedreiros
+                </p>
+
+            </a>
+
+
+            <a href="#"
+               class="group p-6 rounded-2xl
+                      bg-gray-50 border border-gray-100
+                      hover:border-chamapro-200
+                      hover:bg-chamapro-50
+                      transition text-center">
+
+                <div class="w-14 h-14 mx-auto
+                            rounded-2xl bg-white
+                            shadow-sm
+                            flex items-center justify-center
+                            text-2xl
+                            group-hover:scale-110 transition">
+                    🧹
+                </div>
+
+                <h3 class="mt-4 font-bold text-gray-800">
+                    Limpeza
+                </h3>
+
+                <p class="mt-1 text-xs text-gray-500">
+                    Diaristas
+                </p>
+
+            </a>
+
+
+            <a href="#"
+               class="group p-6 rounded-2xl
+                      bg-gray-50 border border-gray-100
+                      hover:border-chamapro-200
+                      hover:bg-chamapro-50
+                      transition text-center">
+
+                <div class="w-14 h-14 mx-auto
+                            rounded-2xl bg-white
+                            shadow-sm
+                            flex items-center justify-center
+                            text-2xl
+                            group-hover:scale-110 transition">
+                    ❄️
+                </div>
+
+                <h3 class="mt-4 font-bold text-gray-800">
+                    Climatização
+                </h3>
+
+                <p class="mt-1 text-xs text-gray-500">
+                    Ar-condicionado
+                </p>
+
+            </a>
+
+
+            <a href="#"
+               class="group p-6 rounded-2xl
+                      bg-gray-50 border border-gray-100
+                      hover:border-chamapro-200
+                      hover:bg-chamapro-50
+                      transition text-center">
+
+                <div class="w-14 h-14 mx-auto
+                            rounded-2xl bg-white
+                            shadow-sm
+                            flex items-center justify-center
+                            text-2xl
+                            group-hover:scale-110 transition">
+                    💻
+                </div>
+
+                <h3 class="mt-4 font-bold text-gray-800">
+                    Tecnologia
+                </h3>
+
+                <p class="mt-1 text-xs text-gray-500">
+                    Informática
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- PROFISSIONAIS -->
+<!-- ========================================================= -->
+
+<section id="profissionais"
+         class="py-20 bg-gray-50">
+
+    <div class="max-w-7xl mx-auto
+                px-4 sm:px-6 lg:px-8">
+
+
+        <div class="text-center mb-12">
+
+            <span class="text-sm font-bold
+                         text-chamapro-600 uppercase
+                         tracking-wider">
+                Profissionais
+            </span>
+
+            <h2 class="mt-2 text-3xl sm:text-4xl
+                       font-extrabold text-gray-900">
+
+                Profissionais em destaque
+
+            </h2>
+
+            <p class="mt-3 text-gray-500 max-w-2xl mx-auto">
+
+                Conheça alguns dos profissionais
+                que podem ajudar você.
+
+            </p>
+
+        </div>
+
+
+        <div class="grid grid-cols-1
+                    sm:grid-cols-2
+                    lg:grid-cols-4
+                    gap-6">
+
+
+            <!-- CARD -->
+
+            <article class="bg-white rounded-2xl
+                            border border-gray-100
+                            overflow-hidden
+                            hover:shadow-xl
+                            transition">
+
+                <div class="h-32 bg-gradient-to-br
+                            from-chamapro-100
+                            to-orange-100
+                            relative">
+
+                    <div class="absolute -bottom-12
+                                left-6">
+
+                        <div class="w-24 h-24
+                                    rounded-2xl
+                                    bg-white
+                                    border-4 border-white
+                                    shadow-lg
+                                    flex items-center
+                                    justify-center
+                                    text-4xl">
+
+                            👨‍🔧
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="p-6 pt-16">
+
+                    <div class="flex items-start
+                                justify-between gap-2">
+
+                        <div>
+
+                            <h3 class="font-bold text-lg
+                                       text-gray-900">
+
+                                João da Silva
+
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                Eletricista
+                            </p>
+
+                        </div>
+
+                        <span class="px-2 py-1 rounded-lg
+                                     bg-green-50
+                                     text-green-700
+                                     text-xs font-bold">
+
+                            ✓ Verificado
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-4 flex items-center gap-3
+                                text-sm">
+
+                        <span class="font-bold">
+                            ⭐ 4,9
+                        </span>
+
+                        <span class="text-gray-400">
+                            (127 avaliações)
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-2 text-sm text-gray-500">
+                        📍 2,4 km de distância
+                    </div>
+
+
+                    <a href="#"
+                       class="mt-5 block text-center
+                              py-3 rounded-xl
+                              border border-gray-200
+                              hover:border-chamapro-500
+                              hover:text-chamapro-600
+                              font-bold text-sm
+                              transition">
+
+                        Ver perfil
+
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- CARD -->
+
+            <article class="bg-white rounded-2xl
+                            border border-gray-100
+                            overflow-hidden
+                            hover:shadow-xl
+                            transition">
+
+                <div class="h-32 bg-gradient-to-br
+                            from-blue-100 to-cyan-100
+                            relative">
+
+                    <div class="absolute -bottom-12 left-6">
+
+                        <div class="w-24 h-24
+                                    rounded-2xl bg-white
+                                    border-4 border-white
+                                    shadow-lg
+                                    flex items-center justify-center
+                                    text-4xl">
+
+                            👨‍🔧
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="p-6 pt-16">
+
+                    <div class="flex items-start
+                                justify-between gap-2">
+
+                        <div>
+
+                            <h3 class="font-bold text-lg
+                                       text-gray-900">
+                                Carlos Souza
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                Encanador
+                            </p>
+
+                        </div>
+
+                        <span class="px-2 py-1 rounded-lg
+                                     bg-green-50
+                                     text-green-700
+                                     text-xs font-bold">
+                            ✓ Verificado
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-4 flex items-center gap-3
+                                text-sm">
+
+                        <span class="font-bold">
+                            ⭐ 4,8
+                        </span>
+
+                        <span class="text-gray-400">
+                            (94 avaliações)
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-2 text-sm text-gray-500">
+                        📍 3,1 km de distância
+                    </div>
+
+
+                    <a href="#"
+                       class="mt-5 block text-center
+                              py-3 rounded-xl
+                              border border-gray-200
+                              hover:border-chamapro-500
+                              hover:text-chamapro-600
+                              font-bold text-sm
+                              transition">
+
+                        Ver perfil
+
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- CARD -->
+
+            <article class="bg-white rounded-2xl
+                            border border-gray-100
+                            overflow-hidden
+                            hover:shadow-xl
+                            transition">
+
+                <div class="h-32 bg-gradient-to-br
+                            from-purple-100 to-pink-100
+                            relative">
+
+                    <div class="absolute -bottom-12 left-6">
+
+                        <div class="w-24 h-24
+                                    rounded-2xl bg-white
+                                    border-4 border-white
+                                    shadow-lg
+                                    flex items-center justify-center
+                                    text-4xl">
+
+                            👩‍🔧
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="p-6 pt-16">
+
+                    <div class="flex items-start
+                                justify-between gap-2">
+
+                        <div>
+
+                            <h3 class="font-bold text-lg
+                                       text-gray-900">
+                                Maria Oliveira
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                Diarista
+                            </p>
+
+                        </div>
+
+                        <span class="px-2 py-1 rounded-lg
+                                     bg-green-50
+                                     text-green-700
+                                     text-xs font-bold">
+                            ✓ Verificada
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-4 flex items-center gap-3
+                                text-sm">
+
+                        <span class="font-bold">
+                            ⭐ 5,0
+                        </span>
+
+                        <span class="text-gray-400">
+                            (81 avaliações)
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-2 text-sm text-gray-500">
+                        📍 1,8 km de distância
+                    </div>
+
+
+                    <a href="#"
+                       class="mt-5 block text-center
+                              py-3 rounded-xl
+                              border border-gray-200
+                              hover:border-chamapro-500
+                              hover:text-chamapro-600
+                              font-bold text-sm
+                              transition">
+
+                        Ver perfil
+
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- CARD -->
+
+            <article class="bg-white rounded-2xl
+                            border border-gray-100
+                            overflow-hidden
+                            hover:shadow-xl
+                            transition">
+
+                <div class="h-32 bg-gradient-to-br
+                            from-green-100 to-emerald-100
+                            relative">
+
+                    <div class="absolute -bottom-12 left-6">
+
+                        <div class="w-24 h-24
+                                    rounded-2xl bg-white
+                                    border-4 border-white
+                                    shadow-lg
+                                    flex items-center justify-center
+                                    text-4xl">
+
+                            👨‍💻
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="p-6 pt-16">
+
+                    <div class="flex items-start
+                                justify-between gap-2">
+
+                        <div>
+
+                            <h3 class="font-bold text-lg
+                                       text-gray-900">
+                                Pedro Santos
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                Técnico de informática
+                            </p>
+
+                        </div>
+
+                        <span class="px-2 py-1 rounded-lg
+                                     bg-green-50
+                                     text-green-700
+                                     text-xs font-bold">
+                            ✓ Verificado
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-4 flex items-center gap-3
+                                text-sm">
+
+                        <span class="font-bold">
+                            ⭐ 4,9
+                        </span>
+
+                        <span class="text-gray-400">
+                            (63 avaliações)
+                        </span>
+
+                    </div>
+
+
+                    <div class="mt-2 text-sm text-gray-500">
+                        📍 4,2 km de distância
+                    </div>
+
+
+                    <a href="#"
+                       class="mt-5 block text-center
+                              py-3 rounded-xl
+                              border border-gray-200
+                              hover:border-chamapro-500
+                              hover:text-chamapro-600
+                              font-bold text-sm
+                              transition">
+
+                        Ver perfil
+
+                    </a>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- COMO FUNCIONA -->
+<!-- ========================================================= -->
+
+<section id="como-funciona"
+         class="py-20 bg-white">
+
+    <div class="max-w-7xl mx-auto
+                px-4 sm:px-6 lg:px-8">
+
+
+        <div class="text-center mb-14">
+
+            <span class="text-sm font-bold
+                         text-chamapro-600 uppercase
+                         tracking-wider">
+
+                Simples assim
+
+            </span>
+
+            <h2 class="mt-2 text-3xl sm:text-4xl
+                       font-extrabold text-gray-900">
+
+                Como funciona?
+
+            </h2>
+
+        </div>
+
+
+        <div class="grid grid-cols-1
+                    md:grid-cols-4 gap-8">
+
+
+            <div class="text-center">
+
+                <div class="w-16 h-16 mx-auto
+                            rounded-2xl
+                            bg-chamapro-100
+                            text-chamapro-600
+                            flex items-center justify-center
+                            text-2xl font-extrabold">
+                    1
+                </div>
+
+                <h3 class="mt-5 font-bold text-lg">
+                    Encontre
+                </h3>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    Informe qual serviço você precisa
+                    e onde ele será realizado.
+                </p>
+
+            </div>
+
+
+            <div class="text-center">
+
+                <div class="w-16 h-16 mx-auto
+                            rounded-2xl
+                            bg-chamapro-100
+                            text-chamapro-600
+                            flex items-center justify-center
+                            text-2xl font-extrabold">
+                    2
+                </div>
+
+                <h3 class="mt-5 font-bold text-lg">
+                    Compare
+                </h3>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    Receba e compare propostas
+                    de profissionais.
+                </p>
+
+            </div>
+
+
+            <div class="text-center">
+
+                <div class="w-16 h-16 mx-auto
+                            rounded-2xl
+                            bg-chamapro-100
+                            text-chamapro-600
+                            flex items-center justify-center
+                            text-2xl font-extrabold">
+                    3
+                </div>
+
+                <h3 class="mt-5 font-bold text-lg">
+                    Contrate
+                </h3>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    Escolha o profissional e
+                    combine os detalhes.
+                </p>
+
+            </div>
+
+
+            <div class="text-center">
+
+                <div class="w-16 h-16 mx-auto
+                            rounded-2xl
+                            bg-chamapro-100
+                            text-chamapro-600
+                            flex items-center justify-center
+                            text-2xl font-extrabold">
+                    4
+                </div>
+
+                <h3 class="mt-5 font-bold text-lg">
+                    Avalie
+                </h3>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    Depois do serviço, avalie
+                    sua experiência.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- PROFISSIONAL -->
+<!-- ========================================================= -->
+
+<section class="py-20">
+
+    <div class="max-w-7xl mx-auto
+                px-4 sm:px-6 lg:px-8">
+
+        <div class="rounded-3xl
+                    bg-gray-900 overflow-hidden
+                    relative">
+
+            <div class="absolute
+                        -right-20 -top-20
+                        w-80 h-80 rounded-full
+                        bg-chamapro-500/20"></div>
+
+            <div class="relative
+                        px-8 py-14
+                        lg:px-16
+                        flex flex-col lg:flex-row
+                        lg:items-center
+                        lg:justify-between
+                        gap-8">
+
+                <div class="max-w-2xl">
+
+                    <span class="text-chamapro-400
+                                 text-sm font-bold
+                                 uppercase tracking-wider">
+
+                        Para profissionais
+
+                    </span>
+
+                    <h2 class="mt-3 text-3xl sm:text-4xl
+                               font-extrabold text-white">
+
+                        Quer encontrar novos clientes?
+
+                    </h2>
+
+                    <p class="mt-4 text-gray-300 text-lg">
+
+                        Cadastre seus serviços no ChamaPro,
+                        divulgue seu trabalho e conecte-se
+                        com pessoas que precisam do que você faz.
+
+                    </p>
+
+                </div>
+
+
+                <a href="#"
+                   class="shrink-0
+                          inline-flex items-center
+                          justify-center
+                          px-7 py-4 rounded-xl
+                          bg-chamapro-500
+                          hover:bg-chamapro-400
+                          text-white font-bold
+                          transition">
+
+                    Quero ser profissional
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- CONFIANÇA -->
+<!-- ========================================================= -->
+
+<section class="py-16 bg-white
+                border-y border-gray-100">
+
+    <div class="max-w-7xl mx-auto
+                px-4 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1
+                    sm:grid-cols-2
+                    lg:grid-cols-4 gap-8">
+
+
+            <div class="flex gap-4">
+
+                <div class="shrink-0 w-12 h-12
+                            rounded-xl bg-green-100
+                            flex items-center justify-center
+                            text-xl">
+                    ✓
+                </div>
+
+                <div>
+                    <h3 class="font-bold">
+                        Profissionais avaliados
+                    </h3>
+
+                    <p class="mt-1 text-sm text-gray-500">
+                        Veja avaliações de outros clientes.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="flex gap-4">
+
+                <div class="shrink-0 w-12 h-12
+                            rounded-xl bg-blue-100
+                            flex items-center justify-center
+                            text-xl">
+                    🛡️
+                </div>
+
+                <div>
+                    <h3 class="font-bold">
+                        Perfis verificados
+                    </h3>
+
+                    <p class="mt-1 text-sm text-gray-500">
+                        Mais segurança para contratar.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="flex gap-4">
+
+                <div class="shrink-0 w-12 h-12
+                            rounded-xl bg-orange-100
+                            flex items-center justify-center
+                            text-xl">
+                    💬
+                </div>
+
+                <div>
+                    <h3 class="font-bold">
+                        Comunicação fácil
+                    </h3>
+
+                    <p class="mt-1 text-sm text-gray-500">
+                        Converse diretamente com o profissional.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="flex gap-4">
+
+                <div class="shrink-0 w-12 h-12
+                            rounded-xl bg-purple-100
+                            flex items-center justify-center
+                            text-xl">
+                    ⭐
+                </div>
+
+                <div>
+                    <h3 class="font-bold">
+                        Sistema de avaliações
+                    </h3>
+
+                    <p class="mt-1 text-sm text-gray-500">
+                        Reputação construída por experiências reais.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- ========================================================= -->
+<!-- FOOTER -->
+<!-- ========================================================= -->
+
+<footer class="bg-gray-950 text-gray-300">
+
+    <div class="max-w-7xl mx-auto
+                px-4 sm:px-6 lg:px-8
+                py-14">
+
+        <div class="grid grid-cols-1
+                    md:grid-cols-4 gap-10">
+
+
+            <div class="md:col-span-2">
+
+                <div class="text-2xl font-extrabold">
+                    <span class="text-white">Chama</span><span
+                          class="text-chamapro-500">Pro</span>
+                </div>
+
+                <div class="text-xs font-medium
+                            tracking-wide text-gray-500">
+                    SERVIÇOS
+                </div>
+
+                <p class="mt-5 max-w-md
+                          text-sm text-gray-400">
+
+                    Conectando pessoas que precisam
+                    de serviços a profissionais preparados
+                    para realizá-los.
+
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3 class="font-bold text-white">
+                    ChamaPro
+                </h3>
+
+                <ul class="mt-4 space-y-3 text-sm">
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-white">
+                            Sobre nós
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#categorias"
+                           class="hover:text-white">
+                            Categorias
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#como-funciona"
+                           class="hover:text-white">
+                            Como funciona
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-white">
+                            Contato
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h3 class="font-bold text-white">
+                    Para profissionais
+                </h3>
+
+                <ul class="mt-4 space-y-3 text-sm">
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-white">
+                            Seja um profissional
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-white">
+                            Como funciona
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-white">
+                            Central de ajuda
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="mt-12 pt-8
+                    border-t border-gray-800
+                    flex flex-col sm:flex-row
+                    justify-between gap-4
+                    text-sm text-gray-500">
+
+            <p>
+                © {% now "Y" %} ChamaPro Serviços.
+                Todos os direitos reservados.
+            </p>
+
+            <div class="flex gap-5">
+
+                <a href="#" class="hover:text-white">
+                    Privacidade
+                </a>
+
+                <a href="#" class="hover:text-white">
+                    Termos de uso
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- ========================================================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    /* =======================================================
+       MENU MOBILE
+    ======================================================= */
+
+    const menuBtn = document.getElementById('menuMobileBtn');
+    const menu = document.getElementById('menuMobile');
+
+    if (menuBtn && menu) {
+
+        menuBtn.addEventListener('click', function () {
+
+            menu.classList.toggle('hidden');
+
+        });
+
+    }
+
+
+    /* =======================================================
+       LINKS DO MENU MOBILE
+    ======================================================= */
+
+    document.querySelectorAll('#menuMobile a').forEach(function (link) {
+
+        link.addEventListener('click', function () {
+
+            menu.classList.add('hidden');
+
+        });
+
+    });
+
+
+    /* =======================================================
+       BUSCAS POPULARES
+    ======================================================= */
+
+    const botoesServico =
+        document.querySelectorAll('[data-servico]');
+
+    const campoServico =
+        document.getElementById('servico');
+
+    if (campoServico) {
+
+        botoesServico.forEach(function (botao) {
+
+            botao.addEventListener('click', function () {
+
+                campoServico.value =
+                    botao.dataset.servico;
+
+                campoServico.focus();
+
+            });
+
+        });
+
+    }
+
+
+    /* =======================================================
+       VALIDAÇÃO DA BUSCA
+    ======================================================= */
+
+    const formBusca =
+        document.getElementById('formBusca');
+
+    if (formBusca) {
+
+        formBusca.addEventListener('submit', function (event) {
+
+            const servico =
+                document.getElementById('servico').value.trim();
+
+            const localizacao =
+                document.getElementById('localizacao').value.trim();
+
+
+            if (!servico) {
+
+                event.preventDefault();
+
+                alert('Informe qual serviço você precisa.');
+
+                document.getElementById('servico').focus();
+
+                return;
+
+            }
+
+
+            if (!localizacao) {
+
+                event.preventDefault();
+
+                alert('Informe onde o serviço será realizado.');
+
+                document.getElementById('localizacao').focus();
+
+                return;
+
+            }
+
+        });
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
