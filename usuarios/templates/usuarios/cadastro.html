@@ -1,138 +1,607 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Criar conta
+    Criar conta | ChamaPro Serviços
 {% endblock %}
 
 {% block content %}
-<div class="mx-auto max-w-2xl">
-    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
-        <h1 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
-            Criar sua conta
-        </h1>
 
-        <p class="mb-8 text-sm text-gray-500 dark:text-gray-400">
-            Escolha como deseja utilizar a plataforma.
-        </p>
+<div class="min-h-[calc(100vh-160px)] bg-gray-50 px-4 py-10 sm:py-14 dark:bg-gray-900">
 
-        <form method="post">
-            {% csrf_token %}
+    <div class="mx-auto max-w-3xl">
 
-            {% if form.non_field_errors %}
-                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900/30 dark:border dark:border-red-800 dark:text-red-300">
-                    {{ form.non_field_errors }}
-                </div>
-            {% endif %}
+        <!-- =========================================================
+             IDENTIDADE
+        ========================================================== -->
+        <div class="mb-8 text-center">
 
-            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Nome
-                    </label>
-                    <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
-                        {{ form.first_name }}
-                    </div>
-                    {% for error in form.first_name.errors %}
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
+            <div class="mb-4 flex justify-center">
 
-                <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Sobrenome
-                    </label>
-                    <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
-                        {{ form.last_name }}
-                    </div>
-                    {% for error in form.last_name.errors %}
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-500 shadow-lg shadow-orange-500/20">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.8"
+                        stroke="currentColor"
+                        class="h-8 w-8 text-white"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 6.75a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4.5 20.25a7.5 7.5 0 0 1 15 0"
+                        />
+                    </svg>
+
                 </div>
 
-                <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        E-mail
-                    </label>
-                    <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
-                        {{ form.email }}
-                    </div>
-                    {% for error in form.email.errors %}
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
-
-                <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Telefone
-                    </label>
-                    <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
-                        {{ form.telefone }}
-                    </div>
-                    {% for error in form.telefone.errors %}
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
-
-                <div class="md:col-span-2">
-                    <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Quero me cadastrar como
-                    </label>
-                    <div class="[&>select]:w-full [&>select]:rounded-lg [&>select]:border [&>select]:border-gray-300 [&>select]:p-2.5 [&>select]:text-gray-900 [&>select]:dark:bg-gray-700 [&>select]:dark:border-gray-600 [&>select]:dark:text-white">
-                        {{ form.tipo_usuario }}
-                    </div>
-                    {% for error in form.tipo_usuario.errors %}
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
-
-                <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Senha
-                    </label>
-                    <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
-                        {{ form.password1 }}
-                    </div>
-                    {% for error in form.password1.errors %}
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
-
-                <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Confirme a senha
-                    </label>
-                    <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
-                        {{ form.password2 }}
-                    </div>
-                    {% for error in form.password2.errors %}
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
             </div>
 
-            <div class="mt-8">
-                <button
-                    type="submit"
-                    class="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-                >
-                    Criar minha conta
-                </button>
+            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                Criar sua conta
+            </h1>
+
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Faça parte do
+                <span class="font-semibold text-orange-500">
+                    ChamaPro Serviços
+                </span>.
+            </p>
+
+        </div>
+
+
+        <!-- =========================================================
+             CARD
+        ========================================================== -->
+        <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-gray-200/60 dark:border-gray-700 dark:bg-gray-800 dark:shadow-none">
+
+            <div class="p-6 sm:p-10">
+
+
+                <!-- =================================================
+                     AVISO
+                ================================================== -->
+                <div class="mb-8 rounded-2xl bg-orange-50 p-5 dark:bg-orange-900/20">
+
+                    <div class="flex items-start gap-4">
+
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                                class="h-5 w-5"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 18.75a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 0 0 0 13.5Z"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 8.25v3.75l2.25 1.5"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h2 class="font-bold text-gray-900 dark:text-white">
+                                Como você deseja utilizar a plataforma?
+                            </h2>
+
+                            <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                                Escolha se deseja contratar serviços ou trabalhar como profissional.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     AJUDA CONTEXTUAL
+                ================================================== -->
+                <div class="mb-6 flex justify-end">
+
+                    <a
+                        href="{% url 'ajuda:artigo' 'como-cadastrar-uma-conta' %}?next={{ request.path }}"
+                        class="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-4 py-2.5 text-sm font-bold text-orange-600 shadow-sm transition hover:border-orange-300 hover:bg-orange-100 hover:text-orange-700 focus:outline-none focus:ring-4 focus:ring-orange-500/20 dark:border-orange-800 dark:bg-orange-900/20 dark:text-orange-400 dark:hover:border-orange-700 dark:hover:bg-orange-900/30 dark:hover:text-orange-300"
+                    >
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="h-5 w-5"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M9.879 7.519c.469-1.08 1.522-1.769 2.7-1.769 1.64 0 2.971 1.331 2.971 2.971 0 1.082-.578 2.027-1.442 2.546-.75.451-1.608 1.052-1.608 2.018v.215"
+                            />
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 17.25h.008v.008H12v-.008Z"
+                            />
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+
+                        Como cadastrar uma conta
+
+                    </a>
+
+                </div>
+
+
+                <!-- =================================================
+                     FORMULÁRIO
+                ================================================== -->
+                <form method="post">
+
+                    {% csrf_token %}
+
+
+                    <!-- Erros gerais -->
+                    {% if form.non_field_errors %}
+
+                        <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-300">
+
+                            {{ form.non_field_errors }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+
+                        <!-- =================================================
+                             NOME
+                        ================================================== -->
+                        <div>
+
+                            <label
+                                for="{{ form.first_name.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                            >
+                                Nome
+                            </label>
+
+                            <div class="
+                                [&>input]:w-full
+                                [&>input]:rounded-xl
+                                [&>input]:border
+                                [&>input]:border-gray-300
+                                [&>input]:bg-white
+                                [&>input]:px-4
+                                [&>input]:py-3
+                                [&>input]:text-gray-900
+                                [&>input]:outline-none
+                                [&>input]:transition
+                                [&>input]:duration-200
+                                [&>input]:placeholder:text-gray-400
+                                [&>input]:focus:border-orange-500
+                                [&>input]:focus:ring-4
+                                [&>input]:focus:ring-orange-500/10
+                                [&>input]:dark:border-gray-600
+                                [&>input]:dark:bg-gray-700
+                                [&>input]:dark:text-white
+                            ">
+                                {{ form.first_name }}
+                            </div>
+
+                            {% for error in form.first_name.errors %}
+
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             SOBRENOME
+                        ================================================== -->
+                        <div>
+
+                            <label
+                                for="{{ form.last_name.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                            >
+                                Sobrenome
+                            </label>
+
+                            <div class="
+                                [&>input]:w-full
+                                [&>input]:rounded-xl
+                                [&>input]:border
+                                [&>input]:border-gray-300
+                                [&>input]:bg-white
+                                [&>input]:px-4
+                                [&>input]:py-3
+                                [&>input]:text-gray-900
+                                [&>input]:outline-none
+                                [&>input]:transition
+                                [&>input]:duration-200
+                                [&>input]:placeholder:text-gray-400
+                                [&>input]:focus:border-orange-500
+                                [&>input]:focus:ring-4
+                                [&>input]:focus:ring-orange-500/10
+                                [&>input]:dark:border-gray-600
+                                [&>input]:dark:bg-gray-700
+                                [&>input]:dark:text-white
+                            ">
+                                {{ form.last_name }}
+                            </div>
+
+                            {% for error in form.last_name.errors %}
+
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             E-MAIL
+                        ================================================== -->
+                        <div>
+
+                            <label
+                                for="{{ form.email.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                            >
+                                E-mail
+                            </label>
+
+                            <div class="
+                                [&>input]:w-full
+                                [&>input]:rounded-xl
+                                [&>input]:border
+                                [&>input]:border-gray-300
+                                [&>input]:bg-white
+                                [&>input]:px-4
+                                [&>input]:py-3
+                                [&>input]:text-gray-900
+                                [&>input]:outline-none
+                                [&>input]:transition
+                                [&>input]:duration-200
+                                [&>input]:placeholder:text-gray-400
+                                [&>input]:focus:border-orange-500
+                                [&>input]:focus:ring-4
+                                [&>input]:focus:ring-orange-500/10
+                                [&>input]:dark:border-gray-600
+                                [&>input]:dark:bg-gray-700
+                                [&>input]:dark:text-white
+                            ">
+                                {{ form.email }}
+                            </div>
+
+                            {% for error in form.email.errors %}
+
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             TELEFONE
+                        ================================================== -->
+                        <div>
+
+                            <label
+                                for="{{ form.telefone.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                            >
+                                Telefone
+                            </label>
+
+                            <div class="
+                                [&>input]:w-full
+                                [&>input]:rounded-xl
+                                [&>input]:border
+                                [&>input]:border-gray-300
+                                [&>input]:bg-white
+                                [&>input]:px-4
+                                [&>input]:py-3
+                                [&>input]:text-gray-900
+                                [&>input]:outline-none
+                                [&>input]:transition
+                                [&>input]:duration-200
+                                [&>input]:placeholder:text-gray-400
+                                [&>input]:focus:border-orange-500
+                                [&>input]:focus:ring-4
+                                [&>input]:focus:ring-orange-500/10
+                                [&>input]:dark:border-gray-600
+                                [&>input]:dark:bg-gray-700
+                                [&>input]:dark:text-white
+                            ">
+                                {{ form.telefone }}
+                            </div>
+
+                            {% for error in form.telefone.errors %}
+
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             TIPO DE USUÁRIO
+                        ================================================== -->
+                        <div class="md:col-span-2">
+
+                            <label
+                                for="{{ form.tipo_usuario.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                            >
+                                Quero me cadastrar como
+                            </label>
+
+                            <div class="
+                                [&>select]:w-full
+                                [&>select]:rounded-xl
+                                [&>select]:border
+                                [&>select]:border-gray-300
+                                [&>select]:bg-white
+                                [&>select]:px-4
+                                [&>select]:py-3
+                                [&>select]:text-gray-900
+                                [&>select]:outline-none
+                                [&>select]:transition
+                                [&>select]:duration-200
+                                [&>select]:focus:border-orange-500
+                                [&>select]:focus:ring-4
+                                [&>select]:focus:ring-orange-500/10
+                                [&>select]:dark:border-gray-600
+                                [&>select]:dark:bg-gray-700
+                                [&>select]:dark:text-white
+                            ">
+                                {{ form.tipo_usuario }}
+                            </div>
+
+                            {% for error in form.tipo_usuario.errors %}
+
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             SENHA
+                        ================================================== -->
+                        <div>
+
+                            <label
+                                for="{{ form.password1.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                            >
+                                Senha
+                            </label>
+
+                            <div class="
+                                [&>input]:w-full
+                                [&>input]:rounded-xl
+                                [&>input]:border
+                                [&>input]:border-gray-300
+                                [&>input]:bg-white
+                                [&>input]:px-4
+                                [&>input]:py-3
+                                [&>input]:text-gray-900
+                                [&>input]:outline-none
+                                [&>input]:transition
+                                [&>input]:duration-200
+                                [&>input]:placeholder:text-gray-400
+                                [&>input]:focus:border-orange-500
+                                [&>input]:focus:ring-4
+                                [&>input]:focus:ring-orange-500/10
+                                [&>input]:dark:border-gray-600
+                                [&>input]:dark:bg-gray-700
+                                [&>input]:dark:text-white
+                            ">
+                                {{ form.password1 }}
+                            </div>
+
+                            {% for error in form.password1.errors %}
+
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             CONFIRMAÇÃO DE SENHA
+                        ================================================== -->
+                        <div>
+
+                            <label
+                                for="{{ form.password2.id_for_label }}"
+                                class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                            >
+                                Confirme a senha
+                            </label>
+
+                            <div class="
+                                [&>input]:w-full
+                                [&>input]:rounded-xl
+                                [&>input]:border
+                                [&>input]:border-gray-300
+                                [&>input]:bg-white
+                                [&>input]:px-4
+                                [&>input]:py-3
+                                [&>input]:text-gray-900
+                                [&>input]:outline-none
+                                [&>input]:transition
+                                [&>input]:duration-200
+                                [&>input]:placeholder:text-gray-400
+                                [&>input]:focus:border-orange-500
+                                [&>input]:focus:ring-4
+                                [&>input]:focus:ring-orange-500/10
+                                [&>input]:dark:border-gray-600
+                                [&>input]:dark:bg-gray-700
+                                [&>input]:dark:text-white
+                            ">
+                                {{ form.password2 }}
+                            </div>
+
+                            {% for error in form.password2.errors %}
+
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         BOTÃO CRIAR CONTA
+                    ================================================== -->
+                    <div class="mt-8">
+
+                        <button
+                            type="submit"
+                            class="
+                                flex
+                                w-full
+                                items-center
+                                justify-center
+                                gap-2
+                                rounded-xl
+                                bg-orange-500
+                                px-5
+                                py-3.5
+                                text-sm
+                                font-bold
+                                text-white
+                                shadow-lg
+                                shadow-orange-500/20
+                                transition
+                                hover:bg-orange-600
+                                hover:shadow-xl
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-500/20
+                            "
+                        >
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="h-5 w-5"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M18 7.5v9"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M22.5 12h-9"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"
+                                />
+                            </svg>
+
+                            Criar minha conta
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- =================================================
+                     LOGIN
+                ================================================== -->
+                <div class="mt-8 border-t border-gray-100 pt-7 text-center dark:border-gray-700">
+
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Já possui uma conta?
+                    </p>
+
+                    <a
+                        href="{% url 'usuarios:login' %}"
+                        class="mt-2 inline-block text-sm font-bold text-orange-600 hover:text-orange-700 hover:underline dark:text-orange-400 dark:hover:text-orange-300"
+                    >
+                        Entrar na minha conta
+                    </a>
+
+                </div>
+
             </div>
-        </form>
+
+        </div>
+
     </div>
+
 </div>
+
 {% endblock %}

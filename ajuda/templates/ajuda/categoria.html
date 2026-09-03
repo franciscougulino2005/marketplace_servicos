@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ categoria.nome }} | Central de Ajuda{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Breadcrumb -->
+    <div class="mb-6">
+
+        <a href="{% url 'ajuda:index' %}"
+           class="inline-flex items-center gap-2 text-sm font-medium
+                  text-gray-500 dark:text-gray-400
+                  hover:text-orange-500 transition-colors">
+
+            <svg class="w-4 h-4"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"/>
+            </svg>
+
+            Central de Ajuda
+
+        </a>
+
+    </div>
+
+
+    <!-- Cabeçalho -->
+    <div class="bg-white dark:bg-gray-900
+                border border-gray-200 dark:border-gray-800
+                rounded-2xl p-6 sm:p-8 mb-8">
+
+        <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+
+            <div class="flex-shrink-0 flex items-center justify-center
+                        w-16 h-16 rounded-2xl
+                        bg-orange-100 dark:bg-orange-900/30
+                        text-orange-500">
+
+                {% if categoria.icone %}
+
+                    <span class="text-2xl">
+                        {{ categoria.icone }}
+                    </span>
+
+                {% else %}
+
+                    <svg class="w-8 h-8"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M8 8h8M8 12h8M8 16h5"/>
+
+                    </svg>
+
+                {% endif %}
+
+            </div>
+
+
+            <div>
+
+                <p class="text-xs font-bold uppercase tracking-wider
+                          text-orange-500 mb-1">
+
+                    {{ categoria.get_publico_display }}
+
+                </p>
+
+                <h1 class="text-2xl sm:text-3xl font-extrabold
+                           text-gray-900 dark:text-white">
+
+                    {{ categoria.nome }}
+
+                </h1>
+
+                {% if categoria.descricao %}
+
+                    <p class="mt-2 text-gray-500 dark:text-gray-400 max-w-3xl">
+                        {{ categoria.descricao }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Artigos -->
+    <div>
+
+        <div class="flex items-center justify-between mb-5">
+
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                    Artigos
+                </h2>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Selecione um artigo para consultar o procedimento completo.
+                </p>
+            </div>
+
+        </div>
+
+
+        {% if artigos %}
+
+            <div class="space-y-3">
+
+                {% for artigo in artigos %}
+
+                    <a href="{% url 'ajuda:artigo' artigo.slug %}"
+                       class="group flex items-center gap-4
+                              bg-white dark:bg-gray-900
+                              border border-gray-200 dark:border-gray-800
+                              rounded-2xl p-5
+                              hover:border-orange-300 dark:hover:border-orange-700
+                              hover:shadow-md
+                              transition-all duration-200">
+
+                        <div class="flex-shrink-0 flex items-center justify-center
+                                    w-11 h-11 rounded-xl
+                                    bg-gray-100 dark:bg-gray-800
+                                    text-gray-500 dark:text-gray-400
+                                    group-hover:bg-orange-100
+                                    group-hover:text-orange-500
+                                    dark:group-hover:bg-orange-900/30
+                                    transition-colors">
+
+                            <svg class="w-5 h-5"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"/>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="flex-1 min-w-0">
+
+                            <h3 class="font-bold text-gray-900 dark:text-white
+                                       group-hover:text-orange-500
+                                       transition-colors">
+
+                                {{ artigo.titulo }}
+
+                            </h3>
+
+                            {% if artigo.resumo %}
+
+                                <p class="text-sm text-gray-500 dark:text-gray-400
+                                          mt-1 line-clamp-2">
+
+                                    {{ artigo.resumo }}
+
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <svg class="flex-shrink-0 w-5 h-5
+                                    text-gray-400
+                                    group-hover:text-orange-500
+                                    group-hover:translate-x-1
+                                    transition-all"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M9 5l7 7-7 7"/>
+
+                        </svg>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="bg-white dark:bg-gray-900
+                        border border-gray-200 dark:border-gray-800
+                        rounded-2xl p-10 text-center">
+
+                <div class="mx-auto w-14 h-14 rounded-full
+                            bg-gray-100 dark:bg-gray-800
+                            flex items-center justify-center mb-4">
+
+                    <svg class="w-7 h-7 text-gray-400"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12 9v2m0 4h.01M5.07 19h13.86a2 2 0 001.73-3L13.73 4a2 2 0 00-3.46 0L3.34 16a2 2 0 001.73 3z"/>
+
+                    </svg>
+
+                </div>
+
+                <h3 class="font-bold text-gray-900 dark:text-white">
+                    Nenhum artigo disponível
+                </h3>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Ainda não existem artigos publicados nesta categoria.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

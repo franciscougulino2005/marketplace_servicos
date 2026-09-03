@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+
+{% block title %}Pesquisa | Central de Ajuda{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Cabeçalho -->
+    <div class="mb-8">
+
+        <a href="{% url 'ajuda:index' %}"
+           class="inline-flex items-center gap-2 text-sm font-medium
+                  text-gray-500 dark:text-gray-400
+                  hover:text-orange-500 transition-colors mb-5">
+
+            <svg class="w-4 h-4"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"/>
+
+            </svg>
+
+            Central de Ajuda
+
+        </a>
+
+
+        <h1 class="text-2xl sm:text-3xl font-extrabold
+                   text-gray-900 dark:text-white">
+
+            Pesquisar na Central de Ajuda
+
+        </h1>
+
+    </div>
+
+
+    <!-- Formulário -->
+    <form method="get"
+          action="{% url 'ajuda:pesquisar' %}"
+          class="mb-8">
+
+        <div class="flex flex-col sm:flex-row gap-3">
+
+            <div class="relative flex-1">
+
+                <div class="absolute inset-y-0 left-0 pl-4
+                            flex items-center pointer-events-none">
+
+                    <svg class="w-5 h-5 text-gray-400"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M21 21l-4.35-4.35m2.35-5.65a8 8 0 11-16 0 8 8 0 0116 0z"/>
+
+                    </svg>
+
+                </div>
+
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ termo }}"
+                    placeholder="Digite o que você está procurando..."
+                    class="w-full pl-11 pr-4 py-3.5
+                           rounded-xl
+                           bg-white dark:bg-gray-900
+                           border border-gray-200 dark:border-gray-800
+                           text-gray-900 dark:text-white
+                           placeholder-gray-400
+                           focus:border-orange-500
+                           focus:ring-4 focus:ring-orange-500/10
+                           outline-none"
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="inline-flex items-center justify-center gap-2
+                       px-6 py-3.5 rounded-xl
+                       bg-orange-500 hover:bg-orange-600
+                       text-white font-bold
+                       shadow-sm hover:shadow-md
+                       transition-all duration-200">
+
+                <svg class="w-5 h-5"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M21 21l-4.35-4.35m2.35-5.65a8 8 0 11-16 0 8 8 0 0116 0z"/>
+
+                </svg>
+
+                Pesquisar
+
+            </button>
+
+        </div>
+
+    </form>
+
+
+    {% if termo %}
+
+        <div class="mb-5">
+
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+
+                Resultados para:
+
+                <span class="font-bold text-gray-900 dark:text-white">
+                    "{{ termo }}"
+                </span>
+
+            </p>
+
+        </div>
+
+
+        {% if artigos %}
+
+            <div class="space-y-3">
+
+                {% for artigo in artigos %}
+
+                    <a href="{% url 'ajuda:artigo' artigo.slug %}"
+                       class="group block
+                              bg-white dark:bg-gray-900
+                              border border-gray-200 dark:border-gray-800
+                              rounded-2xl p-5
+                              hover:border-orange-300 dark:hover:border-orange-700
+                              hover:shadow-md
+                              transition-all duration-200">
+
+                        <div class="flex items-start gap-4">
+
+                            <div class="flex-shrink-0 flex items-center justify-center
+                                        w-11 h-11 rounded-xl
+                                        bg-orange-100 dark:bg-orange-900/30
+                                        text-orange-500">
+
+                                <svg class="w-5 h-5"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"/>
+
+                                </svg>
+
+                            </div>
+
+
+                            <div class="flex-1 min-w-0">
+
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+
+                                    <h2 class="font-bold text-gray-900 dark:text-white
+                                               group-hover:text-orange-500
+                                               transition-colors">
+
+                                        {{ artigo.titulo }}
+
+                                    </h2>
+
+                                </div>
+
+
+                                <span class="inline-flex items-center
+                                             px-2.5 py-1 rounded-full
+                                             text-xs font-semibold
+                                             bg-gray-100 dark:bg-gray-800
+                                             text-gray-600 dark:text-gray-400">
+
+                                    {{ artigo.categoria.nome }}
+
+                                </span>
+
+
+                                {% if artigo.resumo %}
+
+                                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400
+                                              line-clamp-3">
+
+                                        {{ artigo.resumo }}
+
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <svg class="flex-shrink-0 w-5 h-5 mt-1
+                                        text-gray-400
+                                        group-hover:text-orange-500
+                                        group-hover:translate-x-1
+                                        transition-all"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 5l7 7-7 7"/>
+
+                            </svg>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <!-- Nenhum resultado -->
+            <div class="bg-white dark:bg-gray-900
+                        border border-gray-200 dark:border-gray-800
+                        rounded-2xl p-10 sm:p-14 text-center">
+
+                <div class="mx-auto w-16 h-16 rounded-full
+                            bg-orange-100 dark:bg-orange-900/30
+                            flex items-center justify-center mb-5">
+
+                    <svg class="w-8 h-8 text-orange-500"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M21 21l-4.35-4.35m2.35-5.65a8 8 0 11-16 0 8 8 0 0116 0z"/>
+
+                    </svg>
+
+                </div>
+
+
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                    Nenhum resultado encontrado
+                </h2>
+
+
+                <p class="max-w-md mx-auto mt-2 text-sm
+                          text-gray-500 dark:text-gray-400">
+
+                    Não encontramos nenhum artigo relacionado à sua pesquisa.
+                    Tente utilizar outras palavras ou termos mais simples.
+
+                </p>
+
+
+                <a href="{% url 'ajuda:index' %}"
+                   class="inline-flex items-center gap-2 mt-6
+                          px-5 py-3 rounded-xl
+                          bg-orange-500 hover:bg-orange-600
+                          text-white font-bold
+                          transition-colors">
+
+                    Voltar para a Central de Ajuda
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    {% else %}
+
+        <!-- Pesquisa sem termo -->
+        <div class="bg-white dark:bg-gray-900
+                    border border-gray-200 dark:border-gray-800
+                    rounded-2xl p-10 text-center">
+
+            <div class="mx-auto w-14 h-14 rounded-full
+                        bg-gray-100 dark:bg-gray-800
+                        flex items-center justify-center mb-4">
+
+                <svg class="w-7 h-7 text-gray-400"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M21 21l-4.35-4.35m2.35-5.65a8 8 0 11-16 0 8 8 0 0116 0z"/>
+
+                </svg>
+
+            </div>
+
+            <h2 class="font-bold text-gray-900 dark:text-white">
+                Digite algo para pesquisar
+            </h2>
+
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Utilize o campo acima para encontrar artigos e procedimentos.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

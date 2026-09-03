@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'solicitacoes',
     'categorias',
     'relatorios_administrativos',
+    'ajuda',
 ]
 
 MIDDLEWARE = [

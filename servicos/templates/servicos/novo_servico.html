@@ -4,18 +4,36 @@
     Novo serviço
 {% endblock %}
 
+
 {% block extra_head %}
+
 <!-- CSS do Tom Select -->
-<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<link
+    href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css"
+    rel="stylesheet"
+>
+
 {% endblock %}
+
 
 {% block content %}
 
 <div class="mx-auto max-w-3xl">
 
+
+    <!-- ===================================================== -->
+    <!-- CABEÇALHO -->
+    <!-- ===================================================== -->
+
     <div class="mb-8">
 
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1
+            class="text-3xl
+                   font-extrabold
+                   tracking-tight
+                   text-gray-900
+                   dark:text-white"
+        >
             Novo serviço
         </h1>
 
@@ -26,16 +44,46 @@
     </div>
 
 
-    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
+    <!-- ===================================================== -->
+    <!-- FORMULÁRIO -->
+    <!-- ===================================================== -->
+
+    <div
+        class="rounded-2xl
+               border
+               border-gray-100
+               bg-white
+               p-6
+               shadow-sm
+               sm:p-8
+               dark:border-gray-700
+               dark:bg-gray-800"
+    >
 
         <form method="post">
 
             {% csrf_token %}
 
 
+            <!-- ================================================= -->
+            <!-- ERROS GERAIS -->
+            <!-- ================================================= -->
+
             {% if form.non_field_errors %}
 
-                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900/30 dark:border dark:border-red-800 dark:text-red-300">
+                <div
+                    class="mb-6
+                           rounded-xl
+                           border
+                           border-red-200
+                           bg-red-50
+                           p-4
+                           text-sm
+                           text-red-700
+                           dark:border-red-900
+                           dark:bg-red-950/30
+                           dark:text-red-300"
+                >
 
                     {{ form.non_field_errors }}
 
@@ -44,20 +92,35 @@
             {% endif %}
 
 
+            <!-- ================================================= -->
+            <!-- CAMPOS -->
+            <!-- ================================================= -->
+
             <div class="space-y-6">
 
 
+                <!-- CATEGORIA -->
+
                 <div>
 
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
+                    <label
+                        for="id_categoria"
+                        class="mb-2
+                               block
+                               text-sm
+                               font-bold
+                               text-gray-800
+                               dark:text-gray-200"
+                    >
                         {{ form.categoria.label }}
                     </label>
 
                     {{ form.categoria }}
 
+
                     {% for error in form.categoria.errors %}
 
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">
                             {{ error }}
                         </p>
 
@@ -66,17 +129,28 @@
                 </div>
 
 
+                <!-- NOME -->
+
                 <div>
 
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
+                    <label
+                        for="id_nome"
+                        class="mb-2
+                               block
+                               text-sm
+                               font-bold
+                               text-gray-800
+                               dark:text-gray-200"
+                    >
                         {{ form.nome.label }}
                     </label>
 
                     {{ form.nome }}
 
+
                     {% for error in form.nome.errors %}
 
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">
                             {{ error }}
                         </p>
 
@@ -85,17 +159,28 @@
                 </div>
 
 
+                <!-- DESCRIÇÃO -->
+
                 <div>
 
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
+                    <label
+                        for="id_descricao"
+                        class="mb-2
+                               block
+                               text-sm
+                               font-bold
+                               text-gray-800
+                               dark:text-gray-200"
+                    >
                         {{ form.descricao.label }}
                     </label>
 
                     {{ form.descricao }}
 
+
                     {% for error in form.descricao.errors %}
 
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">
                             {{ error }}
                         </p>
 
@@ -104,21 +189,33 @@
                 </div>
 
 
+                <!-- PREÇO -->
+
                 <div>
 
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
+                    <label
+                        for="id_preco_referencia"
+                        class="mb-2
+                               block
+                               text-sm
+                               font-bold
+                               text-gray-800
+                               dark:text-gray-200"
+                    >
                         {{ form.preco_referencia.label }}
                     </label>
 
                     {{ form.preco_referencia }}
 
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+
+                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                         Opcional. O preço final será definido através do orçamento.
                     </p>
 
+
                     {% for error in form.preco_referencia.errors %}
 
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">
                             {{ error }}
                         </p>
 
@@ -129,21 +226,117 @@
             </div>
 
 
-            <div class="mt-8 flex justify-end gap-3">
+            <!-- ================================================= -->
+            <!-- AÇÕES -->
+            <!-- ================================================= -->
+
+            <div
+                class="mt-8
+                       flex
+                       flex-col-reverse
+                       gap-3
+                       border-t
+                       border-gray-100
+                       pt-6
+                       sm:flex-row
+                       sm:justify-end
+                       dark:border-gray-700"
+            >
+
+
+                <!-- CANCELAR -->
 
                 <a
                     href="{% url 'servicos:lista' %}"
-                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    class="inline-flex
+                           items-center
+                           justify-center
+                           gap-2
+                           rounded-xl
+                           border
+                           border-gray-300
+                           bg-white
+                           px-5
+                           py-3
+                           font-bold
+                           text-gray-700
+                           shadow-sm
+                           transition-all
+                           duration-200
+                           hover:-translate-y-0.5
+                           hover:border-gray-400
+                           hover:bg-gray-100
+                           hover:shadow
+                           dark:border-gray-600
+                           dark:bg-gray-700
+                           dark:text-gray-200
+                           dark:hover:bg-gray-600"
                 >
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        class="h-5 w-5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
+
                     Cancelar
+
                 </a>
 
 
+                <!-- CADASTRAR -->
+
                 <button
                     type="submit"
-                    class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
+                    class="inline-flex
+                           items-center
+                           justify-center
+                           gap-2
+                           rounded-xl
+                           bg-orange-500
+                           px-6
+                           py-3
+                           font-bold
+                           text-white
+                           shadow-lg
+                           shadow-orange-500/20
+                           transition-all
+                           duration-200
+                           hover:-translate-y-0.5
+                           hover:bg-orange-600
+                           hover:shadow-xl
+                           focus:outline-none
+                           focus:ring-4
+                           focus:ring-orange-200
+                           dark:focus:ring-orange-900/40"
                 >
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        class="h-5 w-5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                    </svg>
+
                     Cadastrar serviço
+
                 </button>
 
             </div>
@@ -156,123 +349,416 @@
 
 {% endblock %}
 
+
 {% block scripts %}
-<!-- JS do Tom Select -->
+
+
+<!-- ===================================================== -->
+<!-- TOM SELECT -->
+<!-- ===================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const elCategoria = document.getElementById("id_categoria") || document.getElementById("id_categoria_servico");
-        const inputNome = document.getElementById("id_nome");
 
-        if (elCategoria) {
-            const ts = new TomSelect(elCategoria, {
-                create: false,
-                sortField: {
-                    field: "text",
-                    direction: "asc"
-                },
-                placeholder: "Digite para pesquisar a categoria...",
-                allowEmptyOption: true,
-                searchField: ['text'],
-                score: function(search) {
-                    var query = search.trim().toLowerCase();
-                    return function(item) {
-                        var text = (item.text || '').toLowerCase();
-                        if (query === '') return 1;
-                        if (text.indexOf(query) > -1) {
-                            return 1;
-                        }
-                        return 0;
-                    };
-                }
-            });
+document.addEventListener("DOMContentLoaded", function () {
 
-            {% if not form.categoria.value %}
-                ts.clear();
-            {% endif %}
+    const elCategoria =
+        document.getElementById("id_categoria") ||
+        document.getElementById("id_categoria_servico");
 
-            ts.on("change", function(value) {
-                if (value && inputNome) {
-                    const selectedOption = ts.options[value];
-                    if (selectedOption) {
-                        inputNome.value = selectedOption.text.trim();
+    const inputNome =
+        document.getElementById("id_nome");
+
+
+    if (elCategoria) {
+
+        const ts = new TomSelect(elCategoria, {
+
+            create: false,
+
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+
+            placeholder:
+                "Digite para pesquisar a categoria...",
+
+            allowEmptyOption: true,
+
+            searchField: [
+                "text"
+            ],
+
+            score: function (search) {
+
+                const query =
+                    search.trim().toLowerCase();
+
+                return function (item) {
+
+                    const text =
+                        (item.text || "")
+                        .toLowerCase();
+
+
+                    if (query === "") {
+
+                        return 1;
+
                     }
+
+
+                    if (
+                        text.indexOf(query) > -1
+                    ) {
+
+                        return 1;
+
+                    }
+
+
+                    return 0;
+
+                };
+
+            }
+
+        });
+
+
+        {% if not form.categoria.value %}
+
+            ts.clear();
+
+        {% endif %}
+
+
+        ts.on(
+            "change",
+            function (value) {
+
+                if (
+                    value &&
+                    inputNome
+                ) {
+
+                    const selectedOption =
+                        ts.options[value];
+
+
+                    if (selectedOption) {
+
+                        inputNome.value =
+                            selectedOption.text.trim();
+
+                    }
+
                 }
-            });
-        }
-    });
+
+            }
+        );
+
+    }
+
+});
+
 </script>
 
+
+<!-- ===================================================== -->
+<!-- ESTILOS -->
+<!-- ===================================================== -->
+
 <style>
-    /* Estilização Geral dos Campos de Texto e Inputs do Django */
-    input[type="text"], input[type="number"], textarea, select {
+
+
+    /* ===================================================== */
+    /* CAMPOS DO DJANGO */
+    /* ===================================================== */
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+
         width: 100%;
-        border-radius: 0.5rem;
+
+        border-radius: 0.75rem;
+
         border: 1px solid #d1d5db;
-        padding: 0.625rem 1rem;
+
+        padding: 0.75rem 1rem;
+
         font-size: 0.875rem;
+
         background-color: #ffffff;
+
         color: #111827;
+
+        transition:
+            border-color 0.2s,
+            box-shadow 0.2s;
+
     }
 
-    .dark input[type="text"], .dark input[type="number"], .dark textarea, .dark select {
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus {
+
+        outline: none;
+
+        border-color: #f97316;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(249, 115, 22, 0.15);
+
+    }
+
+
+    textarea {
+
+        min-height: 130px;
+
+        resize: vertical;
+
+    }
+
+
+    input::placeholder,
+    textarea::placeholder {
+
+        color: #9ca3af;
+
+    }
+
+
+    /* ===================================================== */
+    /* DARK MODE - CAMPOS */
+    /* ===================================================== */
+
+    .dark
+    input[type="text"],
+
+    .dark
+    input[type="number"],
+
+    .dark
+    textarea,
+
+    .dark
+    select {
+
         background-color: #374151 !important;
+
         border-color: #4b5563 !important;
+
         color: #f9fafb !important;
+
     }
 
-    .dark input::placeholder, .dark textarea::placeholder {
+
+    .dark
+    input::placeholder,
+
+    .dark
+    textarea::placeholder {
+
         color: #9ca3af !important;
+
     }
 
-    /* Estilização do Tom Select (Modo Claro & Escuro) */
-    .ts-wrapper.single .ts-control {
-        border-radius: 0.5rem !important;
-        padding: 0.625rem 1rem !important;
-        border-color: #d1d5db !important;
+
+    .dark
+    input[type="text"]:focus,
+
+    .dark
+    input[type="number"]:focus,
+
+    .dark
+    textarea:focus,
+
+    .dark
+    select:focus {
+
+        border-color: #fb923c !important;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(251, 146, 60, 0.20);
+
+    }
+
+
+    /* ===================================================== */
+    /* TOM SELECT */
+    /* ===================================================== */
+
+    .ts-wrapper.single
+    .ts-control {
+
+        border-radius: 0.75rem !important;
+
+        padding: 0.75rem 1rem !important;
+
+        border: 1px solid #d1d5db !important;
+
         background-color: #ffffff !important;
+
         color: #111827 !important;
+
         font-size: 0.875rem !important;
+
         box-shadow: none !important;
-    }
-    .ts-wrapper.single.focus .ts-control {
-        border-color: #2563eb !important;
-    }
-    .ts-wrapper.single .ts-control:after {
-        right: 15px !important;
-    }
-    .ts-dropdown {
-        border-radius: 0.5rem !important;
-        margin-top: 4px !important;
-        background-color: #ffffff !important;
-        color: #111827 !important;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
-    }
-    .ts-dropdown .active {
-        background-color: #eff6ff !important;
-        color: #1d4ed8 !important;
+
+        transition:
+            border-color 0.2s,
+            box-shadow 0.2s;
+
     }
 
-    /* Adaptações do Tom Select para o Dark Mode */
-    .dark .ts-wrapper.single .ts-control {
+
+    .ts-wrapper.single.focus
+    .ts-control {
+
+        border-color: #f97316 !important;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(249, 115, 22, 0.15) !important;
+
+    }
+
+
+    .ts-wrapper.single
+    .ts-control:after {
+
+        right: 15px !important;
+
+    }
+
+
+    /* ===================================================== */
+    /* DROPDOWN */
+    /* ===================================================== */
+
+    .ts-dropdown {
+
+        margin-top: 6px !important;
+
+        border-radius: 0.75rem !important;
+
+        border: 1px solid #e5e7eb !important;
+
+        background-color: #ffffff !important;
+
+        color: #111827 !important;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 10px 25px
+            rgba(0, 0, 0, 0.10) !important;
+
+    }
+
+
+    .ts-dropdown
+    .option {
+
+        padding:
+            0.75rem
+            1rem !important;
+
+    }
+
+
+    .ts-dropdown
+    .active {
+
+        background-color: #fff7ed !important;
+
+        color: #ea580c !important;
+
+    }
+
+
+    /* ===================================================== */
+    /* DARK MODE - TOM SELECT */
+    /* ===================================================== */
+
+    .dark
+    .ts-wrapper.single
+    .ts-control {
+
         background-color: #374151 !important;
+
         border-color: #4b5563 !important;
+
         color: #f9fafb !important;
+
     }
-    .dark .ts-control input {
+
+
+    .dark
+    .ts-wrapper.single.focus
+    .ts-control {
+
+        border-color: #fb923c !important;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(251, 146, 60, 0.20) !important;
+
+    }
+
+
+    .dark
+    .ts-control
+    input {
+
         color: #f9fafb !important;
+
     }
-    .dark .ts-dropdown {
+
+
+    .dark
+    .ts-dropdown {
+
         background-color: #374151 !important;
-        border: 1px solid #4b5563 !important;
+
+        border-color: #4b5563 !important;
+
         color: #f9fafb !important;
+
     }
-    .dark .ts-dropdown .option {
+
+
+    .dark
+    .ts-dropdown
+    .option {
+
         color: #f9fafb !important;
+
     }
-    .dark .ts-dropdown .active {
+
+
+    .dark
+    .ts-dropdown
+    .active {
+
         background-color: #1f2937 !important;
-        color: #60a5fa !important;
+
+        color: #fb923c !important;
+
     }
+
+
 </style>
+
 {% endblock %}

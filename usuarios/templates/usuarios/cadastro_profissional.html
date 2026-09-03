@@ -1,121 +1,432 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Cadastro profissional
+    Cadastro profissional | ChamaPro Serviços
 {% endblock %}
 
 {% block extra_head %}
-<!-- CSS do Tom Select -->
-<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<link
+    href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css"
+    rel="stylesheet"
+>
 {% endblock %}
 
 {% block content %}
-<div class="mx-auto max-w-3xl">
-    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
-        <h1 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
-            Perfil profissional
-        </h1>
 
-        <p class="mb-8 text-sm text-gray-500 dark:text-gray-400">
-            Complete seus dados para oferecer seus serviços.
-        </p>
+<div class="min-h-[calc(100vh-160px)] bg-gray-50 px-4 py-10 sm:py-14 dark:bg-gray-900">
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+    <div class="mx-auto max-w-4xl">
 
-            {% if form.non_field_errors %}
-                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900/30 dark:border dark:border-red-800 dark:text-red-300">
-                    {{ form.non_field_errors }}
+        <!-- Identidade -->
+        <div class="mb-8 text-center">
+
+            <div class="mb-4 flex justify-center">
+
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-500 shadow-lg shadow-orange-500/20">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.8"
+                        stroke="currentColor"
+                        class="h-8 w-8 text-white"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 6.75a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0"
+                        />
+                    </svg>
+
                 </div>
-            {% endif %}
 
-            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <!-- Campos do Profissional -->
-                {% for field in form %}
-                    <div {% if field.name == "descricao" or field.name == "categorias" %}class="md:col-span-2"{% endif %}>
-                        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ field.label }}
-                        </label>
+            </div>
 
-                        <!-- Wrapper para estilizar inputs e textareas do Django no Dark Mode -->
-                        <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white [&>textarea]:w-full [&>textarea]:rounded-lg [&>textarea]:border [&>textarea]:border-gray-300 [&>textarea]:p-2.5 [&>textarea]:text-gray-900 [&>textarea]:dark:bg-gray-700 [&>textarea]:dark:border-gray-600 [&>textarea]:dark:text-white [&>select]:w-full [&>select]:rounded-lg [&>select]:border [&>select]:border-gray-300 [&>select]:p-2.5 [&>select]:text-gray-900 [&>select]:dark:bg-gray-700 [&>select]:dark:border-gray-600 [&>select]:dark:text-white">
-                            {{ field }}
+            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                Perfil profissional
+            </h1>
+
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Complete seus dados para oferecer seus serviços no
+                <span class="font-semibold text-orange-500">
+                    ChamaPro Serviços
+                </span>.
+            </p>
+
+        </div>
+
+
+        <!-- Card -->
+        <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-gray-200/60 dark:border-gray-700 dark:bg-gray-800 dark:shadow-none">
+
+            <div class="p-6 sm:p-10">
+
+                <!-- Aviso -->
+                <div class="mb-8 rounded-2xl bg-orange-50 p-5 dark:bg-orange-900/20">
+
+                    <div class="flex items-start gap-4">
+
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                                class="h-5 w-5"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 9v3.75m0 3h.008v.008H12v-.008Z"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M10.29 3.86 1.82 18.25a1.5 1.5 0 0 0 1.29 2.25h17.78a1.5 1.5 0 0 0 1.29-2.25L13.71 3.86a2 2 0 0 0-3.42 0Z"
+                                />
+                            </svg>
+
                         </div>
 
-                        {% for error in field.errors %}
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                                {{ error }}
+                        <div>
+
+                            <h2 class="font-bold text-gray-900 dark:text-white">
+                                Apresente seu trabalho
+                            </h2>
+
+                            <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                                Informe suas especialidades e descreva seus serviços
+                                para que os clientes possam conhecer melhor o seu trabalho.
                             </p>
-                        {% endfor %}
+
+                        </div>
+
                     </div>
-                {% endfor %}
-            </div> <!-- Fim da grid -->
+
+                </div>
 
 
-            <div class="mt-8 flex items-center justify-center gap-4">
-                <button
-                    type="submit"
-                    class="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-                >
-                    Enviar cadastro profissional
-                </button>
+                <form method="post" enctype="multipart/form-data">
 
-                <button
-                    type="submit"
-                    name="cancelar"
-                    formnovalidate
-                    class="rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                >
-                    Cancelar
-                </button>
+                    {% csrf_token %}
+
+
+                    {% if form.non_field_errors %}
+
+                        <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-300">
+
+                            {{ form.non_field_errors }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                        {% for field in form %}
+
+                            <div
+                                {% if field.name == "descricao" or field.name == "categorias" %}
+                                    class="md:col-span-2"
+                                {% endif %}
+                            >
+
+                                <label
+                                    for="{{ field.id_for_label }}"
+                                    class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                >
+                                    {{ field.label }}
+                                </label>
+
+
+                                <div class="
+                                    [&>input]:w-full
+                                    [&>input]:rounded-xl
+                                    [&>input]:border
+                                    [&>input]:border-gray-300
+                                    [&>input]:bg-white
+                                    [&>input]:px-4
+                                    [&>input]:py-3
+                                    [&>input]:text-gray-900
+                                    [&>input]:outline-none
+                                    [&>input]:transition
+                                    [&>input]:duration-200
+                                    [&>input]:placeholder:text-gray-400
+                                    [&>input]:focus:border-orange-500
+                                    [&>input]:focus:ring-4
+                                    [&>input]:focus:ring-orange-500/10
+
+                                    [&>textarea]:w-full
+                                    [&>textarea]:rounded-xl
+                                    [&>textarea]:border
+                                    [&>textarea]:border-gray-300
+                                    [&>textarea]:bg-white
+                                    [&>textarea]:px-4
+                                    [&>textarea]:py-3
+                                    [&>textarea]:text-gray-900
+                                    [&>textarea]:outline-none
+                                    [&>textarea]:transition
+                                    [&>textarea]:duration-200
+                                    [&>textarea]:placeholder:text-gray-400
+                                    [&>textarea]:focus:border-orange-500
+                                    [&>textarea]:focus:ring-4
+                                    [&>textarea]:focus:ring-orange-500/10
+
+                                    [&>select]:w-full
+                                    [&>select]:rounded-xl
+                                    [&>select]:border
+                                    [&>select]:border-gray-300
+                                    [&>select]:bg-white
+                                    [&>select]:px-4
+                                    [&>select]:py-3
+                                    [&>select]:text-gray-900
+                                    [&>select]:outline-none
+                                    [&>select]:transition
+                                    [&>select]:duration-200
+                                    [&>select]:focus:border-orange-500
+                                    [&>select]:focus:ring-4
+                                    [&>select]:focus:ring-orange-500/10
+
+                                    [&>input]:dark:border-gray-600
+                                    [&>input]:dark:bg-gray-700
+                                    [&>input]:dark:text-white
+
+                                    [&>textarea]:dark:border-gray-600
+                                    [&>textarea]:dark:bg-gray-700
+                                    [&>textarea]:dark:text-white
+
+                                    [&>select]:dark:border-gray-600
+                                    [&>select]:dark:bg-gray-700
+                                    [&>select]:dark:text-white
+                                ">
+                                    {{ field }}
+                                </div>
+
+
+                                {% for error in field.errors %}
+
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                        {{ error }}
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- Botões -->
+                    <div class="mt-10 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
+
+                        <!-- Cancelar -->
+                        <button
+                            type="submit"
+                            name="cancelar"
+                            formnovalidate
+                            class="
+                                inline-flex
+                                items-center
+                                justify-center
+                                gap-2
+                                rounded-xl
+                                border
+                                border-gray-300
+                                bg-white
+                                px-6
+                                py-3
+                                text-sm
+                                font-semibold
+                                text-gray-700
+                                transition
+                                hover:bg-gray-50
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-gray-200
+                                dark:border-gray-600
+                                dark:bg-gray-700
+                                dark:text-gray-200
+                                dark:hover:bg-gray-600
+                                dark:focus:ring-gray-700
+                            "
+                        >
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                                class="h-5 w-5"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                />
+                            </svg>
+
+                            Cancelar
+
+                        </button>
+
+
+                        <!-- Enviar cadastro -->
+                        <button
+                            type="submit"
+                            class="
+                                inline-flex
+                                items-center
+                                justify-center
+                                gap-2
+                                rounded-xl
+                                bg-orange-500
+                                px-6
+                                py-3
+                                text-sm
+                                font-bold
+                                text-white
+                                shadow-lg
+                                shadow-orange-500/20
+                                transition
+                                hover:bg-orange-600
+                                hover:shadow-xl
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-500/20
+                            "
+                        >
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                                class="h-5 w-5"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M9 12.75 11.25 15 15 9.75"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M21 12a9 9 0 1 1-18 0Z"
+                                />
+                            </svg>
+
+                            Enviar cadastro profissional
+
+                        </button>
+
+                    </div>
+
+                </form>
+
             </div>
-        </form>
+
+        </div>
+
     </div>
+
 </div>
+
 {% endblock %}
 
+
 {% block scripts %}
-<!-- JS do Tom Select -->
+
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const el = document.getElementById("id_categorias_profissional");
-        if (el) {
-            new TomSelect(el, {
-                plugins: ['remove_button'],
-                create: false,
-                sortField: {
-                    field: "text",
-                    direction: "asc"
-                },
-                placeholder: "Selecione as categorias em que você atua...",
-            });
-        }
-    });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const el = document.getElementById("id_categorias_profissional");
+
+    if (el) {
+
+        new TomSelect(el, {
+
+            plugins: ["remove_button"],
+
+            create: false,
+
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+
+            placeholder: "Selecione as categorias em que você atua...",
+
+        });
+
+    }
+
+});
+
 </script>
 
+
 <style>
-    /* Estilização adaptativa do Tom Select para modo claro e escuro */
-    .ts-control {
-        border-radius: 0.5rem !important;
-        padding: 0.625rem !important;
-        border-color: #d1d5db !important;
-        background-color: #ffffff !important;
-        color: #111827 !important;
-    }
-    .dark .ts-control {
-        background-color: #374151 !important;
-        border-color: #4b5563 !important;
-        color: #ffffff !important;
-    }
-    .dark .ts-dropdown {
-        background-color: #374151 !important;
-        color: #ffffff !important;
-        border-color: #4b5563 !important;
-    }
-    .dark .ts-dropdown .active {
-        background-color: #4b5563 !important;
-        color: #ffffff !important;
-    }
+
+.ts-control {
+    border-radius: 0.75rem !important;
+    padding: 0.75rem !important;
+    border-color: #d1d5db !important;
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+}
+
+.ts-control.focus {
+    border-color: #f97316 !important;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.10) !important;
+}
+
+.dark .ts-control {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #ffffff !important;
+}
+
+.dark .ts-dropdown {
+    background-color: #374151 !important;
+    color: #ffffff !important;
+    border-color: #4b5563 !important;
+}
+
+.dark .ts-dropdown .option {
+    color: #ffffff !important;
+}
+
+.dark .ts-dropdown .active {
+    background-color: #4b5563 !important;
+    color: #ffffff !important;
+}
+
+.dark .ts-control input {
+    color: #ffffff !important;
+}
+
+.dark .ts-control input::placeholder {
+    color: #9ca3af !important;
+}
+
 </style>
+
 {% endblock %}

@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ artigo.titulo }} | Central de Ajuda{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 text-sm">
+
+        <a href="{% url 'ajuda:index' %}"
+           class="text-gray-500 dark:text-gray-400
+                  hover:text-orange-500 transition-colors">
+
+            Central de Ajuda
+
+        </a>
+
+        <svg class="w-4 h-4 text-gray-400"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"/>
+
+        </svg>
+
+
+        <a href="{% url 'ajuda:categoria' artigo.categoria.slug %}"
+           class="text-gray-500 dark:text-gray-400
+                  hover:text-orange-500 transition-colors">
+
+            {{ artigo.categoria.nome }}
+
+        </a>
+
+        <svg class="w-4 h-4 text-gray-400"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"/>
+
+        </svg>
+
+        <span class="text-gray-700 dark:text-gray-300 truncate">
+            {{ artigo.titulo }}
+        </span>
+
+    </div>
+
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- Conteúdo principal -->
+        <article class="lg:col-span-2">
+
+            <div class="bg-white dark:bg-gray-900
+                        border border-gray-200 dark:border-gray-800
+                        rounded-2xl overflow-hidden">
+
+                <!-- Cabeçalho -->
+                <div class="p-6 sm:p-8 border-b border-gray-200 dark:border-gray-800">
+
+                    <div class="mb-4">
+
+                        <span class="inline-flex items-center
+                                     px-3 py-1 rounded-full
+                                     text-xs font-bold
+                                     bg-orange-100 dark:bg-orange-900/30
+                                     text-orange-600 dark:text-orange-400">
+
+                            {{ artigo.categoria.nome }}
+
+                        </span>
+
+                    </div>
+
+
+                    <h1 class="text-2xl sm:text-3xl font-extrabold
+                               leading-tight
+                               text-gray-900 dark:text-white">
+
+                        {{ artigo.titulo }}
+
+                    </h1>
+
+
+                    {% if artigo.resumo %}
+
+                        <p class="mt-4 text-base sm:text-lg
+                                  text-gray-500 dark:text-gray-400">
+
+                            {{ artigo.resumo }}
+
+                        </p>
+
+                    {% endif %}
+
+
+                    <div class="flex flex-wrap items-center gap-4 mt-5
+                                text-xs text-gray-400">
+
+                        <span class="inline-flex items-center gap-1.5">
+
+                            <svg class="w-4 h-4"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+
+                            </svg>
+
+                            Atualizado em {{ artigo.atualizado_em|date:"d/m/Y" }}
+
+                        </span>
+
+
+                        <span class="inline-flex items-center gap-1.5">
+
+                            <svg class="w-4 h-4"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+
+                            </svg>
+
+                            {{ artigo.visualizacoes }} visualizações
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Conteúdo -->
+                <div class="p-6 sm:p-8">
+
+                    <div class="prose prose-gray dark:prose-invert max-w-none
+                                prose-headings:font-bold
+                                prose-a:text-orange-500
+                                prose-a:no-underline
+                                hover:prose-a:underline
+                                prose-strong:text-gray-900
+                                dark:prose-strong:text-white">
+
+                        {{ artigo.conteudo|linebreaks }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- Lateral -->
+        <aside class="lg:col-span-1">
+
+            <div class="lg:sticky lg:top-6 space-y-5">
+
+                <!-- Navegação -->
+                <div class="bg-white dark:bg-gray-900
+                            border border-gray-200 dark:border-gray-800
+                            rounded-2xl p-5">
+
+                    <h2 class="font-bold text-gray-900 dark:text-white mb-4">
+                        Navegação
+                    </h2>
+
+
+                    {% if request.GET.next %}
+
+                        <!-- Voltar para a página de origem -->
+
+                        <a href="{{ request.GET.next }}"
+                           class="flex items-center gap-3 px-3 py-2.5 rounded-xl
+                                  text-sm font-medium
+                                  text-orange-600 dark:text-orange-400
+                                  hover:bg-orange-50 dark:hover:bg-orange-900/20
+                                  transition-colors">
+
+                            <svg class="w-5 h-5"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M15 19l-7-7 7-7"/>
+
+                            </svg>
+
+                            Voltar para a solicitação
+
+                        </a>
+
+                    {% else %}
+
+                        <!-- Navegação normal da Central de Ajuda -->
+
+                        <a href="{% url 'ajuda:categoria' artigo.categoria.slug %}"
+                           class="flex items-center gap-3 px-3 py-2.5 rounded-xl
+                                  text-sm font-medium
+                                  text-gray-600 dark:text-gray-400
+                                  hover:bg-orange-50 dark:hover:bg-orange-900/20
+                                  hover:text-orange-500
+                                  transition-colors">
+
+                            <svg class="w-5 h-5"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M15 19l-7-7 7-7"/>
+
+                            </svg>
+
+                            Voltar para a categoria
+
+                        </a>
+
+                    {% endif %}
+
+
+                    <a href="{% url 'ajuda:index' %}"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl
+                              text-sm font-medium
+                              text-gray-600 dark:text-gray-400
+                              hover:bg-orange-50 dark:hover:bg-orange-900/20
+                              hover:text-orange-500
+                              transition-colors">
+
+                        <svg class="w-5 h-5"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/>
+
+                        </svg>
+
+                        Central de Ajuda
+
+                    </a>
+
+                </div>
+
+
+                <!-- Relacionados -->
+                {% if artigos_relacionados %}
+
+                    <div class="bg-white dark:bg-gray-900
+                                border border-gray-200 dark:border-gray-800
+                                rounded-2xl p-5">
+
+                        <h2 class="font-bold text-gray-900 dark:text-white mb-4">
+                            Artigos relacionados
+                        </h2>
+
+                        <div class="space-y-1">
+
+                            {% for relacionado in artigos_relacionados %}
+
+                                <a href="{% url 'ajuda:artigo' relacionado.slug %}"
+                                   class="group block px-3 py-3 rounded-xl
+                                          hover:bg-orange-50
+                                          dark:hover:bg-orange-900/20
+                                          transition-colors">
+
+                                    <div class="flex items-start gap-3">
+
+                                        <svg class="flex-shrink-0 w-4 h-4 mt-0.5
+                                                    text-gray-400
+                                                    group-hover:text-orange-500"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             viewBox="0 0 24 24">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-width="2"
+                                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"/>
+
+                                        </svg>
+
+                                        <span class="text-sm font-medium
+                                                     text-gray-700 dark:text-gray-300
+                                                     group-hover:text-orange-500">
+
+                                            {{ relacionado.titulo }}
+
+                                        </span>
+
+                                    </div>
+
+                                </a>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+{% endblock %}

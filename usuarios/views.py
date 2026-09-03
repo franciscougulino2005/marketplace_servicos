@@ -12,6 +12,7 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from servicos.models import Servico
+from categorias.models import Categoria
 from solicitacoes.models import ContaGateway
 
 from .forms import (
@@ -27,19 +28,45 @@ from .models import (
 )
 
 
+# def home(request):
+#     """View para a Landing Page na raiz (/)"""
+#     if request.user.is_authenticated:
+#         return redirect("usuarios:perfil")
+#
+#     # Busca até 6 serviços ativos para a vitrine
+#     servicos_destaque = Servico.objects.filter(ativo=True)[:6]
+#
+#     return render(
+#         request,
+#         "usuarios/home.html",
+#         {
+#             "servicos_destaque": servicos_destaque,
+#         },
+#     )
 def home(request):
-    """View para a Landing Page na raiz (/)"""
     if request.user.is_authenticated:
         return redirect("usuarios:perfil")
 
-    # Busca até 6 serviços ativos para a vitrine
-    servicos_destaque = Servico.objects.filter(ativo=True)[:6]
+    servicos_destaque = (
+        Servico.objects
+        .filter(ativo=True)
+        .select_related("categoria", "profissional")
+        [:6]
+    )
+
+    categorias_destaque = (
+        Categoria.objects
+        .filter(servicos__ativo=True)
+        .distinct()
+        [:6]
+    )
 
     return render(
         request,
         "usuarios/home.html",
         {
             "servicos_destaque": servicos_destaque,
+            "categorias_destaque": categorias_destaque,
         },
     )
 
@@ -76,46 +103,6 @@ def cadastro(request):
     )
 
 
-# def cadastro_profissional(request):
-#     usuario_id = request.session.get("usuario_cadastro_id")
-#
-#     if not usuario_id:
-#         return redirect("usuarios:cadastro")
-#
-#     try:
-#         usuario = Usuario.objects.get(
-#             id=usuario_id,
-#             tipo_usuario=Usuario.TipoUsuario.PROFISSIONAL,
-#         )
-#     except Usuario.DoesNotExist:
-#         return redirect("usuarios:cadastro")
-#
-#     if request.method == "POST":
-#         form = ProfissionalForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             profissional = form.save(commit=False)
-#             profissional.usuario = usuario
-#             profissional.save()
-#
-#             del request.session["usuario_cadastro_id"]
-#
-#             messages.success(
-#                 request,
-#                 "Cadastro realizado. Seu perfil será analisado pela plataforma.",
-#             )
-#             login(request, usuario)
-#             return redirect("usuarios:perfil")
-#     else:
-#         form = ProfissionalForm()
-#
-#     return render(
-#         request,
-#         "usuarios/cadastro_profissional.html",
-#         {
-#             "form": form,
-#             "usuario": usuario,
-#         },
-#     )
 def cadastro_profissional(request):
     # Se o usuário já estiver logado, editamos diretamente o perfil dele
     if request.user.is_authenticated:

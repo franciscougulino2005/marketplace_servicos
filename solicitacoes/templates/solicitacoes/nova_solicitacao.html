@@ -7,311 +7,922 @@
 
 {% block content %}
 
-<div class="mx-auto max-w-4xl">
+<div class="mx-auto max-w-5xl px-4 py-6 lg:py-10">
 
-    <div class="mb-8">
 
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-            Solicitar orçamento
-        </h1>
+    <!-- ===================================================== -->
+    <!-- CABEÇALHO -->
+    <!-- ===================================================== -->
 
-        <p class="mt-2 text-gray-500 dark:text-gray-400">
-            Explique o que precisa e profissionais poderão enviar suas propostas.
-        </p>
+    <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+        <div>
+
+            <div class="flex items-center gap-3">
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                    <svg
+                        class="h-6 w-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12h6m-6 4h4M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 4V2h6v2"
+                        />
+                    </svg>
+
+                </div>
+
+
+                <div>
+
+                    <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                        Solicitar orçamento
+                    </h1>
+
+                    <p class="mt-1 text-gray-500 dark:text-gray-400">
+                        Explique o que precisa e profissionais poderão enviar suas propostas.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- AJUDA -->
+        <!-- ================================================= -->
+
+        <a
+            href="{% url 'ajuda:artigo' 'como-solicitar-um-servico' %}?next={{ request.path }}"
+            title="Ajuda sobre como solicitar um serviço"
+            class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:bg-gray-700 dark:hover:text-orange-400 dark:focus:ring-orange-900/40"
+        >
+
+            <span
+                class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 text-sm font-bold leading-none text-orange-500"
+            >
+                ?
+            </span>
+
+            <span>
+                Ajuda
+            </span>
+
+        </a>
 
     </div>
 
 
-    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
+    <!-- ===================================================== -->
+    <!-- CARD PRINCIPAL -->
+    <!-- ===================================================== -->
 
-        <form
-            method="post"
-            enctype="multipart/form-data"
-        >
-
-            {% csrf_token %}
+    <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
 
-            {% if form.non_field_errors %}
+        <!-- ================================================= -->
+        <!-- CABEÇALHO DO CARD -->
+        <!-- ================================================= -->
 
-                <div class="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
+        <div class="border-b border-gray-200 bg-gradient-to-r from-orange-50 to-white px-6 py-6 dark:border-gray-700 dark:from-orange-900/20 dark:to-gray-800 md:px-8">
 
-                    {{ form.non_field_errors }}
+            <div class="flex items-start gap-4">
 
-                </div>
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
 
-            {% endif %}
-
-
-            <div class="space-y-6">
-
-
-                <div class="relative">
-
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                        {{ form.categoria.label }}
-                    </label>
-
-                    {{ form.categoria }}
-
-                    {% for error in form.categoria.errors %}
-
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-
-                    {% endfor %}
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
+                        />
+                    </svg>
 
                 </div>
 
 
                 <div>
 
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                        {{ form.titulo.label }}
-                    </label>
-
-                    {{ form.titulo }}
-
-                    {% for error in form.titulo.errors %}
-
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-
-                    {% endfor %}
-
-                </div>
-
-
-                <div>
-
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                        {{ form.descricao.label }}
-                    </label>
-
-                    {{ form.descricao }}
-
-                    {% for error in form.descricao.errors %}
-
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {{ error }}
-                        </p>
-
-                    {% endfor %}
-
-                </div>
-
-
-                <div class="border-t border-gray-200 pt-6 dark:border-gray-700">
-
-                    <h2 class="mb-5 text-lg font-semibold text-gray-900 dark:text-white">
-                        Local do serviço
+                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                        Detalhes da solicitação
                     </h2>
 
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        Informe os detalhes do serviço que você precisa.
+                    </p>
 
-                    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+                </div>
+
+            </div>
+
+        </div>
 
 
-                        <div class="md:col-span-2">
+        <!-- ================================================= -->
+        <!-- FORMULÁRIO -->
+        <!-- ================================================= -->
 
-                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                                {{ form.endereco.label }}
-                            </label>
+        <div class="p-6 md:p-8">
 
-                            {{ form.endereco }}
+            <form
+                method="post"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- ================================================= -->
+                <!-- ERROS GERAIS -->
+                <!-- ================================================= -->
+
+                {% if form.non_field_errors %}
+
+                    <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+
+                        <div class="flex items-start gap-3">
+
+                            <svg
+                                class="mt-0.5 h-5 w-5 shrink-0 text-red-600 dark:text-red-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 9v4m0 4h.01M10.29 3.86l-7.82 14a2 2 0 001.74 3h15.58a2 2 0 001.74-3l-7.82-14a2 2 0 00-3.48 0z"
+                                />
+                            </svg>
+
+                            <div class="text-sm text-red-700 dark:text-red-300">
+
+                                {{ form.non_field_errors }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="space-y-8">
+
+
+                    <!-- ================================================= -->
+                    <!-- CATEGORIA -->
+                    <!-- ================================================= -->
+
+                    <div class="relative">
+
+                        <label
+                            for="id_categoria_input"
+                            class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        >
+                            {{ form.categoria.label }}
+                        </label>
+
+
+                        {{ form.categoria }}
+
+
+                        {% for error in form.categoria.errors %}
+
+                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- TITULO -->
+                    <!-- ================================================= -->
+
+                    <div>
+
+                        <label
+                            for="id_titulo"
+                            class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        >
+                            {{ form.titulo.label }}
+                        </label>
+
+
+                        {{ form.titulo }}
+
+
+                        {% for error in form.titulo.errors %}
+
+                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- DESCRIÇÃO -->
+                    <!-- ================================================= -->
+
+                    <div>
+
+                        <label
+                            for="id_descricao"
+                            class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        >
+                            {{ form.descricao.label }}
+                        </label>
+
+
+                        {{ form.descricao }}
+
+
+                        {% for error in form.descricao.errors %}
+
+                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+
+                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            Descreva com o máximo de detalhes possível o serviço que você precisa.
+                        </p>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- LOCAL DO SERVIÇO -->
+                    <!-- ================================================= -->
+
+                    <div class="border-t border-gray-200 pt-8 dark:border-gray-700">
+
+                        <div class="mb-6 flex items-center gap-3">
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
+                                    />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                    />
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                                    Local do serviço
+                                </h2>
+
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                    Informe onde o serviço deverá ser realizado.
+                                </p>
+
+                            </div>
 
                         </div>
 
 
-                        <div>
+                        <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
 
-                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                                {{ form.numero.label }}
-                            </label>
 
-                            {{ form.numero }}
+                            <!-- ENDEREÇO -->
+
+                            <div class="md:col-span-2">
+
+                                <label
+                                    for="id_endereco"
+                                    class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                                >
+                                    {{ form.endereco.label }}
+                                </label>
+
+                                {{ form.endereco }}
+
+
+                                {% for error in form.endereco.errors %}
+
+                                    <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                        {{ error }}
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- NÚMERO -->
+
+                            <div>
+
+                                <label
+                                    for="id_numero"
+                                    class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                                >
+                                    {{ form.numero.label }}
+                                </label>
+
+                                {{ form.numero }}
+
+
+                                {% for error in form.numero.errors %}
+
+                                    <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                        {{ error }}
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- BAIRRO -->
+
+                            <div>
+
+                                <label
+                                    for="id_bairro"
+                                    class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                                >
+                                    {{ form.bairro.label }}
+                                </label>
+
+                                {{ form.bairro }}
+
+
+                                {% for error in form.bairro.errors %}
+
+                                    <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                        {{ error }}
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- CIDADE -->
+
+                            <div>
+
+                                <label
+                                    for="id_cidade"
+                                    class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                                >
+                                    {{ form.cidade.label }}
+                                </label>
+
+                                {{ form.cidade }}
+
+
+                                {% for error in form.cidade.errors %}
+
+                                    <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                        {{ error }}
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- ESTADO -->
+
+                            <div>
+
+                                <label
+                                    for="id_estado"
+                                    class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                                >
+                                    {{ form.estado.label }}
+                                </label>
+
+                                {{ form.estado }}
+
+
+                                {% for error in form.estado.errors %}
+
+                                    <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                        {{ error }}
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- CEP -->
+
+                            <div>
+
+                                <label
+                                    for="id_cep"
+                                    class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                                >
+                                    {{ form.cep.label }}
+                                </label>
+
+                                {{ form.cep }}
+
+
+                                {% for error in form.cep.errors %}
+
+                                    <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                        {{ error }}
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- DATA DESEJADA -->
+                    <!-- ================================================= -->
+
+                    <div class="border-t border-gray-200 pt-8 dark:border-gray-700">
+
+                        <div class="mb-5 flex items-center gap-3">
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    />
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                                    Data desejada
+                                </h2>
+
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                    Informe quando gostaria que o serviço fosse realizado.
+                                </p>
+
+                            </div>
 
                         </div>
 
 
-                        <div>
+                        <label
+                            for="id_data_desejada"
+                            class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        >
+                            {{ form.data_desejada.label }}
+                        </label>
 
-                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                                {{ form.bairro.label }}
-                            </label>
 
-                            {{ form.bairro }}
+                        {{ form.data_desejada }}
+
+
+                        {% for error in form.data_desejada.errors %}
+
+                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+
+                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            Opcional.
+                        </p>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- FOTOS -->
+                    <!-- ================================================= -->
+
+                    <div class="border-t border-gray-200 pt-8 dark:border-gray-700">
+
+                        <div class="mb-5 flex items-center gap-3">
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 015.828 0L20 16M14 10l.5-.5a2 2 0 012.828 0L20 12M14 6h.01M5 20h14a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v14a1 1 0 001 1z"
+                                    />
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                                    Fotos
+                                </h2>
+
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                    Adicione imagens que possam ajudar a explicar o serviço.
+                                </p>
+
+                            </div>
 
                         </div>
 
 
-                        <div>
-
-                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                                {{ form.cidade.label }}
-                            </label>
-
-                            {{ form.cidade }}
-
-                        </div>
+                        <label
+                            for="id_fotos"
+                            class="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-200"
+                        >
+                            Fotos da solicitação
+                        </label>
 
 
-                        <div>
+                        <div class="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-5 dark:border-gray-600 dark:bg-gray-900/30">
 
-                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                                {{ form.estado.label }}
-                            </label>
+                            <input
+                                id="id_fotos"
+                                type="file"
+                                name="fotos"
+                                multiple
+                                accept="image/*"
+                                class="block w-full cursor-pointer rounded-xl border border-gray-300 bg-white text-sm text-gray-700 shadow-sm transition file:mr-4 file:border-0 file:bg-orange-50 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-orange-700 hover:file:bg-orange-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:file:bg-orange-900/30 dark:file:text-orange-300 dark:hover:file:bg-orange-900/50"
+                            >
 
-                            {{ form.estado }}
 
-                        </div>
-
-
-                        <div>
-
-                            <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                                {{ form.cep.label }}
-                            </label>
-
-                            {{ form.cep }}
+                            <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                                Você pode enviar até 5 fotos. Formatos de imagem aceitos.
+                            </p>
 
                         </div>
+
+
+                        {% if form.fotos.errors %}
+
+                            {% for error in form.fotos.errors %}
+
+                                <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        {% endif %}
 
                     </div>
 
                 </div>
 
 
-                <div class="border-t border-gray-200 pt-6 dark:border-gray-700">
+                <!-- ================================================= -->
+                <!-- AÇÕES -->
+                <!-- ================================================= -->
 
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                        {{ form.data_desejada.label }}
-                    </label>
+                <div class="mt-8 flex flex-col-reverse gap-3 border-t border-gray-200 pt-8 sm:flex-row sm:justify-end dark:border-gray-700">
 
-                    {{ form.data_desejada }}
-
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        Opcional.
-                    </p>
-
-                </div>
-
-
-                <div class="border-t border-gray-200 pt-6 dark:border-gray-700">
-
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-200">
-                        Fotos
-                    </label>
-
-                    <input
-                        type="file"
-                        name="fotos"
-                        multiple
-                        accept="image/*"
-                        class="block w-full rounded-lg border border-gray-300 bg-white text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:file:bg-gray-600 dark:file:text-blue-300"
+                    <a
+                        href="{% url 'solicitacoes:lista_solicitacoes' %}"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
                     >
 
-                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                        Você pode enviar até 5 fotos.
-                    </p>
+                        <svg
+                            class="h-5 w-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+
+                        Cancelar
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3 text-sm font-bold text-white shadow-sm shadow-orange-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-600 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-orange-200 dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:ring-orange-900/40"
+                    >
+
+                        <svg
+                            class="h-5 w-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                            />
+                        </svg>
+
+                        Enviar solicitação
+
+                    </button>
 
                 </div>
 
-            </div>
+            </form>
 
-
-            <div class="mt-8 flex justify-end gap-3">
-
-                <a
-                    href="{% url 'solicitacoes:lista_solicitacoes' %}"
-                    class="rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
-                >
-                    Cancelar
-                </a>
-
-
-                <button
-                    type="submit"
-                    class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
-                >
-                    Enviar solicitação
-                </button>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
 </div>
 
+
+<!-- ========================================================= -->
+<!-- JAVASCRIPT - CATEGORIAS -->
+<!-- ========================================================= -->
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const input = document.getElementById("id_categoria_input");
-        const tituloInput = document.getElementById("id_titulo");
-        const descricaoInput = document.getElementById("id_descricao");
+document.addEventListener("DOMContentLoaded", function () {
 
-        if (!input) return;
+    const input = document.getElementById("id_categoria_input");
+    const tituloInput = document.getElementById("id_titulo");
+    const descricaoInput = document.getElementById("id_descricao");
 
-        const categorias = [
-            {% for cat in form.categoria.field.queryset %}
-                "{{ cat.nome|escapejs }}",
-            {% endfor %}
-        ];
+    if (!input) {
+        return;
+    }
 
-        const dropdown = document.createElement("div");
-        dropdown.className = "absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 hidden max-h-60 overflow-y-auto";
-        input.parentNode.appendChild(dropdown);
 
-        function mostrarCategorias(termo) {
-            dropdown.innerHTML = "";
-            const termoLower = termo.toLowerCase().trim();
-            const filtradas = termoLower === ""
-                ? categorias
-                : categorias.filter(c => c.toLowerCase().includes(termoLower));
+    /*
+     * Monta a lista de categorias diretamente a partir
+     * das categorias existentes no banco de dados.
+     *
+     * Cada categoria possui:
+     * - nome
+     * - descricao
+     */
+    const categorias = [
+        {% for cat in form.categoria.field.queryset %}
+        {
+            nome: "{{ cat.nome|escapejs }}",
+            descricao: "{{ cat.descricao|default_if_none:''|escapejs }}"
+        },
+        {% endfor %}
+    ];
 
-            if (filtradas.length > 0) {
-                dropdown.classList.remove("hidden");
-                filtradas.forEach(cat => {
-                    const item = document.createElement("div");
-                    item.className = "px-4 py-2 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer";
-                    item.textContent = cat;
-                    item.addEventListener("click", function() {
-                        input.value = cat;
-                        dropdown.classList.add("hidden");
 
-                        // Preenche automaticamente o título se estiver vazio
-                        if (tituloInput && !tituloInput.value.trim()) {
-                            tituloInput.value = cat;
-                        }
+    /*
+     * Dropdown das categorias
+     */
+    const dropdown = document.createElement("div");
 
-                        // Move o foco diretamente para o campo de descrição
-                        if (descricaoInput) {
-                            descricaoInput.focus();
-                        }
-                    });
-                    dropdown.appendChild(item);
-                });
-            } else {
-                dropdown.classList.add("hidden");
-            }
+    dropdown.className =
+        "absolute z-50 mt-2 w-full overflow-y-auto " +
+        "max-h-60 rounded-2xl border border-gray-200 " +
+        "bg-white shadow-xl dark:border-gray-600 " +
+        "dark:bg-gray-800 hidden";
+
+    input.parentNode.appendChild(dropdown);
+
+
+    /*
+     * Localiza uma categoria pelo nome.
+     */
+    function encontrarCategoria(nome) {
+
+        const nomeNormalizado = nome.trim().toLowerCase();
+
+        return categorias.find(function (categoria) {
+            return categoria.nome.toLowerCase() === nomeNormalizado;
+        });
+    }
+
+
+    /*
+     * Preenche o título usando a descrição da categoria.
+     */
+    function atualizarTitulo() {
+
+        if (!tituloInput) {
+            return;
         }
 
-        input.addEventListener("focus", function() {
-            mostrarCategorias(input.value);
-        });
+        const categoria = encontrarCategoria(input.value);
 
-        input.addEventListener("input", function() {
-            mostrarCategorias(input.value);
-        });
+        if (categoria) {
 
-        document.addEventListener("click", function(e) {
-            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+            tituloInput.value = categoria.descricao || "";
+
+        } else {
+
+            tituloInput.value = "";
+        }
+    }
+
+
+    /*
+     * Mostra as categorias correspondentes ao texto digitado.
+     */
+    function mostrarCategorias(termo) {
+
+        dropdown.innerHTML = "";
+
+        const termoLower = termo.toLowerCase().trim();
+
+        const filtradas = termoLower === ""
+            ? categorias
+            : categorias.filter(function (categoria) {
+                return categoria.nome.toLowerCase().includes(termoLower);
+            });
+
+
+        if (filtradas.length === 0) {
+
+            dropdown.classList.add("hidden");
+            return;
+        }
+
+
+        dropdown.classList.remove("hidden");
+
+
+        filtradas.forEach(function (categoria) {
+
+            const item = document.createElement("button");
+
+            item.type = "button";
+
+            item.className =
+                "block w-full border-b border-gray-100 px-4 py-3 " +
+                "text-left text-sm font-medium text-gray-800 " +
+                "transition-colors hover:bg-orange-50 hover:text-orange-600 " +
+                "dark:border-gray-700 dark:text-gray-200 " +
+                "dark:hover:bg-gray-700 dark:hover:text-orange-400";
+
+
+            item.textContent = categoria.nome;
+
+
+            item.addEventListener("click", function () {
+
+                /*
+                 * Coloca o nome da categoria no campo.
+                 */
+                input.value = categoria.nome;
+
+                /*
+                 * Preenche SEMPRE o título com a descrição
+                 * correspondente à categoria.
+                 */
+                if (tituloInput) {
+                    tituloInput.value = categoria.descricao || "";
+                }
+
+
+                /*
+                 * Fecha o dropdown.
+                 */
                 dropdown.classList.add("hidden");
-            }
+
+
+                /*
+                 * Depois de escolher a categoria,
+                 * leva o usuário para a descrição.
+                 */
+                if (descricaoInput) {
+                    descricaoInput.focus();
+                }
+
+            });
+
+
+            dropdown.appendChild(item);
+
         });
+
+    }
+
+
+    /*
+     * Ao entrar no campo de categoria,
+     * mostra as categorias disponíveis.
+     */
+    input.addEventListener("focus", function () {
+
+        mostrarCategorias(input.value);
+
     });
+
+
+    /*
+     * Enquanto o usuário digita,
+     * filtra as categorias.
+     */
+    input.addEventListener("input", function () {
+
+        mostrarCategorias(input.value);
+
+        /*
+         * Se o texto digitado corresponder exatamente
+         * a uma categoria, atualiza o título.
+         */
+        atualizarTitulo();
+
+    });
+
+
+    /*
+     * Se a categoria já veio preenchida pela Home,
+     * o título é preenchido automaticamente ao carregar a página.
+     */
+    atualizarTitulo();
+
+
+    /*
+     * Fecha o dropdown quando o usuário clica fora.
+     */
+    document.addEventListener("click", function (e) {
+
+        if (
+            !input.contains(e.target) &&
+            !dropdown.contains(e.target)
+        ) {
+            dropdown.classList.add("hidden");
+        }
+
+    });
+
+});
 </script>
 
 {% endblock %}

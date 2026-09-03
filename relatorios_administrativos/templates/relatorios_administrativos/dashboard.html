@@ -1,37 +1,219 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    Painel Administrativo | ChamaPro Serviços
+{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 py-6">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Painel Administrativo</h1>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Central de auditoria, relatórios financeiros e gerenciais da plataforma.</p>
-    </div>
 
-    <!-- Grid de Módulos / Atalhos -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Card: Extrato de Comissões -->
-        <a href="{% url 'relatorios_administrativos:comissoes' %}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-all">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-blue-100 text-blue-600 rounded-lg dark:bg-blue-900 dark:text-blue-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-gray-900 px-2.5 py-1 rounded-full">Ativo</span>
-            </div>
-            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Extrato de Comissões</h5>
-            <p class="font-normal text-sm text-gray-500 dark:text-gray-400">Visualize o volume negociado, comissões retidas pela plataforma e repasses consolidados por mês e ano.</p>
-        </a>
+<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
 
-        <!-- Futuro Card (Exemplo de expansão) -->
-        <div class="p-6 bg-white border border-dashed border-gray-300 rounded-lg opacity-60 dark:bg-gray-800 dark:border-gray-700">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-gray-100 text-gray-400 rounded-lg dark:bg-gray-700 dark:text-gray-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                </div>
-                <span class="text-xs font-medium text-gray-400">Em Breve</span>
+    <!-- Cabeçalho -->
+    <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+        <div class="flex items-start gap-4">
+
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-2xl dark:bg-orange-900/30">
+                🛡️
             </div>
-            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-400 dark:text-gray-500">Extratos por Profissional</h5>
-            <p class="font-normal text-sm text-gray-400 dark:text-gray-500">Relatório individual detalhado para auditoria de pagamentos de cada prestador de serviço.</p>
+
+            <div>
+                <p class="text-sm font-bold uppercase tracking-wider text-orange-500">
+                    Administração
+                </p>
+
+                <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    Painel Administrativo
+                </h1>
+
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                    Central de auditoria, relatórios financeiros e gerenciais da plataforma.
+                </p>
+            </div>
+
         </div>
+
+
+        <!-- Ações do cabeçalho -->
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+
+            <!-- Botão Ajuda -->
+            <a
+                href="{% url 'ajuda:artigo' 'conhecendo-o-painel-administrativo' %}"
+                title="Ajuda sobre o Painel Administrativo"
+                class="inline-flex items-center justify-center gap-2
+                       rounded-xl
+                       border border-gray-200 dark:border-gray-700
+                       bg-white dark:bg-gray-800
+                       px-4 py-2.5
+                       text-sm font-semibold
+                       text-gray-700 dark:text-gray-200
+                       shadow-sm
+                       transition-all duration-200
+                       hover:border-orange-300
+                       dark:hover:border-orange-500
+                       hover:bg-orange-50
+                       dark:hover:bg-gray-700
+                       hover:text-orange-600
+                       dark:hover:text-orange-400
+                       focus:outline-none
+                       focus:ring-4
+                       focus:ring-orange-200
+                       dark:focus:ring-orange-900/40"
+            >
+
+                <span
+                    class="flex h-6 w-6 items-center justify-center
+                           rounded-full
+                           border-2 border-orange-500
+                           text-sm font-bold leading-none
+                           text-orange-500"
+                >
+                    ?
+                </span>
+
+                <span>
+                    Ajuda
+                </span>
+
+            </a>
+
+
+            <!-- Identificação da área -->
+            <span class="inline-flex w-fit items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-700 dark:bg-orange-900/30 dark:text-orange-300">
+                Área Administrativa
+            </span>
+
+        </div>
+
     </div>
+
+
+    <!-- Card principal -->
+    <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+
+        <!-- Cabeçalho do módulo -->
+        <div class="border-b border-gray-200 bg-gradient-to-r from-orange-50 to-white px-6 py-6 dark:border-gray-700 dark:from-orange-900/20 dark:to-gray-800">
+
+            <div class="flex items-center gap-4">
+
+                <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-500 text-2xl text-white shadow-lg shadow-orange-500/20">
+                    📊
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-extrabold text-gray-900 dark:text-white">
+                        Relatórios e Gestão
+                    </h2>
+
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        Acesse os módulos administrativos disponíveis.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Módulos -->
+        <div class="p-6">
+
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                <!-- Extrato de Comissões -->
+                <a
+                    href="{% url 'relatorios_administrativos:comissoes' %}"
+                    onclick="window.location.href = this.href; return false;"
+                    class="group block cursor-pointer rounded-2xl bg-orange-500 p-6 text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-1 hover:bg-orange-600"
+                >
+
+                    <div class="flex items-center justify-between">
+
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20">
+                            📊
+                        </div>
+
+                        <span class="text-xl transition group-hover:translate-x-1">
+                            →
+                        </span>
+
+                    </div>
+
+                    <h3 class="mt-6 text-lg font-extrabold">
+                        Extrato de Comissões
+                    </h3>
+
+                    <p class="mt-2 text-sm text-orange-50">
+                        Visualize o volume negociado, comissões retidas pela plataforma
+                        e repasses consolidados por mês e ano.
+                    </p>
+
+                    <div class="mt-6 flex items-center justify-between">
+
+                        <span class="text-sm font-semibold text-orange-50">
+                            Relatório financeiro
+                        </span>
+
+                        <span class="text-sm font-bold transition group-hover:translate-x-1">
+                            Acessar →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <!-- Futuro módulo -->
+                <div class="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-6 opacity-60 dark:border-gray-700 dark:bg-gray-900">
+
+                    <div class="flex items-center justify-between">
+
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-500">
+                            ➕
+                        </div>
+
+                        <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-400 dark:bg-gray-700 dark:text-gray-500">
+                            Em Breve
+                        </span>
+
+                    </div>
+
+                    <h3 class="mt-6 text-lg font-extrabold text-gray-400 dark:text-gray-500">
+                        Extratos por Profissional
+                    </h3>
+
+                    <p class="mt-2 text-sm text-gray-400 dark:text-gray-500">
+                        Relatório individual detalhado para auditoria de pagamentos
+                        de cada prestador de serviço.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Rodapé da área -->
+    <div class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+
+        <span class="font-bold text-gray-600 dark:text-gray-300">
+            Chama<span class="text-orange-500">Pro</span>
+        </span>
+
+        Serviços
+
+        <span class="mx-2">
+            •
+        </span>
+
+        Precisou? Chame um profissional.
+
+    </div>
+
 </div>
+
 {% endblock %}

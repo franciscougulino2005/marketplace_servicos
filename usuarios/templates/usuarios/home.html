@@ -2,9 +2,13 @@
 {% load static %}
 
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>ChamaPro Serviços</title>
 
@@ -15,12 +19,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
+
         tailwind.config = {
+
             darkMode: 'class',
+
             theme: {
+
                 extend: {
+
                     colors: {
+
                         chamapro: {
+
                             50:  '#fff7ed',
                             100: '#ffedd5',
                             200: '#fed7aa',
@@ -31,15 +42,24 @@
                             700: '#c2410c',
                             800: '#9a3412',
                             900: '#7c2d12'
+
                         }
+
                     }
+
                 }
+
             }
+
         }
+
     </script>
+
 </head>
 
+
 <body class="bg-gray-50 text-gray-800 antialiased">
+
 
 <!-- ========================================================= -->
 <!-- NAVBAR -->
@@ -51,12 +71,14 @@
 
         <div class="h-20 flex items-center justify-between">
 
+
             <!-- LOGO -->
 
             <a href="{% url 'home' %}"
                class="flex items-center gap-3">
 
-                <div class="w-11 h-11 rounded-xl bg-chamapro-500
+                <div class="w-11 h-11 rounded-xl
+                            bg-chamapro-500
                             flex items-center justify-center
                             shadow-lg shadow-chamapro-500/20">
 
@@ -84,19 +106,32 @@
                                  l-1.06-1.06
                                  a2.25 2.25 0 0 0-3.18 0
                                  l-4.95 4.95"/>
+
                     </svg>
 
                 </div>
 
+
                 <div class="leading-tight">
 
                     <div class="text-2xl font-extrabold tracking-tight">
-                        <span class="text-gray-900">Chama</span><span
-                              class="text-chamapro-500">Pro</span>
+
+                        <span class="text-gray-900">
+                            Chama
+                        </span>
+
+                        <span class="text-chamapro-500">
+                            Pro
+                        </span>
+
                     </div>
 
-                    <div class="text-xs font-medium text-gray-500 tracking-wide">
+                    <div class="text-xs font-medium
+                                text-gray-500
+                                tracking-wide">
+
                         SERVIÇOS
+
                     </div>
 
                 </div>
@@ -109,23 +144,46 @@
             <div class="hidden lg:flex items-center gap-8">
 
                 <a href="#inicio"
-                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                   class="text-sm font-medium
+                          text-gray-700
+                          hover:text-chamapro-600
+                          transition">
+
                     Início
+
                 </a>
+
 
                 <a href="#categorias"
-                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                   class="text-sm font-medium
+                          text-gray-700
+                          hover:text-chamapro-600
+                          transition">
+
                     Categorias
+
                 </a>
+
 
                 <a href="#profissionais"
-                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                   class="text-sm font-medium
+                          text-gray-700
+                          hover:text-chamapro-600
+                          transition">
+
                     Profissionais
+
                 </a>
 
+
                 <a href="#como-funciona"
-                   class="text-sm font-medium text-gray-700 hover:text-chamapro-600 transition">
+                   class="text-sm font-medium
+                          text-gray-700
+                          hover:text-chamapro-600
+                          transition">
+
                     Como funciona
+
                 </a>
 
             </div>
@@ -135,17 +193,36 @@
 
             <div class="hidden md:flex items-center gap-3">
 
-                <a href="#"
-                   class="px-4 py-2 text-sm font-semibold text-gray-700
-                          hover:text-chamapro-600 transition">
+                <!-- AJUDA -->
+
+                {% include "includes/botao_ajuda.html" %}
+
+
+                <!-- ENTRAR -->
+
+                <a href="{% url 'usuarios:login' %}"
+                   class="px-4 py-2
+                          text-sm font-semibold
+                          text-gray-700
+                          hover:text-chamapro-600
+                          transition">
+
                     Entrar
+
                 </a>
 
-                <a href="#"
-                   class="px-5 py-2.5 rounded-xl
-                          bg-chamapro-500 hover:bg-chamapro-600
-                          text-white text-sm font-bold
-                          shadow-lg shadow-chamapro-500/20
+
+                <!-- CRIAR CONTA -->
+
+                <a href="{% url 'usuarios:cadastro' %}"
+                   class="px-5 py-2.5
+                          rounded-xl
+                          bg-chamapro-500
+                          hover:bg-chamapro-600
+                          text-white
+                          text-sm font-bold
+                          shadow-lg
+                          shadow-chamapro-500/20
                           transition">
 
                     Criar conta
@@ -160,7 +237,8 @@
             <button id="menuMobileBtn"
                     type="button"
                     class="lg:hidden p-2 rounded-lg
-                           text-gray-600 hover:bg-gray-100">
+                           text-gray-600
+                           hover:bg-gray-100">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                      fill="none"
@@ -188,36 +266,73 @@
             <div class="flex flex-col gap-2">
 
                 <a href="#inicio"
-                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                   class="px-4 py-3 rounded-lg
+                          hover:bg-gray-100">
+
                     Início
+
                 </a>
+
 
                 <a href="#categorias"
-                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                   class="px-4 py-3 rounded-lg
+                          hover:bg-gray-100">
+
                     Categorias
+
                 </a>
+
 
                 <a href="#profissionais"
-                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                   class="px-4 py-3 rounded-lg
+                          hover:bg-gray-100">
+
                     Profissionais
+
                 </a>
 
+
                 <a href="#como-funciona"
-                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+                   class="px-4 py-3 rounded-lg
+                          hover:bg-gray-100">
+
                     Como funciona
+
                 </a>
+
+
+                <!-- AJUDA -->
+
+                <div class="px-4 py-2">
+
+                    {% include "includes/botao_ajuda.html" %}
+
+                </div>
+
 
                 <hr class="my-2">
 
-                <a href="#"
-                   class="px-4 py-3 rounded-lg hover:bg-gray-100">
+
+                <a href="{% url 'usuarios:login' %}"
+                   class="px-4 py-3 rounded-lg
+                          hover:bg-gray-100
+                          font-semibold">
+
                     Entrar
+
                 </a>
 
-                <a href="#"
-                   class="px-4 py-3 rounded-lg bg-chamapro-500
-                          text-white text-center font-bold">
+
+                <a href="{% url 'usuarios:cadastro' %}"
+                   class="px-4 py-3 rounded-lg
+                          bg-chamapro-500
+                          hover:bg-chamapro-600
+                          text-white
+                          text-center
+                          font-bold">
+
                     Criar conta
+
                 </a>
 
             </div>
@@ -235,31 +350,40 @@
 
 <main id="inicio">
 
-<section class="relative overflow-hidden
-                bg-gradient-to-br from-chamapro-600
-                via-chamapro-500 to-orange-400">
 
-    <!-- Elementos decorativos -->
+<section class="relative overflow-hidden
+                bg-gradient-to-br
+                from-chamapro-600
+                via-chamapro-500
+                to-orange-400">
+
 
     <div class="absolute -top-32 -right-32
                 w-96 h-96 rounded-full
-                bg-white/10"></div>
+                bg-white/10">
+    </div>
+
 
     <div class="absolute -bottom-40 -left-40
                 w-96 h-96 rounded-full
-                bg-black/10"></div>
+                bg-black/10">
+    </div>
 
 
     <div class="relative max-w-7xl mx-auto
                 px-4 sm:px-6 lg:px-8
                 py-20 lg:py-28">
 
+
         <div class="max-w-4xl mx-auto text-center">
+
 
             <span class="inline-flex items-center gap-2
                          px-4 py-2 rounded-full
-                         bg-white/15 border border-white/20
-                         text-white text-sm font-semibold
+                         bg-white/15
+                         border border-white/20
+                         text-white
+                         text-sm font-semibold
                          mb-6">
 
                 <span class="w-2 h-2 rounded-full bg-white"></span>
@@ -276,14 +400,17 @@
                 Precisou de um serviço?
 
                 <span class="block text-orange-100">
+
                     Chame um profissional.
+
                 </span>
 
             </h1>
 
 
             <p class="mt-6 text-lg sm:text-xl
-                      text-orange-50 max-w-2xl mx-auto">
+                      text-orange-50
+                      max-w-2xl mx-auto">
 
                 Encontre profissionais qualificados,
                 compare propostas e contrate quem você confia.
@@ -299,7 +426,8 @@
 
                 <form id="formBusca"
                       method="GET"
-                      action="#">
+                      action="{% url 'solicitacoes:nova_solicitacao' %}">
+
 
                     <div class="grid grid-cols-1
                                 md:grid-cols-[1fr_1fr_auto]
@@ -340,11 +468,13 @@
                                    autocomplete="off"
                                    placeholder="Que serviço você precisa?"
                                    class="w-full h-14 pl-12 pr-4
-                                          rounded-xl border border-gray-200
+                                          rounded-xl
+                                          border border-gray-200
                                           focus:border-chamapro-500
                                           focus:ring-2
                                           focus:ring-chamapro-200
-                                          outline-none text-gray-800">
+                                          outline-none
+                                          text-gray-800">
 
                         </div>
 
@@ -385,11 +515,13 @@
                                    name="localizacao"
                                    placeholder="Onde será o serviço?"
                                    class="w-full h-14 pl-12 pr-4
-                                          rounded-xl border border-gray-200
+                                          rounded-xl
+                                          border border-gray-200
                                           focus:border-chamapro-500
                                           focus:ring-2
                                           focus:ring-chamapro-200
-                                          outline-none text-gray-800">
+                                          outline-none
+                                          text-gray-800">
 
                         </div>
 
@@ -398,11 +530,14 @@
 
                         <button type="submit"
                                 class="h-14 px-7 rounded-xl
-                                       bg-gray-900 hover:bg-gray-800
-                                       text-white font-bold
+                                       bg-gray-900
+                                       hover:bg-gray-800
+                                       text-white
+                                       font-bold
                                        transition
                                        flex items-center
-                                       justify-center gap-2">
+                                       justify-center
+                                       gap-2">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  fill="none"
@@ -440,29 +575,26 @@
                     Populares:
                 </span>
 
-                <button type="button"
-                        data-servico="Eletricista"
-                        class="ml-2 underline underline-offset-4 hover:text-white">
-                    Eletricista
-                </button>
 
-                <button type="button"
-                        data-servico="Encanador"
-                        class="ml-3 underline underline-offset-4 hover:text-white">
-                    Encanador
-                </button>
+                {% for categoria in categorias_destaque|slice:":4" %}
 
-                <button type="button"
-                        data-servico="Diarista"
-                        class="ml-3 underline underline-offset-4 hover:text-white">
-                    Diarista
-                </button>
+                    <button type="button"
+                            data-categoria="{{ categoria.nome }}"
+                            class="ml-3 underline
+                                   underline-offset-4
+                                   hover:text-white">
 
-                <button type="button"
-                        data-servico="Pintor"
-                        class="ml-3 underline underline-offset-4 hover:text-white">
-                    Pintor
-                </button>
+                        {{ categoria.nome }}
+
+                    </button>
+
+                {% empty %}
+
+                    <span class="ml-2">
+                        Cadastre serviços para começar.
+                    </span>
+
+                {% endfor %}
 
             </div>
 
@@ -480,43 +612,54 @@
 <section id="categorias"
          class="py-20 bg-white">
 
+
     <div class="max-w-7xl mx-auto
                 px-4 sm:px-6 lg:px-8">
 
 
-        <div class="flex flex-col sm:flex-row
-                    sm:items-end sm:justify-between
+        <div class="flex flex-col
+                    sm:flex-row
+                    sm:items-end
+                    sm:justify-between
                     gap-4 mb-10">
+
 
             <div>
 
                 <span class="text-sm font-bold
-                             text-chamapro-600 uppercase
+                             text-chamapro-600
+                             uppercase
                              tracking-wider">
+
                     Explore
+
                 </span>
+
 
                 <h2 class="mt-2 text-3xl sm:text-4xl
                            font-extrabold text-gray-900">
+
                     Encontre por categoria
+
                 </h2>
 
+
                 <p class="mt-3 text-gray-500">
+
                     Encontre profissionais especializados
                     no serviço que você precisa.
+
                 </p>
 
             </div>
 
 
-            <a href="#"
-               class="text-sm font-bold
-                      text-chamapro-600
-                      hover:text-chamapro-700">
+            <span class="text-sm font-bold
+                         text-gray-400">
 
-                Ver todas as categorias →
+                Categorias disponíveis
 
-            </a>
+            </span>
 
         </div>
 
@@ -527,170 +670,106 @@
                     gap-4">
 
 
-            <!-- CATEGORIA -->
+            {% for categoria in categorias_destaque %}
 
-            <a href="#"
-               class="group p-6 rounded-2xl
-                      bg-gray-50 border border-gray-100
-                      hover:border-chamapro-200
-                      hover:bg-chamapro-50
-                      transition text-center">
 
-                <div class="w-14 h-14 mx-auto
-                            rounded-2xl bg-white
-                            shadow-sm
-                            flex items-center justify-center
-                            text-2xl
-                            group-hover:scale-110 transition">
+                <a href="{% url 'solicitacoes:nova_solicitacao' %}?categoria={{ categoria.nome|urlencode }}"
+                   class="group p-6 rounded-2xl
+                          bg-gray-50
+                          border border-gray-100
+                          hover:border-chamapro-200
+                          hover:bg-chamapro-50
+                          transition text-center">
 
-                    🔌
+
+                    <div class="w-14 h-14 mx-auto
+                                rounded-2xl bg-white
+                                shadow-sm
+                                flex items-center
+                                justify-center
+                                text-2xl
+                                group-hover:scale-110
+                                transition">
+
+
+                        {% if "elétrica" in categoria.nome|lower or "eletrica" in categoria.nome|lower %}
+
+                            🔌
+
+                        {% elif "hidráulica" in categoria.nome|lower or "hidraulica" in categoria.nome|lower %}
+
+                            🚿
+
+                        {% elif "constru" in categoria.nome|lower %}
+
+                            🔨
+
+                        {% elif "limpeza" in categoria.nome|lower %}
+
+                            🧹
+
+                        {% elif "climat" in categoria.nome|lower or "ar condicionado" in categoria.nome|lower %}
+
+                            ❄️
+
+                        {% elif "tecnologia" in categoria.nome|lower or "informática" in categoria.nome|lower or "informatica" in categoria.nome|lower %}
+
+                            💻
+
+                        {% else %}
+
+                            🛠️
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <h3 class="mt-4 font-bold text-gray-800">
+
+                        {{ categoria.nome }}
+
+                    </h3>
+
+
+                    <p class="mt-1 text-xs text-gray-500">
+
+                        Solicitar orçamento
+
+                    </p>
+
+                </a>
+
+
+            {% empty %}
+
+
+                <div class="col-span-full
+                            py-12
+                            text-center
+                            rounded-2xl
+                            bg-gray-50
+                            border border-dashed
+                            border-gray-300">
+
+                    <div class="text-4xl mb-3">
+                        🛠️
+                    </div>
+
+                    <h3 class="font-bold text-gray-700">
+                        Nenhuma categoria disponível
+                    </h3>
+
+                    <p class="mt-2 text-sm text-gray-500">
+                        Quando houver serviços cadastrados,
+                        eles aparecerão aqui.
+                    </p>
 
                 </div>
 
-                <h3 class="mt-4 font-bold text-gray-800">
-                    Elétrica
-                </h3>
 
-                <p class="mt-1 text-xs text-gray-500">
-                    Eletricistas
-                </p>
-
-            </a>
-
-
-            <a href="#"
-               class="group p-6 rounded-2xl
-                      bg-gray-50 border border-gray-100
-                      hover:border-chamapro-200
-                      hover:bg-chamapro-50
-                      transition text-center">
-
-                <div class="w-14 h-14 mx-auto
-                            rounded-2xl bg-white
-                            shadow-sm
-                            flex items-center justify-center
-                            text-2xl
-                            group-hover:scale-110 transition">
-                    🚿
-                </div>
-
-                <h3 class="mt-4 font-bold text-gray-800">
-                    Hidráulica
-                </h3>
-
-                <p class="mt-1 text-xs text-gray-500">
-                    Encanadores
-                </p>
-
-            </a>
-
-
-            <a href="#"
-               class="group p-6 rounded-2xl
-                      bg-gray-50 border border-gray-100
-                      hover:border-chamapro-200
-                      hover:bg-chamapro-50
-                      transition text-center">
-
-                <div class="w-14 h-14 mx-auto
-                            rounded-2xl bg-white
-                            shadow-sm
-                            flex items-center justify-center
-                            text-2xl
-                            group-hover:scale-110 transition">
-                    🔨
-                </div>
-
-                <h3 class="mt-4 font-bold text-gray-800">
-                    Construção
-                </h3>
-
-                <p class="mt-1 text-xs text-gray-500">
-                    Pedreiros
-                </p>
-
-            </a>
-
-
-            <a href="#"
-               class="group p-6 rounded-2xl
-                      bg-gray-50 border border-gray-100
-                      hover:border-chamapro-200
-                      hover:bg-chamapro-50
-                      transition text-center">
-
-                <div class="w-14 h-14 mx-auto
-                            rounded-2xl bg-white
-                            shadow-sm
-                            flex items-center justify-center
-                            text-2xl
-                            group-hover:scale-110 transition">
-                    🧹
-                </div>
-
-                <h3 class="mt-4 font-bold text-gray-800">
-                    Limpeza
-                </h3>
-
-                <p class="mt-1 text-xs text-gray-500">
-                    Diaristas
-                </p>
-
-            </a>
-
-
-            <a href="#"
-               class="group p-6 rounded-2xl
-                      bg-gray-50 border border-gray-100
-                      hover:border-chamapro-200
-                      hover:bg-chamapro-50
-                      transition text-center">
-
-                <div class="w-14 h-14 mx-auto
-                            rounded-2xl bg-white
-                            shadow-sm
-                            flex items-center justify-center
-                            text-2xl
-                            group-hover:scale-110 transition">
-                    ❄️
-                </div>
-
-                <h3 class="mt-4 font-bold text-gray-800">
-                    Climatização
-                </h3>
-
-                <p class="mt-1 text-xs text-gray-500">
-                    Ar-condicionado
-                </p>
-
-            </a>
-
-
-            <a href="#"
-               class="group p-6 rounded-2xl
-                      bg-gray-50 border border-gray-100
-                      hover:border-chamapro-200
-                      hover:bg-chamapro-50
-                      transition text-center">
-
-                <div class="w-14 h-14 mx-auto
-                            rounded-2xl bg-white
-                            shadow-sm
-                            flex items-center justify-center
-                            text-2xl
-                            group-hover:scale-110 transition">
-                    💻
-                </div>
-
-                <h3 class="mt-4 font-bold text-gray-800">
-                    Tecnologia
-                </h3>
-
-                <p class="mt-1 text-xs text-gray-500">
-                    Informática
-                </p>
-
-            </a>
+            {% endfor %}
 
         </div>
 
@@ -700,11 +779,12 @@
 
 
 <!-- ========================================================= -->
-<!-- PROFISSIONAIS -->
+<!-- SERVIÇOS / PROFISSIONAIS -->
 <!-- ========================================================= -->
 
 <section id="profissionais"
          class="py-20 bg-gray-50">
+
 
     <div class="max-w-7xl mx-auto
                 px-4 sm:px-6 lg:px-8">
@@ -712,23 +792,30 @@
 
         <div class="text-center mb-12">
 
+
             <span class="text-sm font-bold
-                         text-chamapro-600 uppercase
+                         text-chamapro-600
+                         uppercase
                          tracking-wider">
+
                 Profissionais
+
             </span>
+
 
             <h2 class="mt-2 text-3xl sm:text-4xl
                        font-extrabold text-gray-900">
 
-                Profissionais em destaque
+                Serviços em destaque
 
             </h2>
 
-            <p class="mt-3 text-gray-500 max-w-2xl mx-auto">
 
-                Conheça alguns dos profissionais
-                que podem ajudar você.
+            <p class="mt-3 text-gray-500
+                      max-w-2xl mx-auto">
+
+                Veja alguns dos serviços oferecidos
+                por profissionais cadastrados no ChamaPro.
 
             </p>
 
@@ -737,396 +824,261 @@
 
         <div class="grid grid-cols-1
                     sm:grid-cols-2
-                    lg:grid-cols-4
+                    lg:grid-cols-3
                     gap-6">
 
 
-            <!-- CARD -->
+            {% for servico in servicos_destaque %}
 
-            <article class="bg-white rounded-2xl
-                            border border-gray-100
-                            overflow-hidden
-                            hover:shadow-xl
-                            transition">
 
-                <div class="h-32 bg-gradient-to-br
-                            from-chamapro-100
-                            to-orange-100
-                            relative">
+                <article class="bg-white
+                                rounded-2xl
+                                border border-gray-100
+                                overflow-hidden
+                                hover:shadow-xl
+                                transition">
 
-                    <div class="absolute -bottom-12
-                                left-6">
 
-                        <div class="w-24 h-24
-                                    rounded-2xl
-                                    bg-white
-                                    border-4 border-white
-                                    shadow-lg
+                    <!-- TOPO -->
+
+                    <div class="h-32
+                                bg-gradient-to-br
+                                from-chamapro-100
+                                to-orange-100
+                                relative">
+
+
+                        <div class="absolute
+                                    inset-0
                                     flex items-center
-                                    justify-center
-                                    text-4xl">
+                                    justify-center">
 
-                            👨‍🔧
+                            <div class="w-20 h-20
+                                        rounded-2xl
+                                        bg-white
+                                        shadow-lg
+                                        flex items-center
+                                        justify-center
+                                        text-4xl">
+
+                                {% if "elétrica" in servico.categoria.nome|lower or "eletrica" in servico.categoria.nome|lower %}
+
+                                    🔌
+
+                                {% elif "hidráulica" in servico.categoria.nome|lower or "hidraulica" in servico.categoria.nome|lower %}
+
+                                    🚿
+
+                                {% elif "limpeza" in servico.categoria.nome|lower %}
+
+                                    🧹
+
+                                {% elif "constru" in servico.categoria.nome|lower %}
+
+                                    🔨
+
+                                {% elif "climat" in servico.categoria.nome|lower %}
+
+                                    ❄️
+
+                                {% elif "informática" in servico.categoria.nome|lower or "informatica" in servico.categoria.nome|lower or "tecnologia" in servico.categoria.nome|lower %}
+
+                                    💻
+
+                                {% else %}
+
+                                    🛠️
+
+                                {% endif %}
+
+                            </div>
 
                         </div>
 
-                    </div>
 
-                </div>
-
-
-                <div class="p-6 pt-16">
-
-                    <div class="flex items-start
-                                justify-between gap-2">
-
-                        <div>
-
-                            <h3 class="font-bold text-lg
-                                       text-gray-900">
-
-                                João da Silva
-
-                            </h3>
-
-                            <p class="text-sm text-gray-500">
-                                Eletricista
-                            </p>
-
-                        </div>
-
-                        <span class="px-2 py-1 rounded-lg
+                        <span class="absolute
+                                     top-4 right-4
+                                     px-2 py-1
+                                     rounded-lg
                                      bg-green-50
                                      text-green-700
                                      text-xs font-bold">
 
-                            ✓ Verificado
+                            ✓ Ativo
 
                         </span>
 
                     </div>
 
 
-                    <div class="mt-4 flex items-center gap-3
-                                text-sm">
+                    <!-- CONTEÚDO -->
 
-                        <span class="font-bold">
-                            ⭐ 4,9
-                        </span>
-
-                        <span class="text-gray-400">
-                            (127 avaliações)
-                        </span>
-
-                    </div>
+                    <div class="p-6">
 
 
-                    <div class="mt-2 text-sm text-gray-500">
-                        📍 2,4 km de distância
-                    </div>
+                        <div class="flex items-start
+                                    justify-between
+                                    gap-3">
 
 
-                    <a href="#"
-                       class="mt-5 block text-center
-                              py-3 rounded-xl
-                              border border-gray-200
-                              hover:border-chamapro-500
-                              hover:text-chamapro-600
-                              font-bold text-sm
-                              transition">
-
-                        Ver perfil
-
-                    </a>
-
-                </div>
-
-            </article>
+                            <div class="min-w-0">
 
 
-            <!-- CARD -->
+                                <h3 class="font-bold
+                                           text-lg
+                                           text-gray-900
+                                           truncate">
 
-            <article class="bg-white rounded-2xl
-                            border border-gray-100
-                            overflow-hidden
-                            hover:shadow-xl
-                            transition">
+                                    {{ servico.nome }}
 
-                <div class="h-32 bg-gradient-to-br
-                            from-blue-100 to-cyan-100
-                            relative">
+                                </h3>
 
-                    <div class="absolute -bottom-12 left-6">
 
-                        <div class="w-24 h-24
-                                    rounded-2xl bg-white
-                                    border-4 border-white
-                                    shadow-lg
-                                    flex items-center justify-center
-                                    text-4xl">
+                                <p class="mt-1
+                                          text-sm
+                                          text-chamapro-600
+                                          font-semibold">
 
-                            👨‍🔧
+                                    {{ servico.categoria.nome }}
+
+                                </p>
+
+                            </div>
 
                         </div>
 
-                    </div>
 
-                </div>
+                        <p class="mt-4
+                                  text-sm
+                                  text-gray-500
+                                  leading-relaxed">
 
+                            {{ servico.descricao|truncatechars:120 }}
 
-                <div class="p-6 pt-16">
-
-                    <div class="flex items-start
-                                justify-between gap-2">
-
-                        <div>
-
-                            <h3 class="font-bold text-lg
-                                       text-gray-900">
-                                Carlos Souza
-                            </h3>
-
-                            <p class="text-sm text-gray-500">
-                                Encanador
-                            </p>
-
-                        </div>
-
-                        <span class="px-2 py-1 rounded-lg
-                                     bg-green-50
-                                     text-green-700
-                                     text-xs font-bold">
-                            ✓ Verificado
-                        </span>
-
-                    </div>
+                        </p>
 
 
-                    <div class="mt-4 flex items-center gap-3
-                                text-sm">
-
-                        <span class="font-bold">
-                            ⭐ 4,8
-                        </span>
-
-                        <span class="text-gray-400">
-                            (94 avaliações)
-                        </span>
-
-                    </div>
+                        <div class="mt-4
+                                    flex items-center
+                                    gap-2
+                                    text-sm
+                                    text-gray-600">
 
 
-                    <div class="mt-2 text-sm text-gray-500">
-                        📍 3,1 km de distância
-                    </div>
+                            <span class="text-gray-400">
+                                Profissional:
+                            </span>
 
 
-                    <a href="#"
-                       class="mt-5 block text-center
-                              py-3 rounded-xl
-                              border border-gray-200
-                              hover:border-chamapro-500
-                              hover:text-chamapro-600
-                              font-bold text-sm
-                              transition">
+                            <span class="font-semibold
+                                         text-gray-800">
 
-                        Ver perfil
+                                {{ servico.profissional.nome_profissional }}
 
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- CARD -->
-
-            <article class="bg-white rounded-2xl
-                            border border-gray-100
-                            overflow-hidden
-                            hover:shadow-xl
-                            transition">
-
-                <div class="h-32 bg-gradient-to-br
-                            from-purple-100 to-pink-100
-                            relative">
-
-                    <div class="absolute -bottom-12 left-6">
-
-                        <div class="w-24 h-24
-                                    rounded-2xl bg-white
-                                    border-4 border-white
-                                    shadow-lg
-                                    flex items-center justify-center
-                                    text-4xl">
-
-                            👩‍🔧
+                            </span>
 
                         </div>
 
+
+                        {% if servico.preco_referencia %}
+
+                            <div class="mt-4
+                                        px-4 py-3
+                                        rounded-xl
+                                        bg-chamapro-50
+                                        border
+                                        border-chamapro-100">
+
+
+                                <p class="text-xs
+                                          text-gray-500">
+
+                                    Preço de referência
+
+                                </p>
+
+
+                                <p class="mt-1
+                                          text-lg
+                                          font-extrabold
+                                          text-chamapro-600">
+
+                                    R$
+                                    {{ servico.preco_referencia|floatformat:2 }}
+
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- IMPORTANTE:
+                             Não contrata este profissional diretamente.
+                             A ação cria uma solicitação pela categoria. -->
+
+                        <a href="{% url 'solicitacoes:nova_solicitacao' %}?categoria={{ servico.categoria.nome|urlencode }}"
+                           class="mt-5 block
+                                  text-center
+                                  py-3
+                                  rounded-xl
+                                  bg-chamapro-500
+                                  hover:bg-chamapro-600
+                                  text-white
+                                  font-bold
+                                  text-sm
+                                  transition">
+
+                            Solicitar orçamento
+
+                        </a>
+
+
                     </div>
+
+                </article>
+
+
+            {% empty %}
+
+
+                <div class="col-span-full
+                            py-16
+                            text-center
+                            bg-white
+                            rounded-2xl
+                            border
+                            border-dashed
+                            border-gray-300">
+
+
+                    <div class="text-5xl mb-4">
+                        🛠️
+                    </div>
+
+
+                    <h3 class="text-xl
+                               font-bold
+                               text-gray-800">
+
+                        Ainda não há serviços em destaque
+
+                    </h3>
+
+
+                    <p class="mt-2
+                              text-gray-500">
+
+                        Assim que profissionais cadastrarem
+                        serviços ativos, eles aparecerão aqui.
+
+                    </p>
+
 
                 </div>
 
 
-                <div class="p-6 pt-16">
-
-                    <div class="flex items-start
-                                justify-between gap-2">
-
-                        <div>
-
-                            <h3 class="font-bold text-lg
-                                       text-gray-900">
-                                Maria Oliveira
-                            </h3>
-
-                            <p class="text-sm text-gray-500">
-                                Diarista
-                            </p>
-
-                        </div>
-
-                        <span class="px-2 py-1 rounded-lg
-                                     bg-green-50
-                                     text-green-700
-                                     text-xs font-bold">
-                            ✓ Verificada
-                        </span>
-
-                    </div>
-
-
-                    <div class="mt-4 flex items-center gap-3
-                                text-sm">
-
-                        <span class="font-bold">
-                            ⭐ 5,0
-                        </span>
-
-                        <span class="text-gray-400">
-                            (81 avaliações)
-                        </span>
-
-                    </div>
-
-
-                    <div class="mt-2 text-sm text-gray-500">
-                        📍 1,8 km de distância
-                    </div>
-
-
-                    <a href="#"
-                       class="mt-5 block text-center
-                              py-3 rounded-xl
-                              border border-gray-200
-                              hover:border-chamapro-500
-                              hover:text-chamapro-600
-                              font-bold text-sm
-                              transition">
-
-                        Ver perfil
-
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- CARD -->
-
-            <article class="bg-white rounded-2xl
-                            border border-gray-100
-                            overflow-hidden
-                            hover:shadow-xl
-                            transition">
-
-                <div class="h-32 bg-gradient-to-br
-                            from-green-100 to-emerald-100
-                            relative">
-
-                    <div class="absolute -bottom-12 left-6">
-
-                        <div class="w-24 h-24
-                                    rounded-2xl bg-white
-                                    border-4 border-white
-                                    shadow-lg
-                                    flex items-center justify-center
-                                    text-4xl">
-
-                            👨‍💻
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="p-6 pt-16">
-
-                    <div class="flex items-start
-                                justify-between gap-2">
-
-                        <div>
-
-                            <h3 class="font-bold text-lg
-                                       text-gray-900">
-                                Pedro Santos
-                            </h3>
-
-                            <p class="text-sm text-gray-500">
-                                Técnico de informática
-                            </p>
-
-                        </div>
-
-                        <span class="px-2 py-1 rounded-lg
-                                     bg-green-50
-                                     text-green-700
-                                     text-xs font-bold">
-                            ✓ Verificado
-                        </span>
-
-                    </div>
-
-
-                    <div class="mt-4 flex items-center gap-3
-                                text-sm">
-
-                        <span class="font-bold">
-                            ⭐ 4,9
-                        </span>
-
-                        <span class="text-gray-400">
-                            (63 avaliações)
-                        </span>
-
-                    </div>
-
-
-                    <div class="mt-2 text-sm text-gray-500">
-                        📍 4,2 km de distância
-                    </div>
-
-
-                    <a href="#"
-                       class="mt-5 block text-center
-                              py-3 rounded-xl
-                              border border-gray-200
-                              hover:border-chamapro-500
-                              hover:text-chamapro-600
-                              font-bold text-sm
-                              transition">
-
-                        Ver perfil
-
-                    </a>
-
-                </div>
-
-            </article>
+            {% endfor %}
 
         </div>
 
@@ -1142,19 +1094,23 @@
 <section id="como-funciona"
          class="py-20 bg-white">
 
+
     <div class="max-w-7xl mx-auto
                 px-4 sm:px-6 lg:px-8">
 
 
         <div class="text-center mb-14">
 
+
             <span class="text-sm font-bold
-                         text-chamapro-600 uppercase
+                         text-chamapro-600
+                         uppercase
                          tracking-wider">
 
                 Simples assim
 
             </span>
+
 
             <h2 class="mt-2 text-3xl sm:text-4xl
                        font-extrabold text-gray-900">
@@ -1167,7 +1123,8 @@
 
 
         <div class="grid grid-cols-1
-                    md:grid-cols-4 gap-8">
+                    md:grid-cols-4
+                    gap-8">
 
 
             <div class="text-center">
@@ -1176,18 +1133,26 @@
                             rounded-2xl
                             bg-chamapro-100
                             text-chamapro-600
-                            flex items-center justify-center
-                            text-2xl font-extrabold">
+                            flex items-center
+                            justify-center
+                            text-2xl
+                            font-extrabold">
+
                     1
+
                 </div>
 
+
                 <h3 class="mt-5 font-bold text-lg">
-                    Encontre
+                    Solicite
                 </h3>
 
+
                 <p class="mt-2 text-sm text-gray-500">
+
                     Informe qual serviço você precisa
                     e onde ele será realizado.
+
                 </p>
 
             </div>
@@ -1199,18 +1164,26 @@
                             rounded-2xl
                             bg-chamapro-100
                             text-chamapro-600
-                            flex items-center justify-center
-                            text-2xl font-extrabold">
+                            flex items-center
+                            justify-center
+                            text-2xl
+                            font-extrabold">
+
                     2
+
                 </div>
+
 
                 <h3 class="mt-5 font-bold text-lg">
                     Compare
                 </h3>
 
+
                 <p class="mt-2 text-sm text-gray-500">
+
                     Receba e compare propostas
-                    de profissionais.
+                    de profissionais da categoria.
+
                 </p>
 
             </div>
@@ -1222,18 +1195,26 @@
                             rounded-2xl
                             bg-chamapro-100
                             text-chamapro-600
-                            flex items-center justify-center
-                            text-2xl font-extrabold">
+                            flex items-center
+                            justify-center
+                            text-2xl
+                            font-extrabold">
+
                     3
+
                 </div>
+
 
                 <h3 class="mt-5 font-bold text-lg">
                     Contrate
                 </h3>
 
+
                 <p class="mt-2 text-sm text-gray-500">
-                    Escolha o profissional e
-                    combine os detalhes.
+
+                    Escolha a proposta que melhor
+                    atende às suas necessidades.
+
                 </p>
 
             </div>
@@ -1245,18 +1226,26 @@
                             rounded-2xl
                             bg-chamapro-100
                             text-chamapro-600
-                            flex items-center justify-center
-                            text-2xl font-extrabold">
+                            flex items-center
+                            justify-center
+                            text-2xl
+                            font-extrabold">
+
                     4
+
                 </div>
+
 
                 <h3 class="mt-5 font-bold text-lg">
                     Avalie
                 </h3>
 
+
                 <p class="mt-2 text-sm text-gray-500">
+
                     Depois do serviço, avalie
                     sua experiência.
+
                 </p>
 
             </div>
@@ -1274,44 +1263,61 @@
 
 <section class="py-20">
 
+
     <div class="max-w-7xl mx-auto
                 px-4 sm:px-6 lg:px-8">
 
+
         <div class="rounded-3xl
-                    bg-gray-900 overflow-hidden
+                    bg-gray-900
+                    overflow-hidden
                     relative">
+
 
             <div class="absolute
                         -right-20 -top-20
-                        w-80 h-80 rounded-full
-                        bg-chamapro-500/20"></div>
+                        w-80 h-80
+                        rounded-full
+                        bg-chamapro-500/20">
+            </div>
+
 
             <div class="relative
                         px-8 py-14
                         lg:px-16
-                        flex flex-col lg:flex-row
+                        flex flex-col
+                        lg:flex-row
                         lg:items-center
                         lg:justify-between
                         gap-8">
 
+
                 <div class="max-w-2xl">
 
+
                     <span class="text-chamapro-400
-                                 text-sm font-bold
-                                 uppercase tracking-wider">
+                                 text-sm
+                                 font-bold
+                                 uppercase
+                                 tracking-wider">
 
                         Para profissionais
 
                     </span>
 
-                    <h2 class="mt-3 text-3xl sm:text-4xl
-                               font-extrabold text-white">
+
+                    <h2 class="mt-3 text-3xl
+                               sm:text-4xl
+                               font-extrabold
+                               text-white">
 
                         Quer encontrar novos clientes?
 
                     </h2>
 
-                    <p class="mt-4 text-gray-300 text-lg">
+
+                    <p class="mt-4 text-gray-300
+                              text-lg">
 
                         Cadastre seus serviços no ChamaPro,
                         divulgue seu trabalho e conecte-se
@@ -1322,14 +1328,17 @@
                 </div>
 
 
-                <a href="#"
+                <a href="{% url 'usuarios:cadastro' %}"
                    class="shrink-0
-                          inline-flex items-center
+                          inline-flex
+                          items-center
                           justify-center
-                          px-7 py-4 rounded-xl
+                          px-7 py-4
+                          rounded-xl
                           bg-chamapro-500
                           hover:bg-chamapro-400
-                          text-white font-bold
+                          text-white
+                          font-bold
                           transition">
 
                     Quero ser profissional
@@ -1352,31 +1361,44 @@
 <section class="py-16 bg-white
                 border-y border-gray-100">
 
+
     <div class="max-w-7xl mx-auto
                 px-4 sm:px-6 lg:px-8">
 
+
         <div class="grid grid-cols-1
                     sm:grid-cols-2
-                    lg:grid-cols-4 gap-8">
+                    lg:grid-cols-4
+                    gap-8">
 
 
             <div class="flex gap-4">
 
                 <div class="shrink-0 w-12 h-12
-                            rounded-xl bg-green-100
-                            flex items-center justify-center
+                            rounded-xl
+                            bg-green-100
+                            flex items-center
+                            justify-center
                             text-xl">
+
                     ✓
+
                 </div>
 
+
                 <div>
+
                     <h3 class="font-bold">
                         Profissionais avaliados
                     </h3>
 
+
                     <p class="mt-1 text-sm text-gray-500">
+
                         Veja avaliações de outros clientes.
+
                     </p>
+
                 </div>
 
             </div>
@@ -1385,20 +1407,30 @@
             <div class="flex gap-4">
 
                 <div class="shrink-0 w-12 h-12
-                            rounded-xl bg-blue-100
-                            flex items-center justify-center
+                            rounded-xl
+                            bg-blue-100
+                            flex items-center
+                            justify-center
                             text-xl">
+
                     🛡️
+
                 </div>
 
+
                 <div>
+
                     <h3 class="font-bold">
                         Perfis verificados
                     </h3>
 
+
                     <p class="mt-1 text-sm text-gray-500">
+
                         Mais segurança para contratar.
+
                     </p>
+
                 </div>
 
             </div>
@@ -1407,20 +1439,30 @@
             <div class="flex gap-4">
 
                 <div class="shrink-0 w-12 h-12
-                            rounded-xl bg-orange-100
-                            flex items-center justify-center
+                            rounded-xl
+                            bg-orange-100
+                            flex items-center
+                            justify-center
                             text-xl">
+
                     💬
+
                 </div>
 
+
                 <div>
+
                     <h3 class="font-bold">
                         Comunicação fácil
                     </h3>
 
+
                     <p class="mt-1 text-sm text-gray-500">
+
                         Converse diretamente com o profissional.
+
                     </p>
+
                 </div>
 
             </div>
@@ -1429,20 +1471,30 @@
             <div class="flex gap-4">
 
                 <div class="shrink-0 w-12 h-12
-                            rounded-xl bg-purple-100
-                            flex items-center justify-center
+                            rounded-xl
+                            bg-purple-100
+                            flex items-center
+                            justify-center
                             text-xl">
+
                     ⭐
+
                 </div>
 
+
                 <div>
+
                     <h3 class="font-bold">
                         Sistema de avaliações
                     </h3>
 
+
                     <p class="mt-1 text-sm text-gray-500">
+
                         Reputação construída por experiências reais.
+
                     </p>
+
                 </div>
 
             </div>
@@ -1453,6 +1505,7 @@
 
 </section>
 
+
 </main>
 
 
@@ -1462,25 +1515,41 @@
 
 <footer class="bg-gray-950 text-gray-300">
 
+
     <div class="max-w-7xl mx-auto
                 px-4 sm:px-6 lg:px-8
                 py-14">
 
+
         <div class="grid grid-cols-1
-                    md:grid-cols-4 gap-10">
+                    md:grid-cols-4
+                    gap-10">
 
 
             <div class="md:col-span-2">
 
+
                 <div class="text-2xl font-extrabold">
-                    <span class="text-white">Chama</span><span
-                          class="text-chamapro-500">Pro</span>
+
+                    <span class="text-white">
+                        Chama
+                    </span>
+
+                    <span class="text-chamapro-500">
+                        Pro
+                    </span>
+
                 </div>
 
+
                 <div class="text-xs font-medium
-                            tracking-wide text-gray-500">
+                            tracking-wide
+                            text-gray-500">
+
                     SERVIÇOS
+
                 </div>
+
 
                 <p class="mt-5 max-w-md
                           text-sm text-gray-400">
@@ -1500,35 +1569,49 @@
                     ChamaPro
                 </h3>
 
+
                 <ul class="mt-4 space-y-3 text-sm">
 
+
                     <li>
-                        <a href="#"
+                        <a href="#inicio"
                            class="hover:text-white">
-                            Sobre nós
+
+                            Início
+
                         </a>
                     </li>
+
 
                     <li>
                         <a href="#categorias"
                            class="hover:text-white">
+
                             Categorias
+
                         </a>
                     </li>
+
 
                     <li>
                         <a href="#como-funciona"
                            class="hover:text-white">
+
                             Como funciona
+
                         </a>
                     </li>
 
+
                     <li>
-                        <a href="#"
+                        <a href="#profissionais"
                            class="hover:text-white">
-                            Contato
+
+                            Profissionais
+
                         </a>
                     </li>
+
 
                 </ul>
 
@@ -1541,28 +1624,45 @@
                     Para profissionais
                 </h3>
 
+
                 <ul class="mt-4 space-y-3 text-sm">
 
+
                     <li>
-                        <a href="#"
+
+                        <a href="{% url 'usuarios:cadastro' %}"
                            class="hover:text-white">
+
                             Seja um profissional
+
                         </a>
+
                     </li>
 
+
                     <li>
-                        <a href="#"
+
+                        <a href="#como-funciona"
                            class="hover:text-white">
+
                             Como funciona
+
                         </a>
+
                     </li>
 
+
                     <li>
-                        <a href="#"
+
+                        <a href="{% url 'ajuda:index' %}"
                            class="hover:text-white">
+
                             Central de ajuda
+
                         </a>
+
                     </li>
+
 
                 </ul>
 
@@ -1573,23 +1673,37 @@
 
         <div class="mt-12 pt-8
                     border-t border-gray-800
-                    flex flex-col sm:flex-row
-                    justify-between gap-4
-                    text-sm text-gray-500">
+                    flex flex-col
+                    sm:flex-row
+                    justify-between
+                    gap-4
+                    text-sm
+                    text-gray-500">
+
 
             <p>
+
                 © {% now "Y" %} ChamaPro Serviços.
                 Todos os direitos reservados.
+
             </p>
+
 
             <div class="flex gap-5">
 
-                <a href="#" class="hover:text-white">
+                <a href="#"
+                   class="hover:text-white">
+
                     Privacidade
+
                 </a>
 
-                <a href="#" class="hover:text-white">
+
+                <a href="#"
+                   class="hover:text-white">
+
                     Termos de uso
+
                 </a>
 
             </div>
@@ -1609,12 +1723,17 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+
     /* =======================================================
        MENU MOBILE
     ======================================================= */
 
-    const menuBtn = document.getElementById('menuMobileBtn');
-    const menu = document.getElementById('menuMobile');
+    const menuBtn =
+        document.getElementById('menuMobileBtn');
+
+    const menu =
+        document.getElementById('menuMobile');
+
 
     if (menuBtn && menu) {
 
@@ -1631,35 +1750,42 @@ document.addEventListener('DOMContentLoaded', function () {
        LINKS DO MENU MOBILE
     ======================================================= */
 
-    document.querySelectorAll('#menuMobile a').forEach(function (link) {
+    document.querySelectorAll('#menuMobile a')
+        .forEach(function (link) {
 
-        link.addEventListener('click', function () {
+            link.addEventListener('click', function () {
 
-            menu.classList.add('hidden');
+                if (menu) {
+
+                    menu.classList.add('hidden');
+
+                }
+
+            });
 
         });
 
-    });
-
 
     /* =======================================================
-       BUSCAS POPULARES
+       CATEGORIAS POPULARES
     ======================================================= */
 
-    const botoesServico =
-        document.querySelectorAll('[data-servico]');
+    const botoesCategoria =
+        document.querySelectorAll('[data-categoria]');
+
 
     const campoServico =
         document.getElementById('servico');
 
+
     if (campoServico) {
 
-        botoesServico.forEach(function (botao) {
+        botoesCategoria.forEach(function (botao) {
 
             botao.addEventListener('click', function () {
 
                 campoServico.value =
-                    botao.dataset.servico;
+                    botao.dataset.categoria;
 
                 campoServico.focus();
 
@@ -1677,22 +1803,35 @@ document.addEventListener('DOMContentLoaded', function () {
     const formBusca =
         document.getElementById('formBusca');
 
+
     if (formBusca) {
 
         formBusca.addEventListener('submit', function (event) {
 
+
             const servico =
-                document.getElementById('servico').value.trim();
+                document.getElementById('servico')
+                    .value
+                    .trim();
+
 
             const localizacao =
-                document.getElementById('localizacao').value.trim();
+                document.getElementById('localizacao')
+                    .value
+                    .trim();
 
+
+            /*
+             * O serviço/categoria continua obrigatório.
+             */
 
             if (!servico) {
 
                 event.preventDefault();
 
-                alert('Informe qual serviço você precisa.');
+                alert(
+                    'Informe qual serviço você precisa.'
+                );
 
                 document.getElementById('servico').focus();
 
@@ -1701,25 +1840,75 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
 
-            if (!localizacao) {
+            /*
+             * O campo de localização é opcional.
+             *
+             * Se estiver vazio, a solicitação será aberta
+             * normalmente e a view utilizará o endereço
+             * cadastrado no perfil do cliente.
+             */
 
-                event.preventDefault();
 
-                alert('Informe onde o serviço será realizado.');
+            /*
+             * O campo "servico" da Home representa a categoria
+             * escolhida pelo usuário.
+             *
+             * A view nova_solicitacao recebe:
+             *
+             * ?categoria=Nome da categoria
+             *
+             */
 
-                document.getElementById('localizacao').focus();
+            const categoria =
+                document.getElementById('servico')
+                    .value
+                    .trim();
 
-                return;
+
+            const url =
+                new URL(
+                    formBusca.action,
+                    window.location.origin
+                );
+
+
+            url.searchParams.set(
+                'categoria',
+                categoria
+            );
+
+
+            /*
+             * Só enviamos a localização se o usuário
+             * realmente tiver informado alguma coisa.
+             */
+
+            if (localizacao) {
+
+                url.searchParams.set(
+                    'localizacao',
+                    localizacao
+                );
 
             }
+
+
+            window.location.href =
+                url.toString();
+
+
+            event.preventDefault();
 
         });
 
     }
 
+
 });
 
 </script>
 
+
 </body>
+
 </html>

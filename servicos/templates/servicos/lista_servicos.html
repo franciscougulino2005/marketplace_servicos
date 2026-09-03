@@ -9,11 +9,15 @@
 
 <div class="mx-auto max-w-7xl">
 
-    <div class="mb-8 flex items-center justify-between">
+    <!-- ===================================================== -->
+    <!-- CABEÇALHO -->
+    <!-- ===================================================== -->
+
+    <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
         <div>
 
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                 Meus serviços
             </h1>
 
@@ -24,45 +28,162 @@
         </div>
 
 
-        <a
-            href="{% url 'servicos:novo' %}"
-            class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
-        >
-            + Novo serviço
-        </a>
+        <!-- AÇÕES DO CABEÇALHO -->
+
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+
+            <!-- AJUDA -->
+
+            <a
+                href="{% url 'ajuda:artigo' 'como-cadastrar-um-servico' %}"
+                title="Ajuda sobre meus serviços"
+                class="inline-flex items-center justify-center gap-2
+                       rounded-xl
+                       border border-gray-200
+                       bg-white
+                       px-4 py-3
+                       text-sm
+                       font-semibold
+                       text-gray-700
+                       shadow-sm
+                       transition-all
+                       duration-200
+                       hover:-translate-y-0.5
+                       hover:border-orange-300
+                       hover:bg-orange-50
+                       hover:text-orange-600
+                       dark:border-gray-700
+                       dark:bg-gray-800
+                       dark:text-gray-200
+                       dark:hover:border-orange-500
+                       dark:hover:bg-gray-700
+                       dark:hover:text-orange-400
+                       focus:outline-none
+                       focus:ring-4
+                       focus:ring-orange-200
+                       dark:focus:ring-orange-900/40"
+            >
+
+                <span
+                    class="flex h-6 w-6 items-center justify-center
+                           rounded-full
+                           border-2
+                           border-orange-500
+                           text-sm
+                           font-bold
+                           leading-none
+                           text-orange-500"
+                >
+                    ?
+                </span>
+
+                <span>
+                    Ajuda
+                </span>
+
+            </a>
+
+
+            <!-- NOVO SERVIÇO -->
+
+            <a
+                href="{% url 'servicos:novo' %}"
+                class="inline-flex items-center justify-center gap-2
+                       rounded-xl
+                       bg-orange-500
+                       px-5 py-3
+                       font-bold
+                       text-white
+                       shadow-lg
+                       shadow-orange-500/20
+                       transition-all
+                       duration-200
+                       hover:-translate-y-0.5
+                       hover:bg-orange-600
+                       hover:shadow-xl"
+            >
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    class="h-5 w-5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                </svg>
+
+                Novo serviço
+
+            </a>
+
+        </div>
 
     </div>
 
 
     {% if servicos %}
 
-        <div class="overflow-hidden rounded-xl bg-white shadow dark:bg-gray-800 dark:border dark:border-gray-700">
+        <!-- ===================================================== -->
+        <!-- LISTA DE SERVIÇOS -->
+        <!-- ===================================================== -->
+
+        <div
+            class="overflow-hidden
+                   rounded-2xl
+                   border
+                   border-gray-100
+                   bg-white
+                   shadow-sm
+                   dark:border-gray-700
+                   dark:bg-gray-800"
+        >
 
             <div class="overflow-x-auto">
 
-                <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                <table class="w-full text-left text-sm">
 
-                    <thead class="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-600 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-300">
+                    <!-- ================================================= -->
+                    <!-- CABEÇALHO DA TABELA -->
+                    <!-- ================================================= -->
+
+                    <thead
+                        class="border-b
+                               border-gray-200
+                               bg-gray-50
+                               text-xs
+                               uppercase
+                               tracking-wide
+                               text-gray-500
+                               dark:border-gray-700
+                               dark:bg-gray-900/40
+                               dark:text-gray-400"
+                    >
 
                         <tr>
 
-                            <th class="px-6 py-4">
+                            <th class="px-6 py-4 font-bold">
                                 Serviço
                             </th>
 
-                            <th class="px-6 py-4">
+                            <th class="px-6 py-4 font-bold">
                                 Categoria
                             </th>
 
-                            <th class="px-6 py-4">
+                            <th class="px-6 py-4 font-bold">
                                 Preço referência
                             </th>
 
-                            <th class="px-6 py-4">
+                            <th class="px-6 py-4 font-bold">
                                 Status
                             </th>
 
-                            <th class="px-6 py-4 text-right">
+                            <th class="px-6 py-4 text-right font-bold">
                                 Ações
                             </th>
 
@@ -71,55 +192,167 @@
                     </thead>
 
 
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <!-- ================================================= -->
+                    <!-- CORPO DA TABELA -->
+                    <!-- ================================================= -->
+
+                    <tbody
+                        class="divide-y
+                               divide-gray-100
+                               dark:divide-gray-700"
+                    >
 
                         {% for servico in servicos %}
 
-                            <tr class="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700/50 transition-colors">
+                            <tr
+                                class="group
+                                       bg-white
+                                       transition-colors
+                                       duration-200
+                                       hover:bg-orange-50/50
+                                       dark:bg-gray-800
+                                       dark:hover:bg-gray-700/60"
+                            >
 
-                                <td class="px-6 py-4">
 
-                                    <div class="font-semibold text-gray-900 dark:text-white">
+                                <!-- SERVIÇO -->
+
+                                <td class="px-6 py-5">
+
+                                    <div
+                                        class="font-bold
+                                               text-gray-900
+                                               transition-colors
+                                               duration-200
+                                               group-hover:text-orange-600
+                                               dark:text-white
+                                               dark:group-hover:text-orange-400"
+                                    >
+
                                         {{ servico.nome }}
+
                                     </div>
 
-                                    <div class="mt-1 max-w-md text-gray-500 dark:text-gray-400">
+
+                                    <div
+                                        class="mt-1
+                                               max-w-md
+                                               text-sm
+                                               leading-relaxed
+                                               text-gray-500
+                                               dark:text-gray-400"
+                                    >
+
                                         {{ servico.descricao|truncatechars:100 }}
+
                                     </div>
 
                                 </td>
 
 
-                                <td class="px-6 py-4 text-gray-900 dark:text-gray-200">
+                                <!-- CATEGORIA -->
 
-                                    {{ servico.categoria.nome }}
+                                <td class="px-6 py-5">
+
+                                    <span
+                                        class="inline-flex
+                                               rounded-full
+                                               bg-orange-100
+                                               px-3 py-1
+                                               text-xs
+                                               font-bold
+                                               text-orange-700
+                                               dark:bg-orange-900/30
+                                               dark:text-orange-400"
+                                    >
+
+                                        {{ servico.categoria.nome }}
+
+                                    </span>
 
                                 </td>
 
 
-                                <td class="px-6 py-4 text-gray-900 dark:text-gray-200">
+                                <!-- PREÇO -->
+
+                                <td
+                                    class="px-6 py-5
+                                           font-semibold
+                                           text-gray-900
+                                           dark:text-gray-200"
+                                >
 
                                     {% if servico.preco_referencia %}
+
                                         R$ {{ servico.preco_referencia|floatformat:2 }}
+
                                     {% else %}
-                                        A combinar
+
+                                        <span class="text-gray-500 dark:text-gray-400">
+                                            A combinar
+                                        </span>
+
                                     {% endif %}
 
                                 </td>
 
 
-                                <td class="px-6 py-4">
+                                <!-- STATUS -->
+
+                                <td class="px-6 py-5">
 
                                     {% if servico.ativo %}
 
-                                        <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300 dark:border dark:border-green-800">
+                                        <span
+                                            class="inline-flex
+                                                   items-center
+                                                   gap-2
+                                                   rounded-full
+                                                   bg-green-100
+                                                   px-3 py-1.5
+                                                   text-xs
+                                                   font-bold
+                                                   text-green-700
+                                                   dark:bg-green-900/30
+                                                   dark:text-green-400"
+                                        >
+
+                                            <span
+                                                class="h-2
+                                                       w-2
+                                                       rounded-full
+                                                       bg-green-500"
+                                            ></span>
+
                                             Ativo
+
                                         </span>
 
                                     {% else %}
 
-                                        <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:border dark:border-gray-600">
+                                        <span
+                                            class="inline-flex
+                                                   items-center
+                                                   gap-2
+                                                   rounded-full
+                                                   bg-gray-100
+                                                   px-3 py-1.5
+                                                   text-xs
+                                                   font-bold
+                                                   text-gray-600
+                                                   dark:bg-gray-700
+                                                   dark:text-gray-300"
+                                        >
+
+                                            <span
+                                                class="h-2
+                                                       w-2
+                                                       rounded-full
+                                                       bg-gray-400"
+                                            ></span>
+
                                             Inativo
+
                                         </span>
 
                                     {% endif %}
@@ -127,17 +360,76 @@
                                 </td>
 
 
-                                <td class="px-6 py-4">
+                                <!-- ================================================= -->
+                                <!-- AÇÕES -->
+                                <!-- ================================================= -->
+
+                                <td class="px-6 py-5">
 
                                     <div class="flex justify-end gap-2">
 
+
+                                        <!-- EDITAR -->
+
                                         <a
                                             href="{% url 'servicos:editar' servico.pk %}"
-                                            class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
+                                            class="inline-flex
+                                                   items-center
+                                                   justify-center
+                                                   gap-2
+                                                   rounded-xl
+                                                   border
+                                                   border-orange-300
+                                                   bg-white
+                                                   px-4 py-2.5
+                                                   text-sm
+                                                   font-bold
+                                                   text-orange-600
+                                                   shadow-sm
+                                                   transition-all
+                                                   duration-200
+                                                   hover:-translate-y-0.5
+                                                   hover:border-orange-500
+                                                   hover:bg-orange-500
+                                                   hover:text-white
+                                                   hover:shadow-md
+                                                   dark:border-orange-700
+                                                   dark:bg-gray-800
+                                                   dark:text-orange-400
+                                                   dark:hover:bg-orange-500
+                                                   dark:hover:text-white"
                                         >
+
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="2"
+                                                stroke="currentColor"
+                                                class="h-4 w-4"
+                                            >
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M16.862 4.487
+                                                       19.5 7.125
+                                                       M18.375 3.375
+                                                       a2.121 2.121 0 1 1 3 3
+                                                       L7.5 20.25
+                                                       3 21
+                                                       l.75-4.5
+                                                       14.625-13.125Z"
+                                                />
+
+                                            </svg>
+
                                             Editar
+
                                         </a>
 
+
+                                        <!-- ATIVAR / DESATIVAR -->
 
                                         <form
                                             method="post"
@@ -146,18 +438,109 @@
 
                                             {% csrf_token %}
 
-                                            <button
-                                                type="submit"
-                                                class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
-                                            >
 
-                                                {% if servico.ativo %}
+                                            {% if servico.ativo %}
+
+                                                <!-- DESATIVAR -->
+
+                                                <button
+                                                    type="submit"
+                                                    class="inline-flex
+                                                           items-center
+                                                           justify-center
+                                                           gap-2
+                                                           rounded-xl
+                                                           border
+                                                           border-red-200
+                                                           bg-white
+                                                           px-4 py-2.5
+                                                           text-sm
+                                                           font-bold
+                                                           text-red-600
+                                                           shadow-sm
+                                                           transition-all
+                                                           duration-200
+                                                           hover:-translate-y-0.5
+                                                           hover:border-red-500
+                                                           hover:bg-red-500
+                                                           hover:text-white
+                                                           hover:shadow-md
+                                                           dark:border-red-900
+                                                           dark:bg-gray-800
+                                                           dark:text-red-400
+                                                           dark:hover:bg-red-600
+                                                           dark:hover:text-white"
+                                                >
+
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke-width="2"
+                                                        stroke="currentColor"
+                                                        class="h-4 w-4"
+                                                    >
+
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            d="M18 12H6"
+                                                        />
+
+                                                    </svg>
+
                                                     Desativar
-                                                {% else %}
-                                                    Ativar
-                                                {% endif %}
 
-                                            </button>
+                                                </button>
+
+
+                                            {% else %}
+
+                                                <!-- ATIVAR -->
+
+                                                <button
+                                                    type="submit"
+                                                    class="inline-flex
+                                                           items-center
+                                                           justify-center
+                                                           gap-2
+                                                           rounded-xl
+                                                           bg-orange-500
+                                                           px-4 py-2.5
+                                                           text-sm
+                                                           font-bold
+                                                           text-white
+                                                           shadow-sm
+                                                           transition-all
+                                                           duration-200
+                                                           hover:-translate-y-0.5
+                                                           hover:bg-orange-600
+                                                           hover:shadow-md"
+                                                >
+
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke-width="2"
+                                                        stroke="currentColor"
+                                                        class="h-4 w-4"
+                                                    >
+
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            d="M12 4.5v15
+                                                               m7.5-7.5h-15"
+                                                        />
+
+                                                    </svg>
+
+                                                    Ativar
+
+                                                </button>
+
+                                            {% endif %}
 
                                         </form>
 
@@ -177,24 +560,133 @@
 
         </div>
 
+
     {% else %}
 
-        <div class="rounded-xl bg-white p-12 text-center shadow dark:bg-gray-800 dark:border dark:border-gray-700">
+        <!-- ===================================================== -->
+        <!-- ESTADO VAZIO -->
+        <!-- ===================================================== -->
 
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <div
+            class="rounded-2xl
+                   border
+                   border-dashed
+                   border-gray-300
+                   bg-white
+                   px-6
+                   py-16
+                   text-center
+                   shadow-sm
+                   dark:border-gray-600
+                   dark:bg-gray-800"
+        >
+
+            <!-- ÍCONE -->
+
+            <div
+                class="mx-auto
+                       flex
+                       h-16
+                       w-16
+                       items-center
+                       justify-center
+                       rounded-2xl
+                       bg-orange-100
+                       text-orange-600
+                       dark:bg-orange-900/30
+                       dark:text-orange-400"
+            >
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.8"
+                    stroke="currentColor"
+                    class="h-8 w-8"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 4.5v15
+                           m7.5-7.5h-15"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <h2
+                class="mt-5
+                       text-xl
+                       font-bold
+                       text-gray-900
+                       dark:text-white"
+            >
+
                 Você ainda não cadastrou nenhum serviço.
+
             </h2>
 
-            <p class="mt-2 text-gray-500 dark:text-gray-400">
-                Cadastre seu primeiro serviço para começar a receber solicitações.
+
+            <p
+                class="mx-auto
+                       mt-2
+                       max-w-xl
+                       text-gray-500
+                       dark:text-gray-400"
+            >
+
+                Cadastre seu primeiro serviço para começar a receber
+                solicitações e conquistar novos clientes.
+
             </p>
 
 
             <a
                 href="{% url 'servicos:novo' %}"
-                class="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
+                class="mt-6
+                       inline-flex
+                       items-center
+                       justify-center
+                       gap-2
+                       rounded-xl
+                       bg-orange-500
+                       px-6
+                       py-3
+                       font-bold
+                       text-white
+                       shadow-lg
+                       shadow-orange-500/20
+                       transition-all
+                       duration-200
+                       hover:-translate-y-0.5
+                       hover:bg-orange-600
+                       hover:shadow-xl"
             >
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    class="h-5 w-5"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 4.5v15
+                           m7.5-7.5h-15"
+                    />
+
+                </svg>
+
                 Cadastrar primeiro serviço
+
             </a>
 
         </div>

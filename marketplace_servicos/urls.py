@@ -15,6 +15,7 @@ urlpatterns = [
     path("solicitacoes/", include("solicitacoes.urls")),
     path('categorias/', include('categorias.urls')),
     path('admin-relatorios/', include('relatorios_administrativos.urls')),
+    path('ajuda/', include('ajuda.urls')),
 ]
 
 if settings.DEBUG:

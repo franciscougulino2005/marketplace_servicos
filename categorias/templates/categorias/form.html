@@ -1,70 +1,648 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ titulo }} - Marketplace{% endblock %}
+{% block title %}{{ titulo }} | ChamaPro Serviços{% endblock %}
+
 
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-8">
 
-    <!-- Card do Formulário -->
-    <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-        <div class="flex items-center justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ titulo }}</h2>
-            <a href="{% url 'categorias:lista' %}" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">
-                &larr; Voltar para a lista
-            </a>
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+
+    <!-- ===================================================== -->
+    <!-- CABEÇALHO -->
+    <!-- ===================================================== -->
+
+    <div class="mb-8">
+
+        <a href="{% url 'categorias:lista' %}"
+           class="inline-flex items-center
+                  text-sm font-semibold
+                  text-gray-500 dark:text-gray-400
+                  hover:text-orange-600
+                  dark:hover:text-orange-400
+                  transition mb-5">
+
+            <svg class="w-4 h-4 mr-2"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7">
+
+                </path>
+
+            </svg>
+
+            Voltar para categorias
+
+        </a>
+
+
+        <div class="flex items-start gap-4">
+
+            <!-- ÍCONE -->
+
+            <div class="shrink-0
+                        w-14 h-14
+                        rounded-2xl
+
+                        bg-orange-100
+                        dark:bg-orange-900/30
+
+                        flex items-center
+                        justify-center">
+
+                <svg class="w-7 h-7
+                            text-orange-600
+                            dark:text-orange-400"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                          d="M7 7h.01
+                             M3 3h7l11 11
+                             a2 2 0 0 1 0 2.828
+                             l-5.172 5.172
+                             a2 2 0 0 1-2.828 0
+                             L3 10V3Z">
+
+                    </path>
+
+                </svg>
+
+            </div>
+
+
+            <!-- TÍTULO -->
+
+            <div>
+
+                <p class="text-xs
+                          font-bold
+                          uppercase
+                          tracking-widest
+
+                          text-orange-600
+                          dark:text-orange-400
+
+                          mb-1">
+
+                    ChamaPro Serviços
+
+                </p>
+
+
+                <h1 class="text-2xl sm:text-3xl
+                           font-extrabold
+                           tracking-tight
+
+                           text-gray-900
+                           dark:text-white">
+
+                    {{ titulo }}
+
+                </h1>
+
+
+                <p class="mt-1
+                          text-sm
+
+                          text-gray-500
+                          dark:text-gray-400">
+
+                    Preencha as informações abaixo para
+                    configurar esta categoria de serviços.
+
+                </p>
+
+            </div>
+
         </div>
 
-        <form method="POST" class="space-y-6">
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CARD DO FORMULÁRIO -->
+    <!-- ===================================================== -->
+
+    <div class="bg-white
+                dark:bg-gray-900
+
+                border
+                border-gray-200
+                dark:border-gray-800
+
+                rounded-2xl
+
+                shadow-sm
+
+                overflow-hidden">
+
+
+        <!-- ================================================= -->
+        <!-- CABEÇALHO DO CARD -->
+        <!-- ================================================= -->
+
+        <div class="px-6 sm:px-8
+                    py-5
+
+                    border-b
+                    border-gray-100
+                    dark:border-gray-800">
+
+
+            <h2 class="font-bold
+                       text-gray-900
+                       dark:text-white">
+
+                Informações da categoria
+
+            </h2>
+
+
+            <p class="mt-1
+                      text-sm
+
+                      text-gray-500
+                      dark:text-gray-400">
+
+                Os campos marcados com
+                <span class="text-red-500">*</span>
+                são obrigatórios.
+
+            </p>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FORMULÁRIO -->
+        <!-- ================================================= -->
+
+        <form method="POST"
+              class="p-6 sm:p-8">
+
             {% csrf_token %}
 
-            <!-- Campo Nome -->
-            <div>
-                <label for="{{ form.nome.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Nome da Categoria <span class="text-red-500">*</span>
-                </label>
-                <div class="[&>input]:w-full [&>input]:rounded-lg [&>input]:border [&>input]:border-gray-300 [&>input]:p-2.5 [&>input]:text-gray-900 [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600 [&>input]:dark:text-white">
-                    {{ form.nome }}
-                </div>
-                {% if form.nome.errors %}
-                    <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.nome.errors.0 }}</p>
-                {% endif %}
-            </div>
 
-            <!-- Campo Descrição -->
-            <div>
-                <label for="{{ form.descricao.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Descrição
-                </label>
-                <div class="[&>textarea]:w-full [&>textarea]:rounded-lg [&>textarea]:border [&>textarea]:border-gray-300 [&>textarea]:p-2.5 [&>textarea]:text-gray-900 [&>textarea]:dark:bg-gray-700 [&>textarea]:dark:border-gray-600 [&>textarea]:dark:text-white">
-                    {{ form.descricao }}
-                </div>
-                {% if form.descricao.errors %}
-                    <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.descricao.errors.0 }}</p>
-                {% endif %}
-            </div>
+            <div class="space-y-6">
 
-            <!-- Campo Ativo (Checkbox) -->
-            <div class="flex items-center">
-                <div class="flex items-center h-5">
-                    <div class="[&>input]:w-4 [&>input]:h-4 [&>input]:text-blue-600 [&>input]:bg-gray-100 [&>input]:border-gray-300 [&>input]:rounded [&>input]:dark:bg-gray-700 [&>input]:dark:border-gray-600">
-                        {{ form.ativo }}
+
+                <!-- ========================================= -->
+                <!-- NOME -->
+                <!-- ========================================= -->
+
+                <div>
+
+                    <label for="{{ form.nome.id_for_label }}"
+                           class="block
+                                  mb-2
+
+                                  text-sm
+                                  font-bold
+
+                                  text-gray-800
+                                  dark:text-gray-200">
+
+                        Nome da categoria
+
+                        <span class="text-red-500">
+
+                            *
+
+                        </span>
+
+                    </label>
+
+
+                    <div class="
+                        [&>input]:block
+                        [&>input]:w-full
+                        [&>input]:h-12
+
+                        [&>input]:px-4
+
+                        [&>input]:rounded-xl
+
+                        [&>input]:border
+
+                        [&>input]:border-gray-200
+                        [&>input]:dark:border-gray-700
+
+                        [&>input]:bg-white
+                        [&>input]:dark:bg-gray-800
+
+                        [&>input]:text-gray-900
+                        [&>input]:dark:text-white
+
+                        [&>input]:placeholder:text-gray-400
+
+                        [&>input]:shadow-sm
+
+                        [&>input]:outline-none
+
+                        [&>input]:focus:border-orange-400
+                        [&>input]:dark:focus:border-orange-500
+
+                        [&>input]:focus:ring-4
+                        [&>input]:focus:ring-orange-100
+                        [&>input]:dark:focus:ring-orange-900/20
+
+                        [&>input]:transition
+                    ">
+
+                        {{ form.nome }}
+
                     </div>
+
+
+                    {% if form.nome.errors %}
+
+                        <div class="mt-2
+                                    flex items-start
+                                    gap-2">
+
+                            <svg class="w-4 h-4
+                                        mt-0.5
+                                        shrink-0
+                                        text-red-500"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M12 9v4m0 4h.01
+                                         M4.93 19h14.14
+                                         c1.54 0 2.5-1.67
+                                         1.73-3L13.73 3
+                                         c-.77-1.33-2.69-1.33-3.46 0
+                                         L3.2 16c-.77 1.33.19 3
+                                         1.73 3Z">
+
+                                </path>
+
+                            </svg>
+
+
+                            <p class="text-xs
+                                      text-red-600
+                                      dark:text-red-400">
+
+                                {{ form.nome.errors.0 }}
+
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
                 </div>
-                <label for="{{ form.ativo.id_for_label }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Categoria ativa (disponível para novas solicitações)
-                </label>
+
+
+                <!-- ========================================= -->
+                <!-- DESCRIÇÃO -->
+                <!-- ========================================= -->
+
+                <div>
+
+                    <label for="{{ form.descricao.id_for_label }}"
+                           class="block
+                                  mb-2
+
+                                  text-sm
+                                  font-bold
+
+                                  text-gray-800
+                                  dark:text-gray-200">
+
+                        Descrição
+
+                    </label>
+
+
+                    <div class="
+                        [&>textarea]:block
+                        [&>textarea]:w-full
+
+                        [&>textarea]:min-h-[120px]
+
+                        [&>textarea]:px-4
+                        [&>textarea]:py-3
+
+                        [&>textarea]:rounded-xl
+
+                        [&>textarea]:border
+
+                        [&>textarea]:border-gray-200
+                        [&>textarea]:dark:border-gray-700
+
+                        [&>textarea]:bg-white
+                        [&>textarea]:dark:bg-gray-800
+
+                        [&>textarea]:text-gray-900
+                        [&>textarea]:dark:text-white
+
+                        [&>textarea]:placeholder:text-gray-400
+
+                        [&>textarea]:shadow-sm
+
+                        [&>textarea]:outline-none
+
+                        [&>textarea]:resize-y
+
+                        [&>textarea]:focus:border-orange-400
+                        [&>textarea]:dark:focus:border-orange-500
+
+                        [&>textarea]:focus:ring-4
+                        [&>textarea]:focus:ring-orange-100
+                        [&>textarea]:dark:focus:ring-orange-900/20
+
+                        [&>textarea]:transition
+                    ">
+
+                        {{ form.descricao }}
+
+                    </div>
+
+
+                    <p class="mt-2
+                              text-xs
+
+                              text-gray-400
+                              dark:text-gray-500">
+
+                        Explique brevemente quais tipos de serviços
+                        fazem parte desta categoria.
+
+                    </p>
+
+
+                    {% if form.descricao.errors %}
+
+                        <div class="mt-2
+                                    flex items-start
+                                    gap-2">
+
+                            <svg class="w-4 h-4
+                                        mt-0.5
+                                        shrink-0
+                                        text-red-500"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M12 9v4m0 4h.01">
+
+                                </path>
+
+                            </svg>
+
+
+                            <p class="text-xs
+                                      text-red-600
+                                      dark:text-red-400">
+
+                                {{ form.descricao.errors.0 }}
+
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- STATUS -->
+                <!-- ========================================= -->
+
+                <div class="pt-2">
+
+                    <div class="rounded-xl
+
+                                border
+                                border-gray-200
+                                dark:border-gray-700
+
+                                bg-gray-50
+                                dark:bg-gray-800/60
+
+                                px-4 py-4">
+
+
+                        <div class="flex
+                                    items-center
+                                    justify-between
+                                    gap-4">
+
+
+                            <div>
+
+                                <h3 class="text-sm
+                                           font-bold
+
+                                           text-gray-800
+                                           dark:text-gray-200">
+
+                                    Status da categoria
+
+                                </h3>
+
+
+                                <p class="mt-1
+                                          text-xs
+
+                                          text-gray-500
+                                          dark:text-gray-400">
+
+                                    Categorias ativas ficam disponíveis
+                                    para novas solicitações e profissionais.
+
+                                </p>
+
+                            </div>
+
+
+                            <div class="
+                                shrink-0
+
+                                [&>input]:w-5
+                                [&>input]:h-5
+
+                                [&>input]:rounded
+
+                                [&>input]:border-gray-300
+                                [&>input]:dark:border-gray-600
+
+                                [&>input]:bg-white
+                                [&>input]:dark:bg-gray-700
+
+                                [&>input]:text-orange-500
+
+                                [&>input]:focus:ring-orange-300
+                                [&>input]:dark:focus:ring-orange-800
+                            ">
+
+                                {{ form.ativo }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
             </div>
 
-            <!-- Botões de Ação -->
-            <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <a href="{% url 'categorias:lista' %}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
+
+            <!-- ================================================= -->
+            <!-- RODAPÉ / BOTÕES -->
+            <!-- ================================================= -->
+
+            <div class="mt-8
+                        pt-6
+
+                        border-t
+                        border-gray-100
+                        dark:border-gray-800
+
+                        flex
+                        flex-col-reverse
+                        sm:flex-row
+
+                        sm:items-center
+                        sm:justify-end
+
+                        gap-3">
+
+
+                <!-- CANCELAR -->
+
+                <a href="{% url 'categorias:lista' %}"
+
+                   class="inline-flex
+                          items-center
+                          justify-center
+
+                          h-11
+                          px-5
+
+                          rounded-xl
+
+                          border
+                          border-gray-200
+                          dark:border-gray-700
+
+                          bg-white
+                          dark:bg-gray-800
+
+                          text-sm
+                          font-bold
+
+                          text-gray-700
+                          dark:text-gray-300
+
+                          hover:bg-gray-50
+                          dark:hover:bg-gray-700
+
+                          transition">
+
+
+                    <svg class="w-4 h-4 mr-2"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 19l-7-7 7-7">
+
+                        </path>
+
+                    </svg>
+
+
                     Cancelar
+
                 </a>
-                <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+
+
+                <!-- SALVAR -->
+
+                <button type="submit"
+
+                        class="inline-flex
+                               items-center
+                               justify-center
+
+                               h-11
+                               px-6
+
+                               rounded-xl
+
+                               bg-orange-500
+                               hover:bg-orange-600
+
+                               text-white
+
+                               text-sm
+                               font-bold
+
+                               shadow-lg
+                               shadow-orange-500/20
+
+                               hover:-translate-y-0.5
+
+                               transition-all
+
+                               focus:outline-none
+                               focus:ring-4
+                               focus:ring-orange-200
+                               dark:focus:ring-orange-900/40">
+
+
+                    <svg class="w-5 h-5 mr-2"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 13l4 4L19 7">
+
+                        </path>
+
+                    </svg>
+
+
                     Salvar Categoria
+
                 </button>
+
+
             </div>
+
         </form>
+
     </div>
+
 </div>
+
 {% endblock %}

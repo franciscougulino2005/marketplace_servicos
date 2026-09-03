@@ -6,283 +6,897 @@
 
 {% block content %}
 
-<div class="mx-auto max-w-5xl">
+<div class="mx-auto max-w-6xl px-4 py-6 lg:py-10">
+
+    <!-- ===================================================== -->
+    <!-- VOLTAR -->
+    <!-- ===================================================== -->
 
     <div class="mb-6">
+
         {% if is_profissional %}
-            <a href="{% url 'solicitacoes:meus_servicos_profissional' %}" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
-                ← Voltar para meus serviços
+
+            <a
+                href="{% url 'solicitacoes:meus_servicos_profissional' %}"
+                class="inline-flex items-center gap-2 text-sm font-semibold text-orange-600 transition hover:text-orange-700 hover:underline dark:text-orange-400 dark:hover:text-orange-300"
+            >
+
+                <svg class="h-4 w-4"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 19l-7-7 7-7"/>
+
+                </svg>
+
+                Voltar para meus serviços
+
             </a>
+
         {% else %}
-            <a href="{% url 'solicitacoes:lista_solicitacoes' %}" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
-                ← Voltar para minhas solicitações
+
+            <a
+                href="{% url 'solicitacoes:lista_solicitacoes' %}"
+                class="inline-flex items-center gap-2 text-sm font-semibold text-orange-600 transition hover:text-orange-700 hover:underline dark:text-orange-400 dark:hover:text-orange-300"
+            >
+
+                <svg class="h-4 w-4"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 19l-7-7 7-7"/>
+
+                </svg>
+
+                Voltar para minhas solicitações
+
             </a>
+
         {% endif %}
+
     </div>
 
-    <div class="rounded-xl bg-white p-8 shadow dark:bg-gray-800 dark:border dark:border-gray-700">
 
-        <div class="flex flex-col gap-4 border-b border-gray-200 pb-6 dark:border-gray-700 md:flex-row md:items-start md:justify-between">
-            <div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Solicitação #{{ solicitacao.id }}
-                </p>
-                <h1 class="mt-1 text-3xl font-bold text-gray-900 dark:text-white">
-                    {{ solicitacao.titulo }}
-                </h1>
-                <p class="mt-2 text-gray-500 dark:text-gray-400">
-                    {{ solicitacao.categoria.nome }}
-                </p>
-            </div>
+    <!-- ===================================================== -->
+    <!-- CARD PRINCIPAL -->
+    <!-- ===================================================== -->
 
-            <div>
-                {% if solicitacao.status == "ABERTA" %}
-                    <span class="rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-                        Aberta
-                    </span>
-                {% elif solicitacao.status == "RECEBENDO_ORCAMENTOS" %}
-                    <span class="rounded-full bg-purple-100 px-4 py-2 text-sm font-medium text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
-                        Recebendo orçamentos
-                    </span>
-                {% elif solicitacao.status == "CANCELADA" or solicitacao.contratacao.status == "CANCELADA" %}
-                    <span class="rounded-full bg-red-100 px-4 py-2 text-sm font-medium text-red-700 dark:bg-red-900/40 dark:text-red-300">
-                        Cancelada
-                    </span>
-                {% elif solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
-                    <span class="rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300">
-                        Serviço Contratado
-                    </span>
-                {% else %}
-                    <span class="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300">
-                        {{ solicitacao.get_status_display }}
-                    </span>
-                {% endif %}
-            </div>
-        </div>
+    <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
-        <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
 
-            <div class="md:col-span-2">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Descrição
-                </h2>
+        <!-- ===================================================== -->
+        <!-- CABEÇALHO -->
+        <!-- ===================================================== -->
 
-                <p class="mt-3 whitespace-pre-line text-gray-700 dark:text-gray-300">
-                    {{ solicitacao.descricao }}
-                </p>
+        <div class="border-b border-gray-200 bg-gradient-to-r from-orange-50 to-white px-6 py-7 dark:border-gray-700 dark:from-orange-900/20 dark:to-gray-800 md:px-8">
 
-                {% if fotos %}
-                    <div class="mt-8">
-                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Fotos
-                        </h2>
+            <div class="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
 
-                        <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
-                            {% for foto in fotos %}
-                                <a href="{{ foto.imagem.url }}" target="_blank">
-                                    <img
-                                        src="{{ foto.imagem.url }}"
-                                        alt="Foto da solicitação"
-                                        class="h-40 w-full rounded-lg object-cover border dark:border-gray-700 hover:opacity-90 transition-opacity"
-                                    >
-                                </a>
-                            {% endfor %}
+                <div class="min-w-0">
+
+                    <div class="mb-3 flex items-center gap-2">
+
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                            <svg class="h-5 w-5"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 12h6m-6 4h4
+                                         M7 4h10a2 2 0 0 1 2 2v12
+                                         a2 2 0 0 1-2 2H7
+                                         a2 2 0 0 1-2-2V6
+                                         a2 2 0 0 1 2-2Z"/>
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 4V2h6v2"/>
+
+                            </svg>
+
                         </div>
+
+                        <span class="text-sm font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">
+                            Solicitação #{{ solicitacao.id }}
+                        </span>
+
                     </div>
-                {% endif %}
-            </div>
 
-            <div>
-                <div class="rounded-xl bg-gray-50 p-5 dark:bg-gray-900/50 dark:border dark:border-gray-700">
-                    <h2 class="font-semibold text-gray-900 dark:text-white">
-                        Local do serviço
-                    </h2>
 
-                    {% if solicitacao.endereco %}
-                        <p class="mt-4 text-sm text-gray-700 dark:text-gray-300">
-                            {{ solicitacao.endereco }}
-                            {% if solicitacao.numero %}
-                                , {{ solicitacao.numero }}
-                            {% endif %}
-                        </p>
-                    {% endif %}
+                    <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-3xl">
+                        {{ solicitacao.titulo }}
+                    </h1>
 
-                    {% if solicitacao.bairro %}
-                        <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">
-                            {{ solicitacao.bairro }}
-                        </p>
-                    {% endif %}
 
-                    <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">
-                        {{ solicitacao.cidade }} - {{ solicitacao.estado }}
-                    </p>
+                    <div class="mt-3 flex items-center gap-2 text-sm font-bold text-orange-600 dark:text-orange-400">
 
-                    {% if solicitacao.cep %}
-                        <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">
-                            CEP: {{ solicitacao.cep }}
-                        </p>
-                    {% endif %}
+                        <svg class="h-5 w-5"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
 
-                    {% if solicitacao.data_desejada %}
-                        <div class="mt-5 border-t border-gray-200 pt-5 dark:border-gray-700">
-                            <p class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">
-                                Data desejada
-                            </p>
-                            <p class="mt-1 font-semibold text-gray-900 dark:text-white">
-                                {{ solicitacao.data_desejada|date:"d/m/Y" }}
-                            </p>
-                        </div>
-                    {% endif %}
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M7 7h.01M7 3h5l9 9-5 5-9-9V3z"/>
+
+                        </svg>
+
+                        {{ solicitacao.categoria.nome }}
+
+                    </div>
+
                 </div>
 
-                {% if solicitacao.status == "ABERTA" or solicitacao.status == "RECEBENDO_ORCAMENTOS" %}
-                    <form
-                        method="post"
-                        action="{% url 'solicitacoes:cancelar_solicitacao' solicitacao.pk %}"
-                        class="mt-5"
-                    >
-                        {% csrf_token %}
-                        <button
-                            type="submit"
-                            onclick="return confirm('Deseja realmente cancelar esta solicitação?');"
-                            class="w-full rounded-lg border border-red-300 px-4 py-3 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950/30 transition-colors"
-                        >
-                            Cancelar solicitação
-                        </button>
-                    </form>
-                {% endif %}
-            </div>
 
-        </div>
+                <!-- ================================================= -->
+                <!-- STATUS + AJUDA -->
+                <!-- ================================================= -->
 
-        <!-- Seção de Orçamentos e Contratação -->
-        <div class="mt-10 border-t border-gray-200 pt-8 dark:border-gray-700">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                    Orçamentos
-                </h2>
-                {% if solicitacao.status == "ABERTA" or solicitacao.status == "RECEBENDO_ORCAMENTOS" %}
+                <div class="flex shrink-0 flex-wrap items-center gap-3">
+
+                    <!-- ================================================= -->
+                    <!-- BOTÃO AJUDA -->
+                    <!-- ================================================= -->
+
                     <a
-                        href="{% url 'solicitacoes:orcamentos_solicitacao' solicitacao.pk %}"
-                        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm"
+                        href="{% url 'ajuda:artigo' 'como-solicitar-um-servico' %}?next={{ request.get_full_path|urlencode }}"
+                        title="Ajuda sobre esta solicitação"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-orange-500 dark:hover:bg-gray-700 dark:hover:text-orange-400 dark:focus:ring-orange-900/40"
                     >
-                        Ver orçamentos recebidos
+
+                        <span
+                            class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 text-sm font-bold leading-none text-orange-500 transition-all duration-200"
+                        >
+                            ?
+                        </span>
+
+                        <span>
+                            Ajuda
+                        </span>
+
                     </a>
-                {% endif %}
+
+
+                    <!-- ================================================= -->
+                    <!-- STATUS -->
+                    <!-- ================================================= -->
+
+                    <div>
+
+                        {% if solicitacao.status == "ABERTA" %}
+
+                            <span class="inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+
+                                <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+
+                                Aberta
+
+                            </span>
+
+                        {% elif solicitacao.status == "RECEBENDO_ORCAMENTOS" %}
+
+                            <span class="inline-flex items-center gap-2 rounded-full bg-purple-100 px-4 py-2 text-sm font-semibold text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+
+                                <span class="h-2 w-2 rounded-full bg-purple-500"></span>
+
+                                Recebendo orçamentos
+
+                            </span>
+
+                        {% elif solicitacao.status == "CANCELADA" or solicitacao.contratacao.status == "CANCELADA" %}
+
+                            <span class="inline-flex items-center gap-2 rounded-full bg-red-100 px-4 py-2 text-sm font-semibold text-red-700 dark:bg-red-900/40 dark:text-red-300">
+
+                                <span class="h-2 w-2 rounded-full bg-red-500"></span>
+
+                                Cancelada
+
+                            </span>
+
+                        {% elif solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
+
+                            <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300">
+
+                                <span class="h-2 w-2 rounded-full bg-green-500"></span>
+
+                                Serviço Contratado
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+
+                                {{ solicitacao.get_status_display }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
             </div>
 
-            {% if solicitacao.contratacao %}
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:bg-gray-900/50 dark:border-gray-700">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div>
-                            {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
-                                <span class="inline-block rounded-md bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800 dark:bg-green-900/40 dark:text-green-300 mb-2">
-                                    Serviço Contratado
-                                </span>
-                            {% elif solicitacao.contratacao.status == "CANCELADA" %}
-                                <span class="inline-block rounded-md bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-800 dark:bg-red-900/40 dark:text-red-300 mb-2">
-                                    Contratação Cancelada
-                                </span>
-                            {% else %}
-                                <span class="inline-block rounded-md bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 mb-2">
-                                    Orçamento Aceito
-                                </span>
-                            {% endif %}
+        </div>
 
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                                Profissional: {{ solicitacao.contratacao.profissional.nome_profissional }}
-                            </h3>
-                            <p class="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">
-                                R$ {{ solicitacao.contratacao.valor }}
+
+        <!-- ===================================================== -->
+        <!-- CONTEÚDO -->
+        <!-- ===================================================== -->
+
+        <div class="p-6 md:p-8">
+
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+
+
+                <!-- ================================================= -->
+                <!-- COLUNA PRINCIPAL -->
+                <!-- ================================================= -->
+
+                <div class="lg:col-span-2">
+
+
+                    <!-- ================================================= -->
+                    <!-- DESCRIÇÃO -->
+                    <!-- ================================================= -->
+
+                    <section>
+
+                        <div class="flex items-center gap-3">
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                                <svg class="h-5 w-5"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M4 6h16M4 12h16M4 18h10"/>
+
+                                </svg>
+
+                            </div>
+
+                            <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                                Descrição
+                            </h2>
+
+                        </div>
+
+
+                        <div class="mt-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-900/30">
+
+                            <p class="whitespace-pre-line leading-relaxed text-gray-700 dark:text-gray-300">
+                                {{ solicitacao.descricao }}
                             </p>
 
-                            <!-- Telefone do profissional -->
-                            {% if solicitacao.contratacao.profissional.usuario.telefone %}
-                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
-                                    <span>📱 WhatsApp:</span>
-                                    <a href="https://wa.me/55{{ solicitacao.contratacao.profissional.usuario.telefone|slugify }}" target="_blank" class="font-medium text-green-600 dark:text-green-400 hover:underline">
-                                        {{ solicitacao.contratacao.profissional.usuario.telefone }}
-                                    </a>
-                                </p>
-                            {% endif %}
                         </div>
 
-                        <div class="flex flex-wrap items-center gap-3">
-                            {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
-                                <span class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white shadow-sm cursor-default dark:bg-emerald-500">
-                                    Pagamento Realizado
-                                </span>
-                            {% elif solicitacao.contratacao.status != "CANCELADA" and solicitacao.contratacao.status != "SERVICO_CONCLUIDO" %}
-                                <a
-                                    href="{% url 'solicitacoes:pagamento' solicitacao.contratacao.pk %}"
-                                    class="inline-block rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition-colors shadow-sm"
-                                >
-                                    Efetuar Pagamento
-                                </a>
-                            {% endif %}
+                    </section>
 
-                            <!-- Botão de Cancelar Contrato -->
-                            {% if solicitacao.contratacao.status != "CANCELADA" and solicitacao.contratacao.status != "SERVICO_CONCLUIDO" %}
-                                <form
-                                    action="{% url 'solicitacoes:cancelar_contratacao' solicitacao.contratacao.pk %}"
-                                    method="POST"
-                                    onsubmit="return confirm('Tem certeza que deseja cancelar esta contratação? Se houver pagamento aprovado, o estorno será solicitado.');"
-                                >
-                                    {% csrf_token %}
-                                    <button
-                                        type="submit"
-                                        class="rounded-lg bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition-colors shadow-sm"
+
+                    <!-- ================================================= -->
+                    <!-- FOTOS -->
+                    <!-- ================================================= -->
+
+                    {% if fotos %}
+
+                        <section class="mt-8">
+
+                            <div class="flex items-center gap-3">
+
+                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                                    <svg class="h-5 w-5"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         viewBox="0 0 24 24">
+
+                                        <path stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-width="2"
+                                              d="M4 16l4.586-4.586a2 2 0 015.828 0L20 16M14 10l.5-.5a2 2 0 012.828 0L20 12M14 6h.01M5 20h14a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v14a1 1 0 001 1z"/>
+
+                                    </svg>
+
+                                </div>
+
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                                    Fotos
+                                </h2>
+
+                            </div>
+
+
+                            <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+
+                                {% for foto in fotos %}
+
+                                    <a
+                                        href="{{ foto.imagem.url }}"
+                                        target="_blank"
+                                        class="group overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700"
                                     >
-                                        Cancelar Contrato
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </div>
+
+                                        <img
+                                            src="{{ foto.imagem.url }}"
+                                            alt="Foto da solicitação"
+                                            class="h-44 w-full object-cover transition duration-300 group-hover:scale-105 group-hover:opacity-90"
+                                        >
+
+                                    </a>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </section>
+
+                    {% endif %}
+
                 </div>
-            {% else %}
-                <!-- Caso exiba os orçamentos quando a contratação ainda não foi gerada -->
-                <div class="space-y-4">
-                    {% for orcamento in solicitacao.orcamentos.all %}
-                        {% if orcamento.status == "ACEITO" %}
-                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:bg-gray-900/50 dark:border-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                <div>
-                                    <span class="inline-block rounded-md bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 mb-2">
-                                        Orçamento Aceito
-                                    </span>
-                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                                        Profissional: {{ orcamento.profissional.nome_profissional }}
-                                    </h3>
-                                    <p class="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">
-                                        R$ {{ orcamento.valor }}
+
+
+                <!-- ================================================= -->
+                <!-- COLUNA LATERAL -->
+                <!-- ================================================= -->
+
+                <div>
+
+
+                    <!-- ================================================= -->
+                    <!-- LOCAL -->
+                    <!-- ================================================= -->
+
+                    <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-900/40">
+
+                        <div class="flex items-center gap-3">
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+
+                                <svg class="h-5 w-5"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/>
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+
+                                </svg>
+
+                            </div>
+
+                            <h2 class="font-bold text-gray-900 dark:text-white">
+                                Local do serviço
+                            </h2>
+
+                        </div>
+
+
+                        <div class="mt-5 space-y-1.5">
+
+                            {% if solicitacao.endereco %}
+
+                                <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+
+                                    {{ solicitacao.endereco }}
+
+                                    {% if solicitacao.numero %}
+                                        , {{ solicitacao.numero }}
+                                    {% endif %}
+
+                                </p>
+
+                            {% endif %}
+
+
+                            {% if solicitacao.bairro %}
+
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    {{ solicitacao.bairro }}
+                                </p>
+
+                            {% endif %}
+
+
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                {{ solicitacao.cidade }} - {{ solicitacao.estado }}
+                            </p>
+
+
+                            {% if solicitacao.cep %}
+
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    CEP: {{ solicitacao.cep }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {% if solicitacao.data_desejada %}
+
+                            <div class="mt-5 border-t border-gray-200 pt-5 dark:border-gray-700">
+
+                                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                                    Data desejada
+                                </p>
+
+
+                                <div class="mt-2 flex items-center gap-2">
+
+                                    <svg class="h-5 w-5 text-orange-600 dark:text-orange-400"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         viewBox="0 0 24 24">
+
+                                        <path stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-width="2"
+                                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+
+                                    </svg>
+
+
+                                    <p class="font-bold text-gray-900 dark:text-white">
+                                        {{ solicitacao.data_desejada|date:"d/m/Y" }}
                                     </p>
 
-                                    <!-- Telefone do profissional -->
-                                    {% if orcamento.profissional.usuario.telefone %}
-                                        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
-                                            <span>📱 WhatsApp:</span>
-                                            <a href="https://wa.me/55{{ orcamento.profissional.usuario.telefone|slugify }}" target="_blank" class="font-medium text-green-600 dark:text-green-400 hover:underline">
-                                                {{ orcamento.profissional.usuario.telefone }}
-                                            </a>
-                                        </p>
-                                    {% endif %}
                                 </div>
 
-                                <div>
-                                    <a
-                                        href="{% url 'solicitacoes:contratar_orcamento' orcamento.pk %}"
-                                        class="inline-block rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 transition-colors shadow-sm"
-                                    >
-                                        Gerar Contratação e Pagar
-                                    </a>
-                                </div>
                             </div>
+
                         {% endif %}
-                    {% empty %}
-                        <p class="text-gray-500 dark:text-gray-400">Nenhum orçamento recebido ainda.</p>
-                    {% endfor %}
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- CANCELAR SOLICITAÇÃO -->
+                    <!-- ================================================= -->
+
+                    {% if solicitacao.status == "ABERTA" or solicitacao.status == "RECEBENDO_ORCAMENTOS" %}
+
+                        <form
+                            method="post"
+                            action="{% url 'solicitacoes:cancelar_solicitacao' solicitacao.pk %}"
+                            class="mt-5"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                onclick="return confirm('Deseja realmente cancelar esta solicitação?');"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-300 px-4 py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950/30"
+                            >
+
+                                <svg class="h-5 w-5"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M6 18L18 6M6 6l12 12"/>
+
+                                </svg>
+
+                                Cancelar solicitação
+
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
                 </div>
-            {% endif %}
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- ORÇAMENTOS / CONTRATAÇÃO -->
+            <!-- ===================================================== -->
+
+            <section class="mt-10 border-t border-gray-200 pt-8 dark:border-gray-700">
+
+                <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                    <div>
+
+                        <h2 class="text-xl font-extrabold text-gray-900 dark:text-white">
+                            Orçamentos
+                        </h2>
+
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            Acompanhe os orçamentos recebidos para esta solicitação.
+                        </p>
+
+                    </div>
+
+
+                    {% if solicitacao.status == "ABERTA" or solicitacao.status == "RECEBENDO_ORCAMENTOS" %}
+
+                        <a
+                            href="{% url 'solicitacoes:orcamentos_solicitacao' solicitacao.pk %}"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-sm shadow-orange-500/20 transition-all hover:bg-orange-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                        >
+
+                            <svg class="h-5 w-5"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a2 2 0 011.414.586l4.414 4.414A2 2 0 0119 9v10a2 2 0 01-2 2z"/>
+
+                            </svg>
+
+                            Ver orçamentos recebidos
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if solicitacao.contratacao %}
+
+
+                    <!-- ================================================= -->
+                    <!-- CONTRATAÇÃO -->
+                    <!-- ================================================= -->
+
+                    <div class="rounded-3xl border border-orange-200 bg-orange-50/50 p-6 shadow-sm dark:border-orange-800 dark:bg-orange-900/10">
+
+                        <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+
+                            <div>
+
+                                {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
+
+                                    <span class="mb-2 inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800 dark:bg-green-900/40 dark:text-green-300">
+
+                                        <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+
+                                        Serviço Contratado
+
+                                    </span>
+
+                                {% elif solicitacao.contratacao.status == "CANCELADA" %}
+
+                                    <span class="mb-2 inline-flex items-center gap-2 rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-800 dark:bg-red-900/40 dark:text-red-300">
+
+                                        <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+
+                                        Contratação Cancelada
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="mb-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
+
+                                        <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+
+                                        Orçamento Aceito
+
+                                    </span>
+
+                                {% endif %}
+
+
+                                <h3 class="text-xl font-extrabold text-gray-900 dark:text-white">
+                                    {{ solicitacao.contratacao.profissional.nome_profissional }}
+                                </h3>
+
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                    Profissional contratado
+                                </p>
+
+                                <p class="mt-3 text-2xl font-extrabold text-orange-600 dark:text-orange-400">
+                                    R$ {{ solicitacao.contratacao.valor }}
+                                </p>
+
+
+                                <!-- ================================================= -->
+                                <!-- WHATSAPP -->
+                                <!-- ================================================= -->
+
+                                {% if solicitacao.contratacao.profissional.usuario.telefone %}
+
+                                    <p class="mt-3 flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+
+                                        <svg class="h-5 w-5 text-green-600 dark:text-green-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 24 24">
+
+                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.075-.792.372-.272.298-1.04 1.016-1.04 2.479 0 1.462 1.065 2.839 1.213 3.038.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+
+                                            <path d="M20.52 3.449A11.817 11.817 0 0012.004 0C5.478 0 .16 5.316.157 11.841a11.8 11.8 0 001.58 5.92L.057 24l6.392-1.657a11.9 11.9 0 005.555 1.414h.005c6.525 0 11.842-5.317 11.842-11.842a11.81 11.81 0 00-3.331-8.466z"/>
+
+                                        </svg>
+
+                                        <span>WhatsApp:</span>
+
+                                        <a
+                                            href="https://wa.me/55{{ solicitacao.contratacao.profissional.usuario.telefone|slugify }}"
+                                            target="_blank"
+                                            class="font-semibold text-green-600 hover:underline dark:text-green-400"
+                                        >
+                                            {{ solicitacao.contratacao.profissional.usuario.telefone }}
+                                        </a>
+
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- ================================================= -->
+                            <!-- AÇÕES -->
+                            <!-- ================================================= -->
+
+                            <div class="flex flex-wrap items-center gap-3">
+
+                                {% if solicitacao.contratacao.status == "PAGO" or solicitacao.contratacao.pagamento.status == "APROVADO" or solicitacao.contratacao.pagamento.mercado_pago_status == "approved" or solicitacao.contratacao.pagamento_set.first.status == "APROVADO" or solicitacao.contratacao.pagamento_set.first.mercado_pago_status == "approved" or solicitacao.contratacao.status == "PAGAMENTO_CONFIRMADO" or solicitacao.contratacao.status == "EM_EXECUCAO" %}
+
+                                    <span class="inline-flex cursor-default items-center gap-2 rounded-xl bg-green-600 px-6 py-3 font-bold text-white shadow-sm dark:bg-green-500">
+
+                                        <svg class="h-5 w-5"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             viewBox="0 0 24 24">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-width="2"
+                                                  d="M5 13l4 4L19 7"/>
+
+                                        </svg>
+
+                                        Pagamento Realizado
+
+                                    </span>
+
+                                {% elif solicitacao.contratacao.status != "CANCELADA" and solicitacao.contratacao.status != "SERVICO_CONCLUIDO" %}
+
+                                    <a
+                                        href="{% url 'solicitacoes:pagamento' solicitacao.contratacao.pk %}"
+                                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3 font-bold text-white shadow-sm shadow-orange-500/20 transition-all hover:bg-orange-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-orange-900/20"
+                                    >
+
+                                        <svg class="h-5 w-5"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             viewBox="0 0 24 24">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-width="2"
+                                                  d="M3 10h18M7 15h2m4 0h2m-8 5h10a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+
+                                        </svg>
+
+                                        Efetuar Pagamento
+
+                                    </a>
+
+                                {% endif %}
+
+
+                                <!-- ================================================= -->
+                                <!-- CANCELAR CONTRATO -->
+                                <!-- ================================================= -->
+
+                                {% if solicitacao.contratacao.status != "CANCELADA" and solicitacao.contratacao.status != "SERVICO_CONCLUIDO" %}
+
+                                    <form
+                                        action="{% url 'solicitacoes:cancelar_contratacao' solicitacao.contratacao.pk %}"
+                                        method="POST"
+                                        onsubmit="return confirm('Tem certeza que deseja cancelar esta contratação? Se houver pagamento aprovado, o estorno será solicitado.');"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 font-bold text-white shadow-sm transition-colors hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+                                        >
+
+                                            <svg class="h-5 w-5"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 viewBox="0 0 24 24">
+
+                                                <path stroke-linecap="round"
+                                                      stroke-linejoin="round"
+                                                      stroke-width="2"
+                                                      d="M6 18L18 6M6 6l12 12"/>
+
+                                            </svg>
+
+                                            Cancelar contrato
+
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <!-- ================================================= -->
+                    <!-- ORÇAMENTO ACEITO / CONTRATAÇÃO AINDA NÃO GERADA -->
+                    <!-- ================================================= -->
+
+                    <div class="space-y-4">
+
+                        {% for orcamento in solicitacao.orcamentos.all %}
+
+                            {% if orcamento.status == "ACEITO" %}
+
+                                <div class="rounded-3xl border border-gray-200 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900/40">
+
+                                    <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+
+                                        <div>
+
+                                            <span class="mb-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
+
+                                                <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+
+                                                Orçamento Aceito
+
+                                            </span>
+
+
+                                            <h3 class="text-xl font-extrabold text-gray-900 dark:text-white">
+                                                {{ orcamento.profissional.nome_profissional }}
+                                            </h3>
+
+                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                Profissional
+                                            </p>
+
+                                            <p class="mt-3 text-2xl font-extrabold text-orange-600 dark:text-orange-400">
+                                                R$ {{ orcamento.valor }}
+                                            </p>
+
+
+                                            {% if orcamento.profissional.usuario.telefone %}
+
+                                                <p class="mt-3 flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+
+                                                    <svg class="h-5 w-5 text-green-600 dark:text-green-400"
+                                                         fill="currentColor"
+                                                         viewBox="0 0 24 24">
+
+                                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.075-.792.372-.272.298-1.04 1.016-1.04 2.479 0 1.462 1.065 2.839 1.213 3.038.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+
+                                                        <path d="M20.52 3.449A11.817 11.817 0 0012.004 0C5.478 0 .16 5.316.157 11.841a11.8 11.8 0 001.58 5.92L.057 24l6.392-1.657a11.9 11.9 0 005.555 1.414h.005c6.525 0 11.842-5.317 11.842-11.842a11.81 11.81 0 00-3.331-8.466z"/>
+
+                                                    </svg>
+
+                                                    <span>WhatsApp:</span>
+
+                                                    <a
+                                                        href="https://wa.me/55{{ orcamento.profissional.usuario.telefone|slugify }}"
+                                                        target="_blank"
+                                                        class="font-semibold text-green-600 hover:underline dark:text-green-400"
+                                                    >
+                                                        {{ orcamento.profissional.usuario.telefone }}
+                                                    </a>
+
+                                                </p>
+
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <a
+                                                href="{% url 'solicitacoes:contratar_orcamento' orcamento.pk %}"
+                                                class="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3 font-bold text-white shadow-sm shadow-orange-500/20 transition-all hover:bg-orange-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                            >
+
+                                                <svg class="h-5 w-5"
+                                                     fill="none"
+                                                     stroke="currentColor"
+                                                     viewBox="0 0 24 24">
+
+                                                    <path stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a2 2 0 011.414.586l4.414 4.414A2 2 0 0119 9v10a2 2 0 01-2 2z"/>
+
+                                                </svg>
+
+                                                Gerar contratação e pagar
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+                        {% empty %}
+
+                            <div class="rounded-2xl border border-dashed border-gray-300 p-8 text-center dark:border-gray-700">
+
+                                <svg class="mx-auto h-10 w-10 text-gray-400"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a2 2 0 011.414.586l4.414 4.414A2 2 0 0119 9v10a2 2 0 01-2 2z"/>
+
+                                </svg>
+
+                                <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                                    Nenhum orçamento recebido ainda.
+                                </p>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
         </div>
 
     </div>

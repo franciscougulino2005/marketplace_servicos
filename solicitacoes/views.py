@@ -12,12 +12,17 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction, IntegrityError
 from django.core.mail import send_mail
+from django.db.models import Sum
+from django.utils import timezone
+from datetime import datetime, date
 import requests
 from utils import enviar_whatsapp
 import qrcode
 
+
 from usuarios.models import Usuario
 from solicitacoes.forms import OrcamentoForm, SolicitacaoForm
+from categorias.models import Categoria
 from .models import Contratacao, Orcamento, Pagamento, Solicitacao, SolicitacaoFoto
 
 logger = logging.getLogger(__name__)
@@ -113,6 +118,7 @@ def lista_solicitacoes(request, cliente):
 
 @cliente_obrigatorio
 def nova_solicitacao(request, cliente):
+
     if request.method == "POST":
 
         form = SolicitacaoForm(request.POST)
@@ -120,6 +126,7 @@ def nova_solicitacao(request, cliente):
         arquivos = request.FILES.getlist("fotos")
 
         if len(arquivos) > 5:
+
             form.add_error(
                 None,
                 "Você pode enviar no máximo 5 fotos.",
@@ -134,6 +141,7 @@ def nova_solicitacao(request, cliente):
             solicitacao.save()
 
             for arquivo in arquivos:
+
                 SolicitacaoFoto.objects.create(
                     solicitacao=solicitacao,
                     imagem=arquivo,
@@ -151,7 +159,59 @@ def nova_solicitacao(request, cliente):
 
     else:
 
-        form = SolicitacaoForm()
+        categoria_nome = request.GET.get(
+            "categoria",
+            ""
+        ).strip()
+
+        if categoria_nome:
+
+            try:
+
+                categoria = Categoria.objects.get(
+                    nome__iexact=categoria_nome
+                )
+
+                form = SolicitacaoForm(
+                    initial={
+                        "categoria": categoria,
+                        "titulo": categoria.descricao or "",
+
+                        # Dados cadastrados no perfil do cliente
+                        "cidade": cliente.cidade,
+                        "estado": cliente.estado,
+                        "endereco": cliente.endereco,
+                        "numero": cliente.numero,
+                        "bairro": cliente.bairro,
+                        "cep": cliente.cep,
+                    }
+                )
+
+            except Categoria.DoesNotExist:
+
+                form = SolicitacaoForm(
+                    initial={
+                        "cidade": cliente.cidade,
+                        "estado": cliente.estado,
+                        "endereco": cliente.endereco,
+                        "numero": cliente.numero,
+                        "bairro": cliente.bairro,
+                        "cep": cliente.cep,
+                    }
+                )
+
+        else:
+
+            form = SolicitacaoForm(
+                initial={
+                    "cidade": cliente.cidade,
+                    "estado": cliente.estado,
+                    "endereco": cliente.endereco,
+                    "numero": cliente.numero,
+                    "bairro": cliente.bairro,
+                    "cep": cliente.cep,
+                }
+            )
 
     return render(
         request,
@@ -1401,40 +1461,55 @@ def reembolsar_pagamento_mercado_pago(pagamento):
         return False, error_message
 
 
-def cancelar_contratacao_cliente(request, pk):
+def cancelar_contratacao_cliente(request, contratacao_id):
     contratacao = get_object_or_404(
         Contratacao,
-        pk=pk,
+        pk=contratacao_id,
         cliente=request.user.cliente
     )
 
-    if contratacao.status in [Contratacao.Status.SERVICO_CONCLUIDO, Contratacao.Status.CANCELADA]:
-        messages.error(request, "Esta contratação não pode mais ser cancelada.")
-        return redirect('solicitacoes:lista_solicitacoes')
+    if contratacao.status in [
+        Contratacao.Status.SERVICO_CONCLUIDO,
+        Contratacao.Status.CANCELADA
+    ]:
+        messages.error(
+            request,
+            "Esta contratação não pode mais ser cancelada."
+        )
+        return redirect("solicitacoes:lista_solicitacoes")
 
     contratacao.status = Contratacao.Status.CANCELADA
     contratacao.save()
 
-    if hasattr(contratacao, 'pagamento') and contratacao.pagamento.status == Pagamento.Status.APROVADO:
-        sucesso, mensagem = reembolsar_pagamento_mercado_pago(contratacao.pagamento)
+    if (
+        hasattr(contratacao, "pagamento")
+        and contratacao.pagamento.status == Pagamento.Status.APROVADO
+    ):
+        sucesso, mensagem = reembolsar_pagamento_mercado_pago(
+            contratacao.pagamento
+        )
+
         if sucesso:
-            messages.success(request, "Contratação cancelada e valor estornado com sucesso pelo Mercado Pago.")
+            messages.success(
+                request,
+                "Contratação cancelada e valor estornado com sucesso pelo Mercado Pago."
+            )
         else:
-            messages.warning(request, f"Contratação cancelada, mas houve um erro no estorno automático: {mensagem}")
+            messages.warning(
+                request,
+                f"Contratação cancelada, mas houve um erro no estorno automático: {mensagem}"
+            )
     else:
-        if hasattr(contratacao, 'pagamento'):
+        if hasattr(contratacao, "pagamento"):
             contratacao.pagamento.status = Pagamento.Status.CANCELADO
             contratacao.pagamento.save()
-        messages.success(request, "Contratação cancelada com sucesso.")
 
-    return redirect('solicitacoes:lista_solicitacoes')
+        messages.success(
+            request,
+            "Contratação cancelada com sucesso."
+        )
 
-
-from django.db.models import Sum
-from django.utils import timezone
-from datetime import datetime, date
-from django.shortcuts import render
-from solicitacoes.models import Contratacao
+    return redirect("solicitacoes:lista_solicitacoes")
 
 
 def relatorio_comissoes(request):
