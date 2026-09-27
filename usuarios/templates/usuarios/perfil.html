@@ -396,7 +396,7 @@ Minha conta | ChamaPro Serviços
 
             {% if profissional.aprovado %}
 
-                <div class="mt-6 grid gap-4 md:grid-cols-3">
+                <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
 
 
                     <!-- SERVIÇOS -->
@@ -492,6 +492,32 @@ Minha conta | ChamaPro Serviços
                             enviados aos clientes.
                         </p>
 
+                    </a>
+
+
+                    <!-- SERVIÇOS CONTRATADOS -->
+
+                    <a
+                        href="{% url 'solicitacoes:meus_servicos_profissional' %}"
+                        class="group rounded-2xl border border-gray-200 bg-gray-50 p-6 transition hover:-translate-y-1 hover:border-orange-300 hover:bg-orange-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-orange-700 dark:hover:bg-orange-900/10"
+                    >
+                        <div class="flex items-center justify-between">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-xl dark:bg-orange-900/30">
+                                🤝
+                            </div>
+                            <span class="text-xl text-gray-400 transition group-hover:translate-x-1 group-hover:text-orange-500">
+                                →
+                            </span>
+                        </div>
+
+                        <h3 class="mt-6 text-lg font-extrabold text-gray-900 dark:text-white">
+                            Meus serviços contratados
+                        </h3>
+
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            Acompanhe os serviços que os clientes
+                            contrataram com você.
+                        </p>
                     </a>
 
                 </div>

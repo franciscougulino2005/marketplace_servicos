@@ -359,6 +359,16 @@ def mercado_pago_callback(request):
         messages.error(request, "O Mercado Pago retornou uma resposta inválida.")
         return redirect("usuarios:perfil")
 
+    print("=== RESPOSTA OAUTH MERCADO PAGO ===")
+    print("user_id:", dados.get("user_id"))
+    print("live_mode:", dados.get("live_mode"))
+    print("scope:", dados.get("scope"))
+    print("token_type:", dados.get("token_type"))
+    print("expires_in:", dados.get("expires_in"))
+    print("refresh_token presente:", bool(dados.get("refresh_token")))
+    print("access_token presente:", bool(dados.get("access_token")))
+    print("===================================")
+
     access_token = dados.get("access_token")
     refresh_token = dados.get("refresh_token")
     user_id = dados.get("user_id")

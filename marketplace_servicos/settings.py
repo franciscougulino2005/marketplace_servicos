@@ -12,38 +12,49 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
 from dotenv import load_dotenv
 from decouple import config
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+# ==========================================================
+# BASE DIR
+# ==========================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Força o carregamento do .env localizado na raiz do projeto (onde está o manage.py)
+# Carrega o .env localizado na raiz do projeto
 load_dotenv(BASE_DIR / ".env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# ==========================================================
+# CONFIGURAÇÕES BÁSICAS
+# ==========================================================
+
 SECRET_KEY = 'django-insecure-r9$ifnigpnz-et!=+ev8&#r!-(^)^i5jw4oeo%v&e&+4-%g(kj'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     ".ngrok-free.dev",
-    ".trycloudflare.com"
+    ".trycloudflare.com",
 ]
+
+
+# ==========================================================
+# CSRF / TÚNEL
+# ==========================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://zero-concur-program.ngrok-free.dev",
-    "https://sword-shop-oakland-departments.trycloudflare.com",
+    "https://handles-cholesterol-student-antibody.trycloudflare.com",
 ]
 
 
-# Application definition
+# ==========================================================
+# APPLICATION DEFINITION
+# ==========================================================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -52,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'usuarios',
     'servicos',
     'solicitacoes',
@@ -93,8 +105,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'marketplace_servicos.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# ==========================================================
+# DATABASE
+# ==========================================================
 
 DATABASES = {
     "default": {
@@ -108,27 +121,41 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+# ==========================================================
+# PASSWORD VALIDATION
+# ==========================================================
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'UserAttributeSimilarityValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'MinimumLengthValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'CommonPasswordValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'NumericPasswordValidator'
+        ),
     },
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+# ==========================================================
+# INTERNATIONALIZATION
+# ==========================================================
 
 LANGUAGE_CODE = "pt-br"
 
@@ -139,8 +166,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# ==========================================================
+# STATIC / MEDIA
+# ==========================================================
 
 STATIC_URL = "static/"
 
@@ -151,6 +179,11 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+
+# ==========================================================
+# AUTH USER
+# ==========================================================
+
 AUTH_USER_MODEL = "usuarios.Usuario"
 
 LOGIN_URL = "usuarios:login"
@@ -159,40 +192,201 @@ LOGOUT_REDIRECT_URL = "usuarios:login"
 
 
 # ==========================================================
-# CONFIGURAÇÕES ADICIONAIS DO MERCADO PAGO
+# MERCADO PAGO
 # ==========================================================
-MERCADO_PAGO_CLIENT_ID = os.getenv("MP_CLIENT_ID")
-MERCADO_PAGO_CLIENT_SECRET = os.getenv("MP_CLIENT_SECRET")
-MERCADO_PAGO_REDIRECT_URI = os.getenv("MP_REDIRECT_URI")
-MERCADO_PAGO_ACCESS_TOKEN = os.getenv("MP_ACCESS_TOKEN")
 
-# Tenta carregar via decouple ou cai para o os.getenv padrão
-try:
-    MP_PUBLIC_KEY = config('MP_PUBLIC_KEY', default='')
-except Exception:
-    MP_PUBLIC_KEY = os.getenv("MP_PUBLIC_KEY", "")
+
+# ----------------------------------------------------------
+# OAuth / Marketplace
+#
+# Estas credenciais pertencem à aplicação principal
+# marketplace_servicos.
+#
+# São utilizadas para o profissional autorizar o ChamaPro
+# a operar sua conta Mercado Pago através do OAuth.
+# ----------------------------------------------------------
+
+MERCADO_PAGO_CLIENT_ID = os.getenv(
+    "MP_CLIENT_ID",
+    ""
+)
+
+MERCADO_PAGO_CLIENT_SECRET = os.getenv(
+    "MP_CLIENT_SECRET",
+    ""
+)
+
+MERCADO_PAGO_REDIRECT_URI = os.getenv(
+    "MP_REDIRECT_URI",
+    ""
+)
+
+
+# ----------------------------------------------------------
+# CREDENCIAIS PRINCIPAIS DA APLICAÇÃO
+# ----------------------------------------------------------
+
+MERCADO_PAGO_ACCESS_TOKEN = os.getenv(
+    "MP_ACCESS_TOKEN",
+    ""
+)
+
+MP_PUBLIC_KEY = os.getenv(
+    "MP_PUBLIC_KEY",
+    ""
+)
+
+
+# ----------------------------------------------------------
+# ALIASES DO CHECKOUT
+#
+# Mantidos porque outras partes do projeto podem utilizar
+# estes nomes.
+# ----------------------------------------------------------
+
+MERCADO_PAGO_CHECKOUT_ACCESS_TOKEN = (
+    MERCADO_PAGO_ACCESS_TOKEN
+)
+
+MERCADO_PAGO_CHECKOUT_PUBLIC_KEY = (
+    MP_PUBLIC_KEY
+)
+
 
 # ==========================================================
-# CONFIGURAÇÕES DO WHATSAPP (Evolution API / Local)
+# MODO DE TESTE DE PAGAMENTOS
 # ==========================================================
-WHATSAPP_API_URL = os.getenv("WHATSAPP_API_URL", "http://localhost:8080/message/sendText/sua_instancia")
-WHATSAPP_API_TOKEN = os.getenv("WHATSAPP_API_TOKEN")
+#
+# True:
+#
+#   O ChamaPro utiliza o fluxo de teste do Mercado Pago.
+#
+#   POST:
+#       /v1/orders
+#
+#   Token:
+#       MERCADO_PAGO_TEST_ACCESS_TOKEN
+#
+#   Neste modo utilizaremos os dados de teste do Mercado
+#   Pago para simular PIX, inclusive aprovação através
+#   do cenário APRO.
+#
+#   Não movimenta dinheiro real.
+#
+#
+# False:
+#
+#   O ChamaPro utiliza o fluxo normal do marketplace.
+#
+#   POST:
+#       /v1/payments
+#
+#   Token:
+#       Access Token OAuth do PROFISSIONAL
+#
+#   Comissão:
+#       application_fee
+#
+#   Este será o modo utilizado posteriormente em produção.
+#
+# IMPORTANTE:
+#
+#   Em produção:
+#
+#       MP_PAGAMENTO_TESTE=False
+#
+# ==========================================================
 
-# Configuração de E-mail via SMTP (Gmail)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+MP_PAGAMENTO_TESTE = config(
+    "MP_PAGAMENTO_TESTE",
+    default=True,
+    cast=bool,
+)
+
+
+# ----------------------------------------------------------
+# ACCESS TOKEN EXCLUSIVO PARA TESTES
+#
+# Deve conter o Access Token encontrado em:
+#
+# Mercado Pago
+#   -> Suas integrações
+#   -> marketplace_servicos
+#   -> Credenciais de teste
+#
+# O token deve ficar SOMENTE no arquivo .env.
+# ----------------------------------------------------------
+
+MERCADO_PAGO_TEST_ACCESS_TOKEN = os.getenv(
+    "MP_TEST_ACCESS_TOKEN",
+    ""
+)
+MERCADO_PAGO_WEBHOOK_SECRET = config(
+    "MERCADO_PAGO_WEBHOOK_SECRET",
+    default=""
+)
+
+
+# ==========================================================
+# WHATSAPP (Evolution API / Local)
+# ==========================================================
+
+WHATSAPP_API_URL = os.getenv(
+    "WHATSAPP_API_URL",
+    "http://localhost:8080/message/sendText/sua_instancia"
+)
+
+WHATSAPP_API_TOKEN = os.getenv(
+    "WHATSAPP_API_TOKEN"
+)
+
+
+# ==========================================================
+# E-MAIL SMTP (GMAIL)
+# ==========================================================
+
+EMAIL_BACKEND = (
+    'django.core.mail.backends.smtp.EmailBackend'
+)
+
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("DEFAULT_FROM_EMAIL", "franciscougulino@gmail.com")
-EMAIL_HOST_PASSWORD = os.getenv("SENHA_EMAIL", "")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "franciscougulino@gmail.com")
 
-# Permite que o Django reconheça o HTTPS enviado pelo Cloudflare / Ngrok Tunnel
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    "franciscougulino@gmail.com"
+)
+
+EMAIL_HOST_PASSWORD = os.getenv(
+    "SENHA_EMAIL",
+    ""
+)
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    "franciscougulino@gmail.com"
+)
+
+
+# ==========================================================
+# HTTPS VIA CLOUDFLARE / NGROK
+# ==========================================================
+
+SECURE_PROXY_SSL_HEADER = (
+    'HTTP_X_FORWARDED_PROTO',
+    'https'
+)
+
 USE_X_FORWARDED_HOST = True
+
 USE_X_FORWARDED_PORT = True
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+# ==========================================================
+# DEFAULT PRIMARY KEY
+# ==========================================================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

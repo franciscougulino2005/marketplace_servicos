@@ -420,6 +420,7 @@
 
 
 <script>
+
 function copiarPix() {
 
     const input = document.getElementById('pix-chave');
@@ -432,9 +433,7 @@ function copiarPix() {
             btnText.textContent = 'Copiado!';
 
             setTimeout(() => {
-
                 btnText.textContent = 'Copiar';
-
             }, 3000);
 
         });
@@ -442,6 +441,152 @@ function copiarPix() {
     }
 
 }
+
+
+// ==========================================================
+// VERIFICAÇÃO AUTOMÁTICA DO PAGAMENTO PIX
+// ==========================================================
+
+{% if pagamento.metodo == "PIX" %}
+
+const urlVerificarPagamento =
+    "{% url 'solicitacoes:verificar_status_pagamento' pagamento.pk %}";
+
+const urlDetalheSolicitacao =
+    "{% url 'solicitacoes:detalhe' contratacao.solicitacao.pk %}";
+
+let verificacaoEmAndamento = false;
+let pagamentoFinalizado = false;
+
+
+// ----------------------------------------------------------
+// CONSULTA O DJANGO
+// ----------------------------------------------------------
+
+async function verificarPagamento() {
+
+    if (verificacaoEmAndamento || pagamentoFinalizado) {
+        return;
+    }
+
+    verificacaoEmAndamento = true;
+
+    try {
+
+        const response = await fetch(
+            urlVerificarPagamento,
+            {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json"
+                },
+                cache: "no-store"
+            }
+        );
+
+
+        if (!response.ok) {
+
+            console.warn(
+                "Não foi possível consultar o status do pagamento.",
+                response.status
+            );
+
+            return;
+        }
+
+
+        const data = await response.json();
+
+        console.log(
+            "Status atual do pagamento:",
+            data.status
+        );
+
+
+        // ==================================================
+        // PAGAMENTO APROVADO
+        // ==================================================
+
+        if (data.status === "APROVADO") {
+
+            pagamentoFinalizado = true;
+
+            // Usa a URL enviada pelo Django.
+            // Se não vier, utiliza a URL da solicitação.
+            const destino =
+                data.redirect_url ||
+                urlDetalheSolicitacao;
+
+            window.location.href = destino;
+
+            return;
+        }
+
+
+        // ==================================================
+        // PAGAMENTO RECUSADO / CANCELADO
+        // ==================================================
+
+        if (
+            data.status === "RECUSADO" ||
+            data.status === "CANCELADO"
+        ) {
+
+            pagamentoFinalizado = true;
+
+            window.location.reload();
+
+            return;
+        }
+
+
+    } catch (error) {
+
+        /*
+         * Uma falha momentânea de rede não interrompe
+         * o acompanhamento.
+         *
+         * Na próxima execução será feita nova tentativa.
+         */
+
+        console.warn(
+            "Erro temporário ao verificar pagamento:",
+            error
+        );
+
+    } finally {
+
+        verificacaoEmAndamento = false;
+
+    }
+
+}
+
+
+// ----------------------------------------------------------
+// INICIA O ACOMPANHAMENTO
+// ----------------------------------------------------------
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        // Consulta imediatamente ao abrir a página.
+        verificarPagamento();
+
+        // Depois consulta novamente a cada 5 segundos.
+        setInterval(
+            verificarPagamento,
+            5000
+        );
+
+    }
+);
+
+{% endif %}
+
 </script>
 
 {% endblock %}

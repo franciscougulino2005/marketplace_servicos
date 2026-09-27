@@ -1,119 +1,82 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Pagamento - Contratação #{{ contratacao.id }}
+    Pagamento da contratação
 {% endblock %}
 
 {% block content %}
 
-<div class="mx-auto max-w-3xl px-4 py-8">
+<div class="mx-auto max-w-4xl px-4 py-8">
 
-    <!-- Cabeçalho -->
+    <!-- ======================================================
+         CABEÇALHO
+    ======================================================= -->
+
     <div class="mb-8">
 
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+            Pagamento da contratação
+        </h1>
 
-            <div>
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    Pagamento
-                </h1>
-
-                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    Realize o pagamento para confirmar a contratação do serviço.
-                </p>
-            </div>
-
-
-            <!-- Ajuda -->
-            <a
-                href="{% url 'ajuda:artigo' 'como-realizar-o-pagamento' %}?next={{ request.path }}"
-                title="Ajuda sobre como realizar o pagamento"
-                class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-4 py-2.5 text-sm font-semibold text-orange-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-100 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-orange-200 dark:border-orange-800 dark:bg-orange-900/20 dark:text-orange-300 dark:hover:bg-orange-900/40 dark:focus:ring-orange-900/40"
-            >
-                <span
-                    class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 text-sm font-bold leading-none text-orange-500"
-                >
-                    ?
-                </span>
-
-                <span>
-                    Como realizar o pagamento
-                </span>
-            </a>
-
-        </div>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Finalize o pagamento para confirmar a contratação.
+        </p>
 
     </div>
 
 
-    <!-- Dados da Contratação -->
-    <div class="mb-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <!-- ======================================================
+         RESUMO DA CONTRATAÇÃO
+    ======================================================= -->
 
-        <div class="flex flex-col gap-3 border-b border-gray-200 p-6 sm:flex-row sm:items-center sm:justify-between dark:border-gray-700">
+    <div class="mb-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+
+        <h2 class="mb-4 text-lg font-bold text-gray-900 dark:text-white">
+            Resumo da contratação
+        </h2>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
             <div>
-                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
-                    Dados da contratação
-                </h2>
-
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    Contratação #{{ contratacao.id }}
-                </p>
-            </div>
-
-            <span class="inline-flex w-fit items-center rounded-full bg-orange-100 px-3 py-1.5 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
-                Aguardando pagamento
-            </span>
-
-        </div>
-
-
-        <div class="grid grid-cols-1 gap-5 p-6 sm:grid-cols-2">
-
-            <!-- Serviço -->
-            <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                <p class="text-xs font-medium uppercase text-gray-500">
                     Serviço
                 </p>
 
-                <p class="mt-1 font-semibold text-gray-800 dark:text-gray-200">
+                <p class="mt-1 font-semibold text-gray-900 dark:text-white">
                     {{ contratacao.solicitacao.titulo }}
                 </p>
             </div>
 
 
-            <!-- Profissional -->
             <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                <p class="text-xs font-medium uppercase text-gray-500">
                     Profissional
                 </p>
 
-                <p class="mt-1 font-semibold text-gray-800 dark:text-gray-200">
-                    {{ contratacao.profissional.usuario.get_full_name|default:contratacao.profissional.usuario.username }}
+                <p class="mt-1 font-semibold text-gray-900 dark:text-white">
+                    {{ contratacao.profissional }}
                 </p>
             </div>
 
 
-            <!-- Prazo -->
             <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Prazo de execução
+                <p class="text-xs font-medium uppercase text-gray-500">
+                    Valor
                 </p>
 
-                <p class="mt-1 font-semibold text-gray-800 dark:text-gray-200">
-                    {{ contratacao.orcamento.prazo_dias }} dia(s)
+                <p class="mt-1 text-xl font-bold text-green-600">
+                    R$ {{ contratacao.valor|floatformat:2 }}
                 </p>
             </div>
 
 
-            <!-- Valor -->
             <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Valor do serviço
+                <p class="text-xs font-medium uppercase text-gray-500">
+                    Status da contratação
                 </p>
 
-                <p class="mt-1 text-2xl font-bold text-orange-500 dark:text-orange-400">
-                    R$ {{ contratacao.valor }}
+                <p class="mt-1 font-semibold text-gray-900 dark:text-white">
+                    {{ contratacao.get_status_display }}
                 </p>
             </div>
 
@@ -122,155 +85,162 @@
     </div>
 
 
-    <!-- Forma de Pagamento -->
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <!-- ======================================================
+         FORMULÁRIO NORMAL DE PAGAMENTO
+    ======================================================= -->
 
-        <div class="border-b border-gray-200 p-6 dark:border-gray-700">
+    <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
-            <h2 class="text-lg font-bold text-gray-900 dark:text-white">
-                Forma de pagamento
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Escolha como deseja realizar o pagamento.
-            </p>
-
-        </div>
+        <h2 class="mb-6 text-lg font-bold text-gray-900 dark:text-white">
+            Escolha a forma de pagamento
+        </h2>
 
 
-        <div class="p-6">
+        <form
+            method="post"
+            id="form-pagamento"
+        >
 
-            <form id="form-pagamento" method="post">
-
-                {% csrf_token %}
-
-
-                <!-- Opções de pagamento -->
-                <div class="mb-6 space-y-3">
-
-                    <!-- PIX -->
-                    <label
-                        class="flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white p-4 transition-all hover:border-orange-300 hover:bg-orange-50/50 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-orange-500 dark:hover:bg-orange-900/10"
-                    >
-
-                        <input
-                            type="radio"
-                            name="metodo_pagamento"
-                            value="PIX"
-                            class="metodo-radio h-4 w-4 border-gray-300 text-orange-500 focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700"
-                        >
-
-                        <div class="ml-3">
-
-                            <span class="block text-sm font-semibold text-gray-900 dark:text-white">
-                                PIX
-                            </span>
-
-                            <span class="mt-0.5 block text-xs text-gray-500 dark:text-gray-400">
-                                Pagamento instantâneo.
-                            </span>
-
-                        </div>
-
-                    </label>
+            {% csrf_token %}
 
 
-                    <!-- Cartão de Crédito -->
-                    <label
-                        class="flex cursor-pointer items-center rounded-xl border border-orange-300 bg-orange-50/50 p-4 transition-all hover:border-orange-400 hover:bg-orange-50 dark:border-orange-500 dark:bg-orange-900/10 dark:hover:bg-orange-900/20"
-                    >
+            <!-- PIX -->
 
-                        <input
-                            type="radio"
-                            name="metodo_pagamento"
-                            value="CARTAO"
-                            class="metodo-radio h-4 w-4 border-gray-300 text-orange-500 focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700"
-                            checked
-                        >
+            <label
+                class="mb-3 flex cursor-pointer items-center rounded-xl border border-gray-200 p-4 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
+            >
 
-                        <div class="ml-3">
+                <input
+                    type="radio"
+                    name="metodo_pagamento"
+                    value="PIX"
+                    class="h-4 w-4 text-blue-600"
+                >
 
-                            <span class="block text-sm font-semibold text-gray-900 dark:text-white">
-                                Cartão de crédito
-                            </span>
+                <span class="ml-3">
 
-                            <span class="mt-0.5 block text-xs text-gray-500 dark:text-gray-400">
-                                Pagamento com cartão.
-                            </span>
+                    <span class="block font-semibold text-gray-900 dark:text-white">
+                        PIX
+                    </span>
 
-                        </div>
+                    <span class="block text-xs text-gray-500 dark:text-gray-400">
+                        Pagamento instantâneo
+                    </span>
 
-                    </label>
+                </span>
 
-                </div>
+            </label>
 
 
-                <!-- Contêiner do Card Payment Brick -->
-                <div
-                    id="cardPaymentBrick_container"
-                    class="mb-6"
-                ></div>
+            <!-- CARTÃO -->
+
+            <label
+                class="mb-6 flex cursor-pointer items-center rounded-xl border border-gray-200 p-4 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
+            >
+
+                <input
+                    type="radio"
+                    name="metodo_pagamento"
+                    value="CARTAO"
+                    checked
+                    class="h-4 w-4 text-blue-600"
+                >
+
+                <span class="ml-3">
+
+                    <span class="block font-semibold text-gray-900 dark:text-white">
+                        Cartão
+                    </span>
+
+                    <span class="block text-xs text-gray-500 dark:text-gray-400">
+                        Pagamento seguro pelo Mercado Pago
+                    </span>
+
+                </span>
+
+            </label>
 
 
-                <!-- Botões -->
-                <div class="mt-8 flex flex-col-reverse items-stretch justify-between gap-3 border-t border-gray-200 pt-5 sm:flex-row sm:items-center dark:border-gray-700">
+            <!-- BRICK CARTÃO -->
 
-                    <!-- Voltar / Cancelar -->
-                    <a
-                        href="{% url 'solicitacoes:detalhe' contratacao.solicitacao.pk %}"
-                        class="inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition-all hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                    >
-                        ← Voltar / Cancelar
-                    </a>
+            <div
+                id="cardPaymentBrick_container"
+                class="mb-6"
+            ></div>
 
 
-                    <!-- Gerar QR Code PIX -->
-                    <button
-                        type="submit"
-                        id="btn-continuar"
-                        class="hidden inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-orange-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:bg-orange-500 dark:hover:bg-orange-600"
-                    >
-                        Gerar QR Code PIX
-                    </button>
+            <!-- BOTÃO PIX -->
 
-                </div>
+            <button
+                type="submit"
+                id="btn-continuar"
+                class="hidden w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+                Gerar QR Code PIX
+            </button>
 
-            </form>
-
-        </div>
+        </form>
 
     </div>
 
 </div>
 
 
-<!-- SDK do Mercado Pago JS v2 -->
+<!-- ==========================================================
+     MERCADO PAGO SDK
+=========================================================== -->
+
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 
+
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ======================================================
+    // REFERÊNCIAS
+    // ======================================================
+
+    const radios = document.querySelectorAll(
+        'input[name="metodo_pagamento"]'
+    );
+
+    const cardContainer = document.getElementById(
+        "cardPaymentBrick_container"
+    );
+
+    const btnContinuar = document.getElementById(
+        "btn-continuar"
+    );
+
+
+    // ======================================================
+    // DADOS DO MERCADO PAGO
+    // ======================================================
+
+    const publicKey = "{{ mp_public_key|escapejs }}";
+
+    const valorPagamento = "{{ contratacao.valor|floatformat:2 }}";
+
+
+    // ======================================================
+    // BRICK CARTÃO
+    // ======================================================
 
     let cardPaymentBrickController = null;
 
 
-    async function renderCardPaymentBrick(themeChoice) {
+    async function renderCardPaymentBrick() {
 
-        const publicKey = "{{ mp_public_key }}";
+        if (!publicKey) {
 
-        const cardContainer =
-            document.getElementById(
-                'cardPaymentBrick_container'
+            console.error(
+                "MP_PUBLIC_KEY não configurada."
             );
 
-
-        if (
-            !publicKey ||
-            publicKey.trim() === "" ||
-            publicKey === "None"
-        ) {
-
             cardContainer.innerHTML = `
-                <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/40 dark:text-red-300">
-                    Erro: Chave pública do Mercado Pago (MP_PUBLIC_KEY) não configurada ou vazia.
+                <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                    A chave pública do Mercado Pago não está configurada.
                 </div>
             `;
 
@@ -278,287 +248,314 @@
         }
 
 
-        try {
+        if (cardPaymentBrickController) {
 
-            const mp =
-                new MercadoPago(
-                    publicKey,
-                    {
-                        locale: "pt-BR"
-                    }
+            try {
+
+                await cardPaymentBrickController.unmount();
+
+            } catch (error) {
+
+                console.warn(
+                    "Erro ao desmontar Card Payment Brick:",
+                    error
                 );
 
+            }
 
-            const settings = {
-
-                initialization: {
-
-                    amount:
-                        Number(
-                            "{{ contratacao.valor|stringformat:'s' }}"
-                                .replace(',', '.')
-                        ) || 0,
-
-                },
+            cardPaymentBrickController = null;
+        }
 
 
-                customization: {
+        cardContainer.innerHTML = "";
 
-                    visual: {
 
-                        style: {
+        try {
 
-                            theme:
-                                themeChoice === 'dark'
-                                    ? 'dark'
-                                    : 'default'
+            const mp = new MercadoPago(
+                publicKey,
+                {
+                    locale: "pt-BR"
+                }
+            );
+
+
+            const bricksBuilder = mp.bricks();
+
+
+            cardPaymentBrickController =
+                await bricksBuilder.create(
+                    "cardPayment",
+                    "cardPaymentBrick_container",
+                    {
+
+                        initialization: {
+
+                            amount: Number(
+                                valorPagamento.replace(",", ".")
+                            ),
+
+                            payer: {
+                                email: "{{ request.user.email|escapejs }}"
+                            }
+
+                        },
+
+                        customization: {
+
+                            visual: {
+
+                                style: {
+
+                                    theme: "default"
+
+                                }
+
+                            },
+
+                            paymentMethods: {
+
+                                maxInstallments: 12
+
+                            }
+
+                        },
+
+                        callbacks: {
+
+                            onReady: () => {
+
+                                console.log(
+                                    "Card Payment Brick carregado."
+                                );
+
+                            },
+
+
+                            onSubmit: async (
+                                cardData
+                            ) => {
+
+                                try {
+
+                                    const response =
+                                        await fetch(
+                                            "{% url 'solicitacoes:processar_cartao' contratacao.pk %}",
+                                            {
+
+                                                method: "POST",
+
+                                                headers: {
+
+                                                    "Content-Type":
+                                                        "application/json",
+
+                                                    "X-CSRFToken":
+                                                        getCookie(
+                                                            "csrftoken"
+                                                        )
+
+                                                },
+
+                                                body:
+                                                    JSON.stringify(
+                                                        cardData
+                                                    )
+
+                                            }
+                                        );
+
+
+                                    const data =
+                                        await response.json();
+
+
+                                    if (
+                                        response.ok &&
+                                        data.status === "success"
+                                    ) {
+
+                                        window.location.href =
+                                            "{% url 'solicitacoes:detalhe' contratacao.solicitacao.pk %}";
+
+                                    } else {
+
+                                        alert(
+                                            data.message ||
+                                            "Não foi possível processar o pagamento."
+                                        );
+
+                                    }
+
+                                } catch (error) {
+
+                                    console.error(
+                                        error
+                                    );
+
+                                    alert(
+                                        "Erro ao processar o pagamento."
+                                    );
+
+                                }
+
+                            },
+
+
+                            onError: (error) => {
+
+                                console.error(
+                                    "Erro no Card Payment Brick:",
+                                    error
+                                );
+
+                            }
 
                         }
 
                     }
+                );
 
-                },
-
-
-                callbacks: {
-
-                    onReady: () => {},
-
-
-                    onSubmit: (cardData) => {
-
-                        return new Promise(
-                            (resolve, reject) => {
-
-                                fetch(
-                                    "{% url 'solicitacoes:processar_cartao' contratacao.pk %}",
-                                    {
-                                        method: "POST",
-
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                            "X-CSRFToken": "{{ csrf_token }}"
-                                        },
-
-                                        body:
-                                            JSON.stringify(
-                                                cardData
-                                            )
-                                    }
-                                )
-
-                                .then(
-                                    response =>
-                                        response.json()
-                                )
-
-                                .then(
-                                    result => {
-
-                                        if (
-                                            result.status === 'success'
-                                        ) {
-
-                                            window.location.href =
-                                                "{% url 'solicitacoes:detalhe' contratacao.solicitacao.pk %}";
-
-                                        } else {
-
-                                            alert(
-                                                "Erro: " +
-                                                result.message
-                                            );
-
-                                            reject();
-
-                                        }
-
-                                    }
-                                )
-
-                                .catch(
-                                    error => {
-
-                                        console.error(
-                                            "Erro ao processar pagamento:",
-                                            error
-                                        );
-
-                                        alert(
-                                            "Erro de conexão."
-                                        );
-
-                                        reject();
-
-                                    }
-                                );
-
-                            }
-                        );
-
-                    },
-
-
-                    onError: (error) => {
-
-                        console.error(
-                            "Erro interno do Brick:",
-                            error
-                        );
-
-                    },
-
-                },
-
-            };
-
-
-            cardPaymentBrickController =
-                await mp
-                    .bricks()
-                    .create(
-                        "cardPayment",
-                        "cardPaymentBrick_container",
-                        settings
-                    );
-
-
-        } catch (e) {
+        } catch (error) {
 
             console.error(
-                "Erro detalhado ao carregar o Brick:",
-                e
+                "Erro ao inicializar Mercado Pago:",
+                error
+            );
+
+            cardContainer.innerHTML = `
+                <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                    Não foi possível carregar o formulário de cartão.
+                </div>
+            `;
+        }
+
+    }
+
+
+    // ======================================================
+    // CONTROLE DOS MÉTODOS
+    // ======================================================
+
+    async function atualizarMetodoPagamento() {
+
+        const selecionado =
+            document.querySelector(
+                'input[name="metodo_pagamento"]:checked'
             );
 
 
-            cardContainer.innerHTML = `
-                <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/40 dark:text-red-300">
-                    Erro ao carregar o componente de cartão:
-                    ${e.message || e}
-                </div>
-            `;
+        if (!selecionado) {
+
+            return;
+
+        }
+
+
+        if (selecionado.value === "PIX") {
+
+            cardContainer.classList.add(
+                "hidden"
+            );
+
+            btnContinuar.classList.remove(
+                "hidden"
+            );
+
+            btnContinuar.textContent =
+                "Gerar QR Code PIX";
+
+        } else {
+
+            cardContainer.classList.remove(
+                "hidden"
+            );
+
+            btnContinuar.classList.add(
+                "hidden"
+            );
+
+            await renderCardPaymentBrick();
 
         }
 
     }
 
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        () => {
+    radios.forEach(
+        radio => {
 
-            const radios =
-                document.querySelectorAll(
-                    '.metodo-radio'
-                );
-
-
-            const cardContainer =
-                document.getElementById(
-                    'cardPaymentBrick_container'
-                );
-
-
-            const btnContinuar =
-                document.getElementById(
-                    'btn-continuar'
-                );
-
-
-            // Renderiza o brick com o tema inicial correto
-            const initialTheme =
-                document.documentElement.classList.contains(
-                    'dark'
-                )
-                    ? 'dark'
-                    : 'default';
-
-
-            renderCardPaymentBrick(
-                initialTheme
-            );
-
-
-            // Ouve a mudança de tema disparada pelo base.html
-            // para recriar o brick dinamicamente
-            window.addEventListener(
-                'themeChanged',
-                async (e) => {
-
-                    const newTheme =
-                        e.detail.theme;
-
-
-                    if (
-                        cardPaymentBrickController
-                    ) {
-
-                        try {
-
-                            await
-                                cardPaymentBrickController
-                                    .unmount();
-
-                        } catch (err) {
-
-                            console.error(
-                                "Erro ao desmontar o brick:",
-                                err
-                            );
-
-                        }
-
-                    }
-
-
-                    renderCardPaymentBrick(
-                        newTheme
-                    );
-
-                }
-            );
-
-
-            // Alternância entre PIX e Cartão
-            radios.forEach(
-                radio => {
-
-                    radio.addEventListener(
-                        'change',
-                        (e) => {
-
-                            if (
-                                e.target.value === 'PIX'
-                            ) {
-
-                                cardContainer.classList.add(
-                                    'hidden'
-                                );
-
-                                btnContinuar.classList.remove(
-                                    'hidden'
-                                );
-
-                            } else {
-
-                                cardContainer.classList.remove(
-                                    'hidden'
-                                );
-
-                                btnContinuar.classList.add(
-                                    'hidden'
-                                );
-
-                            }
-
-                        }
-                    );
-
-                }
+            radio.addEventListener(
+                "change",
+                atualizarMetodoPagamento
             );
 
         }
     );
+
+
+    // ======================================================
+    // COOKIE CSRF
+    // ======================================================
+
+    function getCookie(name) {
+
+        let cookieValue = null;
+
+
+        if (document.cookie && document.cookie !== "") {
+
+            const cookies =
+                document.cookie.split(";");
+
+
+            for (
+                let i = 0;
+                i < cookies.length;
+                i++
+            ) {
+
+                const cookie =
+                    cookies[i].trim();
+
+
+                if (
+                    cookie.substring(
+                        0,
+                        name.length + 1
+                    ) === name + "="
+                ) {
+
+                    cookieValue =
+                        decodeURIComponent(
+                            cookie.substring(
+                                name.length + 1
+                            )
+                        );
+
+                    break;
+
+                }
+
+            }
+
+        }
+
+
+        return cookieValue;
+
+    }
+
+
+    // ======================================================
+    // INICIALIZAÇÃO
+    // ======================================================
+
+    atualizarMetodoPagamento();
+
+
+
+});
 
 </script>
 

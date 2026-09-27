@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Serviço{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-160px)] bg-gray-50 px-4 py-8 dark:bg-gray-900 sm:py-10">
+  <div class="mx-auto max-w-5xl">
+    <div class="mb-6">
+      <a href="{% url 'solicitacoes:meus_servicos_profissional' %}" class="text-sm font-semibold text-orange-600 hover:text-orange-700">← Voltar para meus serviços</a>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <div class="border-b border-gray-200 bg-orange-50 px-6 py-6 dark:border-gray-700 dark:bg-gray-800">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            {% if contratacao.status == 'CANCELADA' %}
+              <p class="text-sm font-bold uppercase tracking-wide text-gray-600">Serviço cancelado · Solicitação #{{ solicitacao.pk }}</p>
+            {% elif contratacao.status == 'SERVICO_CONCLUIDO' %}
+              <p class="text-sm font-bold uppercase tracking-wide text-blue-600">Serviço concluído · Solicitação #{{ solicitacao.pk }}</p>
+            {% elif contratacao.status == 'PAGAMENTO_LIBERADO' %}
+              <p class="text-sm font-bold uppercase tracking-wide text-green-700">Serviço finalizado · Solicitação #{{ solicitacao.pk }}</p>
+            {% else %}
+              <p class="text-sm font-bold uppercase tracking-wide text-orange-600">Serviço contratado · Solicitação #{{ solicitacao.pk }}</p>
+            {% endif %}
+            <h1 class="mt-2 text-2xl font-extrabold text-gray-900 dark:text-white">{{ solicitacao.titulo }}</h1>
+            <p class="mt-2 text-sm font-semibold text-orange-600">{{ solicitacao.categoria }}</p>
+          </div>
+          <div class="text-left sm:text-right">
+            <p class="text-2xl font-extrabold text-green-700 dark:text-green-400">R$ {{ contratacao.valor }}</p>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{{ contratacao.get_status_display }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-6 p-6 lg:grid-cols-3">
+        <div class="space-y-6 lg:col-span-2">
+          <section>
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white">Descrição</h2>
+            <div class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">{{ solicitacao.descricao|linebreaksbr }}</div>
+          </section>
+
+          <section class="border-t border-gray-200 pt-6 dark:border-gray-700">
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white">Cliente</h2>
+            <div class="mt-3 space-y-1 text-sm text-gray-700 dark:text-gray-300">
+              <p><strong>Nome:</strong> {{ solicitacao.cliente.usuario.get_full_name|default:solicitacao.cliente.usuario.username }}</p>
+              {% if solicitacao.cliente.usuario.telefone %}<p><strong>Telefone:</strong> {{ solicitacao.cliente.usuario.telefone }}</p>{% endif %}
+            </div>
+          </section>
+
+          <section class="border-t border-gray-200 pt-6 dark:border-gray-700">
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white">Situação do pagamento</h2>
+            <div class="mt-3">
+              {% if contratacao.status == 'CANCELADA' %}
+                {% if pagamento and pagamento.status == 'ESTORNADO' %}
+                  <span class="inline-flex rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700">Pagamento estornado</span>
+                {% elif pagamento and pagamento.status == 'CANCELADO' %}
+                  <span class="inline-flex rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700">Pagamento cancelado</span>
+                {% else %}
+                  <span class="inline-flex rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700">Pagamento não realizado</span>
+                {% endif %}
+              {% elif pagamento and pagamento.status == 'APROVADO' %}
+                <span class="inline-flex rounded-full bg-green-100 px-3 py-1 text-sm font-semibold text-green-800">Pagamento confirmado</span>
+              {% elif pagamento and pagamento.status == 'ESTORNADO' %}
+                <span class="inline-flex rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700">Pagamento estornado</span>
+              {% elif pagamento and pagamento.status == 'CANCELADO' %}
+                <span class="inline-flex rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700">Pagamento cancelado</span>
+              {% elif pagamento and pagamento.status == 'RECUSADO' %}
+                <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-700">Pagamento recusado</span>
+              {% else %}
+                <span class="inline-flex rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-800">Aguardando pagamento do cliente</span>
+              {% endif %}
+            </div>
+          </section>
+        </div>
+
+        <aside class="space-y-5">
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-900">
+            <h2 class="font-bold text-gray-900 dark:text-white">Local do serviço</h2>
+            <div class="mt-3 space-y-1 text-sm text-gray-700 dark:text-gray-300">
+              <p>{{ solicitacao.endereco }}{% if solicitacao.numero %}, {{ solicitacao.numero }}{% endif %}</p>
+              {% if solicitacao.bairro %}<p>{{ solicitacao.bairro }}</p>{% endif %}
+              <p>{{ solicitacao.cidade }} - {{ solicitacao.estado }}</p>
+              {% if solicitacao.cep %}<p>CEP: {{ solicitacao.cep }}</p>{% endif %}
+              {% if solicitacao.data_desejada %}<p class="mt-4 border-t border-gray-200 pt-4 dark:border-gray-700"><strong>Data desejada:</strong> {{ solicitacao.data_desejada|date:"d/m/Y" }}</p>{% endif %}
+            </div>
+          </div>
+
+          {% if contratacao.status == 'PAGAMENTO_CONFIRMADO' or contratacao.status == 'EM_EXECUCAO' %}
+            {% if pagamento and pagamento.status == 'APROVADO' %}
+              <form method="post" action="{% url 'solicitacoes:concluir_servico' pk=contratacao.pk %}" onsubmit="return confirm('Confirma que o serviço foi concluído?');">
+                {% csrf_token %}
+                <button type="submit" class="w-full rounded-xl bg-green-600 px-4 py-3 text-sm font-bold text-white hover:bg-green-700">✓ Informar serviço concluído</button>
+              </form>
+            {% endif %}
+          {% elif contratacao.status == 'SERVICO_CONCLUIDO' %}
+            <div class="rounded-xl bg-blue-50 p-4 text-sm font-semibold text-blue-800">Conclusão informada. Aguardando confirmação do cliente.</div>
+          {% elif contratacao.status == 'PAGAMENTO_LIBERADO' %}
+            <div class="rounded-xl bg-green-50 p-4 text-sm font-semibold text-green-800">Serviço concluído e confirmado pelo cliente.</div>
+          {% elif contratacao.status == 'CANCELADA' %}
+            <div class="rounded-xl bg-gray-100 p-4 text-sm font-semibold text-gray-700">Serviço cancelado.</div>
+          {% endif %}
+
+          {% if contratacao.status != 'SERVICO_CONCLUIDO' and contratacao.status != 'PAGAMENTO_LIBERADO' and contratacao.status != 'CANCELADA' %}
+            <form method="post" action="{% url 'solicitacoes:cancelar_contratacao_profissional' pk=contratacao.pk %}" onsubmit="return confirm('Tem certeza de que deseja desistir deste serviço? Se o pagamento já tiver sido aprovado, o sistema solicitará o reembolso ao cliente.');">
+              {% csrf_token %}
+              <button type="submit" class="w-full rounded-xl border border-red-300 bg-white px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50">✕ Cancelar / desistir do serviço</button>
+            </form>
+          {% endif %}
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
